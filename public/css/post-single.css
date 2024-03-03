@@ -1,0 +1,29 @@
+.header-post-single {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 30px 30px 30px;
+  color: rgb(99, 99, 99);
+}
+
+.post-container-single {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 40px 80px 40px 80px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  border-radius: 5px;
+  background: rgb(240, 240, 240);
+  margin-bottom: 40px;
+}
+
+.title-post-single {
+  font-size: 40px;
+  font-weight: bold;
+}
+.chapo-post-single {
+  font-size: 24px;
+}
+
+.text-post-single {
+  font-size: 18px;
+}

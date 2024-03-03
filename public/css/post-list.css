@@ -1,0 +1,55 @@
+.title-post-list {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.chapo-post-list {
+  font-size: 18px;
+}
+
+.content-post-list {
+  font-size: 14px;
+}
+
+.author-post-list,
+.date-creation-post-list {
+  font-size: 14px;
+  color: rgb(185, 185, 185);
+  position: absolute;
+  right: 15px;
+}
+
+.author-post-list {
+  bottom: 10px;
+}
+
+.date-creation-post-list {
+  top: 10px;
+}
+
+.posts-container-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+.post-container-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 15px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  border-radius: 5px;
+  background: rgb(240, 240, 240);
+  transition: 0.3s;
+}
+
+.post-container-list:hover {
+  transform: scale(1.03);
+}
+
+a {
+  text-decoration: none;
+  color: rgb(36, 36, 36);
+}
