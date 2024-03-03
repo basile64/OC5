@@ -5,7 +5,7 @@
     <?php
     foreach ($posts as $post) { ?>
         <div class="post-container-list">
-            <a href='/post/<?= strtolower(str_replace(" ", "-", $post->getTitle())) . '-' . $post->getId() ?>'>
+            <a href='/OC5/post/<?= $post->getId() ?>'>
                 <div class="title-post-list"><?= $post->getTitle() ?></div>
             </a>
             <div class="chapo-post-list"><?= $post->getChapo() ?></div>

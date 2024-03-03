@@ -2,12 +2,15 @@
 
 namespace application\src\controllers;
 
-use application\src\controllers as Controller;
 use application\src\models as Model;
 
-class HomepageController extends Controller\Controller {
+class HomepageController extends Controller {
     private $postManager;
     private $view;
+
+    public function __construct(){
+        $this->showHomePage();
+    }
 
     public function showHomePage(){
         $this->postManager = new Model\post\PostManager();
@@ -15,5 +18,6 @@ class HomepageController extends Controller\Controller {
         $this->view = "homepageView";
         $this->render($this->view, ["posts"=> $posts]);
     }
+
 }
 

@@ -2,6 +2,9 @@
 
 namespace application\src\models\comment;
 
+use application\src\controllers as Controller;
+use application\src\models as Model;
+
 class CommentManager {
 
     public static function getComments($idPost){
@@ -30,8 +33,17 @@ class CommentManager {
 
         $params = [":idPost" => $idPost];
 
-        $result = DbConnect::executeQuery($query, $params);
+        $result = Model\database\DbConnect::executeQuery($query, $params);
 
-        return $result;
+        $comments = [];
+
+        if (is_array($result)) {
+            foreach ($result as $comment) {
+                $comments[] = new Comment($comment);
+            }
+            return $comments;
+        }        
+
+        return null;
     }
 }
