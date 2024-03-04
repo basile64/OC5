@@ -7,7 +7,8 @@ use application\src\utils as Util;
 
 class PostController extends Controller{
     private $postManager;
-    private $commentManager;
+    private $mainCommentManager;
+    private $responseCommentManager;
     private $categoryManager;
     private $view;
     private $parsedUrl;
@@ -39,10 +40,18 @@ class PostController extends Controller{
     public function showSinglePost($idPost){
         $this->postManager = new Model\post\PostManager();
         $post = $this->postManager->getPost($idPost);
-        $this->commentManager = new Model\comment\CommentManager();
-        $comments = $this->commentManager->getComments($idPost);
+
+        $this->mainCommentManager = new Model\comment\MainCommentManager();
+        $mainComments = $this->mainCommentManager->getMainComments($idPost);
+
+        $this->responseCommentManager = new Model\comment\ResponseCommentManager();
+        foreach ($mainComments as $mainComment) {
+            $responseComments = $this->responseCommentManager->getResponseComments($mainComment->getId());
+            $mainComment->setResponseComments($responseComments);
+        }
+
         $this->view = "post/singlePostView";
-        $this->render($this->view, ["post"=> $post, "comments" => $comments]);
+        $this->render($this->view, ["post"=> $post, "mainComments" => $mainComments]);
     }
 
 

@@ -2,15 +2,18 @@
     <div class="title2">Commentaires</div>
 
     <div class="comments-container">
-    <?=empty($comments) ? "Aucun commentaire.":"";?>
-    <?php foreach ($comments as $comment) {?>
-        <div class="comment-container">
-            <div class="header-comment">
-                <div class="author-comment"><?=$comment->getAuthor()?></div>
-                <div class="date-comment"><?=$comment->getDate()?></div>
+        <?= empty($mainComments) ? "Aucun commentaire." : ""; ?>
+        <?php foreach ($mainComments as $mainComment) : ?>
+            <div class="comment-container">
+                <div class="main-comment-container">
+                    <div class="main-comment-header">
+                        <div class="main-comment-author"><?= $mainComment->getAuthor() ?></div>
+                        <div class="main-comment-date"><?= $mainComment->getDate() ?></div>
+                    </div>
+                    <div class="main-comment-text"><?= $mainComment->getText() ?></div>
+                </div>
+                <?php require_once("../src/views/comment/responseCommentsView.php")?>
             </div>
-            <div class="text-comment"><?=$comment->getText()?></div>
-        </div>
-    <?php } ?>
+        <?php endforeach; ?>
     </div>
 </div>
