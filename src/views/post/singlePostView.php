@@ -1,34 +1,26 @@
 <?php ob_start()?>
-
-<div class="header-post-single">
-    <div class="date-creation-post-single">Article écrit le <?=$post["dateCreationPost"]?></div>
-    <div class="date-creation-post-single">par <?=$post["authorPost"]?> </div>
-</div>
-
-<div class="post-container-single">
-    <div class="title-post-single"><?=$post["titlePost"]?></div>
-    <div class="chapo-post-single"><?=$post["chapoPost"]?></div>
-    <div class="text-post-single"><?=$post["textPost"]?></div>
-</div>
-
-<div class="comments">
-    <div class="title2">Commentaires</div>
-
-    <div class="comments-container">
-    <?=empty($comments) ? "Aucun commentaire.":"";?>
-    <?php foreach ($comments as $comment) {?>
-        <div class="comment-container">
-            <div class="header-comment">
-                <div class="author-comment"><?=$comment["authorComment"]?></div>
-                <div class="date-comment"><?=$comment["dateComment"]?></div>
-            </div>
-            <div class="text-comment"><?=$comment["textComment"]?></div>
-        </div>
-    <?php } ?>
+<div class="single-post">
+    <div class="nav-post">
+        <a id="post-back-home" href="http://localhost/OC5">Back home</a>
+        <a id="post-next" href="">Next</a>
     </div>
+    <div class="header-post-single">
+        <div class="date-creation-post-single">Article écrit le <?=$post->getDateCreation()?></div>
+        <div class="date-creation-post-single">par <?=$post->getAuthor()?> </div>
+    </div>
+
+    <div class="post-container-single">
+        <div class="title-post-single"><?=$post->getTitle()?></div>
+        <div class="chapo-post-single"><?=$post->getChapo()?></div>
+        <div class="text-post-single"><?=$post->getText()?></div>
+    </div>
+
+<?php require_once("../src/views/comment/commentsView.php");?>
+
 </div>
+
 <?php
 
 $content = ob_get_clean();
 
-require_once("../views/layout.php");
+require_once("../src/views/mainLayout.php");

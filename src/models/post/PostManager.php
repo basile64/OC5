@@ -39,9 +39,10 @@ class PostManager {
             foreach ($result as $post) {
                 $posts[] = new Post($post);
             }
+            return $posts;
         }        
 
-        return $posts;
+        return null;
     }
 
     public static function getPost($idPost){

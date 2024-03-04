@@ -1,7 +1,39 @@
+.single-post {
+  width: 800px;
+  margin: 0 auto;
+  font-family: "Noto Sans";
+}
+
+.nav-post {
+  display: flex;
+  justify-content: space-between;
+}
+
+#post-back-home,
+#post-next {
+  width: 120px;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 100;
+  margin-bottom: 30px;
+  background-color: rgb(6, 2, 51);
+  color: rgb(238, 238, 238);
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+#post-back-home:hover,
+#post-next:hover {
+  transform: scale(1.03);
+}
+
 .header-post-single {
   display: flex;
   justify-content: space-between;
-  margin: 0 30px 30px 30px;
+  margin: 0 0px 30px 0px;
   color: rgb(99, 99, 99);
 }
 
