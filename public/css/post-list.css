@@ -37,12 +37,18 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 30px;
-  gap: 15px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
   border-radius: 5px;
   background: rgb(240, 240, 240);
   transition: 0.3s;
+}
+
+.post-container-list a {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  gap: 15px;
 }
 
 .post-container-list:hover {

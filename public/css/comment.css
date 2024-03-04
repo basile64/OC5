@@ -1,5 +1,5 @@
 .comments {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
 }
 
@@ -10,7 +10,7 @@
   margin-top: 10px;
 }
 
-.header-comment {
+.main-comment-header {
   display: flex;
   justify-content: space-between;
 }
@@ -23,16 +23,56 @@
   border: 1px solid rgb(214, 214, 214);
 }
 
-.date-comment {
+.main-comment-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.main-comment-date {
   font-size: 16px;
   color: rgb(117, 117, 117);
 }
 
-.author-comment {
+.main-comment-author {
   font-size: 18px;
   font-weight: bold;
 }
 
-.date-comment {
+.main-comment-date {
+  font-size: 14px;
+}
+
+.response-comments-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.response-comment-container {
+  margin-top: 20px;
+  padding-left: 40px;
+}
+
+.response-comment-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.response-comment-date {
+  font-size: 12px;
+  color: rgb(117, 117, 117);
+}
+
+.response-comment-author {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.response-comment-text {
+  font-size: 14px;
+}
+
+.response-comment-date {
   font-size: 14px;
 }
