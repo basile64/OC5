@@ -8,7 +8,7 @@ class DbConnect{
     private const DBNAME = "OC5";
     private const USER = "root";
     private const PASSWORD = "";
-    private static $connection;
+    public static $connection;
     private static $instance;
 
     private function __construct(){
@@ -47,7 +47,7 @@ class DbConnect{
 
         } catch (\PDOException $e) {
             echo "Erreur lors de l'exécution de la requête : ". $e->getMessage();
-            return array();
+            return false;
         }
     }
 
