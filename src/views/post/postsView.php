@@ -11,7 +11,7 @@
                 <div class="content-post-list"><?= strlen($post->getText()) > 200 ? substr($post->getText(), 0, 200) . "..." : $post->getText(); ?></div>
             </a>
             <div class="author-post-list"><?= $post->getAuthor() ?></div>
-            <div class="date-creation-post-list"><?= $post->getDateCreation() ?></div>
+            <div class="date-creation-post-list"><?= $post->getDateCreation("d-m-Y") ?></div>
         </div>
     <?php } ?>
 </div>
