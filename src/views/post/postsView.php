@@ -6,6 +6,7 @@
     foreach ($posts as $post) { ?>
         <div class="post-container-list">
             <a href='/OC5/post/<?= $post->getId() ?>'>
+            <img src="/OC5/public/upload/<?= $post->getImg() ?>">
                 <div class="title-post-list"><?= $post->getTitle() ?></div>
                 <div class="chapo-post-list"><?= $post->getChapo() ?></div>
                 <div class="content-post-list"><?= strlen($post->getText()) > 200 ? substr($post->getText(), 0, 200) . "..." : $post->getText(); ?></div>
