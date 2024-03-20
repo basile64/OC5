@@ -1,0 +1,55 @@
+.user {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  width: 1400px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 300px;
+  background: rgb(240, 240, 240);
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+}
+
+#input-first-name-user,
+#input-last-name-user,
+#input-mail-user,
+#input-password-user {
+  padding: 5px 10px;
+  overflow-y: auto;
+  border-radius: 5px;
+  border: none;
+  transition: 0.3s;
+}
+
+#input-first-name-user:focus,
+#input-last-name-user:focus,
+#input-mail-user:focus,
+#input-password-user:focus {
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
+}
+
+#btn-edit-user {
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 10px;
+}
+
+.info-user {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.title2 {
+  margin-bottom: 0;
+}
