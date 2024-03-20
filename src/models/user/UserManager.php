@@ -68,11 +68,7 @@ class UserManager {
         return null;
     }
 
-    public function editUser($idUser){
-        return ($this->getUser($idUser));
-    }
-
-    public function addUser(){
+    public function createUser(){
         $newUser = array_map("htmlspecialchars", $_POST);
 
         $query="
@@ -100,6 +96,10 @@ class UserManager {
         }else{
             echo "Error creating user.";
         }
+    }
+
+    public function editUser($idUser){
+        return ($this->getUser($idUser));
     }
 
     public function updateUser($idUser){
@@ -156,5 +156,54 @@ class UserManager {
     public function loginUser(){
         return null;
     }
+
+    public function connectUser(){
+        $post = array_map("htmlspecialchars", $_POST);
+        $mailUser = $post["mailUser"];
+        $passwordUser = $post["passwordUser"];
+        $query="
+            SELECT 
+                idUser,
+                firstNameUser,
+                lastNameUser,
+                mailUser,
+                passwordUser,
+                dateRegistrationUser,
+                roleUser
+            FROM
+                user
+            WHERE
+                mailUser = :mailUser AND passwordUser = :passwordUser
+        ";
+        $params = [":mailUser" => $mailUser, ":passwordUser" => $passwordUser];
+        $userData = DbConnect::executeQuery($query, $params)[0];
+
+        if ($userData != NULL){
+            $_SESSION["success_message"] = "Connected !";
+            $_SESSION["logged"] = true;
+            $this->openSession($userData);
+            header("Location: http://localhost/OC5/");
+        } else {
+            $_SESSION["error_message"] = "Incorrect email or password.";
+            header("Location: http://localhost/OC5/user/login");
+        }
+    }
+
+    public function openSession($userData){
+        $user = new User($userData);
+        $_SESSION["idUser"] = $user->getId();
+        $_SESSION["firstNameUser"] = $user->getFirstName();
+        $_SESSION["lastNameUser"] = $user->getLastName();
+        $_SESSION["mailUser"] = $user->getMail();
+        $_SESSION["dateRegistrationUser"] = $user->getDateRegistration();
+        $_SESSION["roleUser"] = $user->getRole();
+    }
+    
+    public function logoutUser(){
+        session_unset();
+        header("Location: http://localhost/OC5/");
+    }
+
+
 
 }
