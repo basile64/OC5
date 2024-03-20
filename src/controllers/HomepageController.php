@@ -6,7 +6,6 @@ use application\src\models as Model;
 
 class HomepageController extends Controller {
     private $postManager;
-    private $view;
 
     public function __construct(){
         $this->showHomePage();
@@ -14,9 +13,9 @@ class HomepageController extends Controller {
 
     public function showHomePage(){
         $this->postManager = new Model\post\PostManager();
-        $posts = $this->postManager->getPosts();
+        $posts = $this->postManager->getAll();
         $this->view = "homepageView";
-        $this->render($this->view, ["posts"=> $posts]);
+        $this->render(["posts"=> $posts]);
     }
 
 }
