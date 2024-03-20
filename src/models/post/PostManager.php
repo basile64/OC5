@@ -127,7 +127,7 @@ class PostManager {
         return null;
     }
 
-    public function addPost(){
+    public function createPost(){
         $newPost = array_map("htmlspecialchars", $_POST);
 
         $query="

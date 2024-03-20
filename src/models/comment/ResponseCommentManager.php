@@ -117,7 +117,7 @@ class ResponseCommentManager {
         return $responseComments;
     }
 
-    public function addResponseComment($idComment){
+    public function createResponseComment($idComment){
         $newComment = array_map("htmlspecialchars", $_POST);
 
         $query="

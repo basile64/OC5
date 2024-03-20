@@ -13,30 +13,31 @@ class CommentController extends Controller{
     private $mainCommentManager;
     private $responseCommentManager;
     private $parsedUrl;
+    private $class;
     private $action;
 
     public function __construct($explodedUrl){
-        $classToLoad = $explodedUrl[0];
+        $this->class = $explodedUrl[0];
         $this->action = $explodedUrl[1];
         //call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
-        $this->runAction($classToLoad, $explodedUrl);
+        $this->runAction($explodedUrl);
     }
 
-    private function runAction($classToLoad, $explodedUrl){
-        call_user_func([$this, $this->action . "Comment"]);
+    private function runAction($explodedUrl){
+        call_user_func([$this, $this->action . ucfirst($this->class)]);
     }
 
-    private function addComment(){
+    private function createComment(){
         $this->commentManager = new CommentManager();
-        if (call_user_func([$this->commentManager, $this->action . "Comment"])){
+        if (call_user_func([$this->commentManager, $this->action . ucfirst($this->class)])){
             $idComment = DbConnect::$connection->lastInsertId();
             //Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
             if (!isset($_POST["idMainComment"])){
                 $this->mainCommentManager = new MainCommentManager();
-                call_user_func([$this->mainCommentManager, "addMainComment"], $idComment);
+                call_user_func([$this->mainCommentManager, "createMainComment"], $idComment);
             } else {
                 $this->responseCommentManager = new ResponseCommentManager();
-                call_user_func([$this->responseCommentManager, "addResponseComment"], $idComment);
+                call_user_func([$this->responseCommentManager, "createResponseComment"], $idComment);
             }
         }
     }

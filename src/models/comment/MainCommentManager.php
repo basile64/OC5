@@ -118,7 +118,7 @@ class MainCommentManager {
     }
     
 
-    public function addMainComment($idComment){
+    public function createMainComment($idComment){
         $newComment = array_map("htmlspecialchars", $_POST);
 
         $query="
