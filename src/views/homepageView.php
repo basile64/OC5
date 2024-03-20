@@ -2,6 +2,8 @@
 
 ob_start();
 
+$page = "home";
+
 ?>
 
 <?php require_once("../src/views/post/postsView.php");?>
@@ -11,4 +13,4 @@ ob_start();
 
 $content = ob_get_clean();
 
-require_once("../src/views/layout.php");
+require_once("../src/views/mainLayout.php");

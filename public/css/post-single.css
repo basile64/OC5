@@ -9,13 +9,15 @@
   justify-content: space-between;
 }
 
-#post-back-home,
-#post-next {
-  width: 120px;
+.nav-post a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
   text-align: center;
   padding: 10px 20px;
   font-size: 18px;
-  font-weight: 100;
+  font-weight: 200;
   margin-bottom: 30px;
   background-color: rgb(6, 2, 51);
   color: rgb(238, 238, 238);
@@ -25,7 +27,7 @@
   transition: 0.3s;
 }
 
-#post-back-home:hover,
+#post-previous:hover,
 #post-next:hover {
   transform: scale(1.03);
 }

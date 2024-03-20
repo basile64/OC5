@@ -11,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="http://localhost/OC5/public/css/layout.css">
-    <link rel="stylesheet" href="http://localhost/OC5/public/css/post-list.css">
+    <link rel="stylesheet" href="http://localhost/OC5/public/css/main-layout.css">
+    <link rel="stylesheet" href="http://localhost/OC5/public/css/post-list-homepage.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/post-single.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/comment.css">
 
@@ -22,15 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="navbar">
-        <div class="link-container-navbar">
-            <a id="accueil" href="">Accueil</a>
-            <a id="contact" href="">Contact</a>
-        </div>
-        <div class="login-container-navbar">
-            <a id="mon-compte" href=""> Mon compte</a>
-        </div>
-    </div>
+    <?php require_once("../src/views/navbar/main-navbar.php");?>
 
     <div id ="content">
         <?= $content ?>

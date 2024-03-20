@@ -14,19 +14,23 @@ class Router {
         public function __construct($url){
             $this->urlParser = new Util\UrlParser();
             $explodedUrl = $this->urlParser->getExplodedUrl();
-
-            $controllerFileName = (!empty($explodedUrl)) ? ucfirst(strtolower($explodedUrl[0])) . "Controller.php" : "HomepageController.php";
-            //On rajoute le chemin depuis index.php
-            $controllerFilePath = (!empty($explodedUrl)) ? "../src/controllers/" . ucfirst(strtolower($explodedUrl[0])) . "Controller.php" : "HomepageController.php";
-            //On enlève l'extension du fichier et on rajoute le chemin de l'espace de nom
-            $controllerClassName =  "application\src\controllers\\".str_replace(".php", "", $controllerFileName);
-
-            if (file_exists($controllerFilePath)) {
-                $this->controller = new $controllerClassName($explodedUrl);
+            if (!empty($explodedUrl)){
+                $controllerToLoad = $explodedUrl[0];
+                $controllerToLoad = ($controllerToLoad == "mainComment" || $controllerToLoad == "responseComment") ? "comment" : $controllerToLoad;
+                // On rajoute le chemin depuis index.php et on enlève l'extension du fichier
+                $controllerFileName = ucfirst(strtolower($controllerToLoad)) . "Controller.php";
+                $controllerFilePath = "../src/controllers/" . $controllerFileName;
+                // On rajoute le chemin de l'espace de nom
+                $controllerClassName = "application\src\controllers\\" . str_replace(".php", "", $controllerFileName);
+    
+                if (file_exists($controllerFilePath)) {
+                    $this->controller = new $controllerClassName($explodedUrl);
+                } else {
+                    $this->controller = new HomepageController;
+                }
             } else {
+                // Si l'URL est vide, chargez le contrôleur de la page d'accueil
                 $this->controller = new HomepageController;
-                //Si la page n'existe pas, on redirige vers erreur 404
-                //A faire
             }
         }
 
