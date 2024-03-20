@@ -11,6 +11,7 @@ class Post {
     private $textPost;
     private $categoryPost;
     private $authorPost;
+    private $mainComments;
 
     public function __construct($post){
         $this->setId($post['idPost'] ?? null);
@@ -21,6 +22,7 @@ class Post {
         $this->setText($post['textPost'] ?? null);
         $this->setCategory($post['categoryPost'] ?? null);
         $this->setAuthor($post['authorPost'] ?? null);
+        $this->setMainComments($post['mainComments'] ?? null);
     }
 
     //Getters
@@ -28,12 +30,19 @@ class Post {
         return $this->idPost;
     }
 
-    public function getDateCreation(){
-        return $this->dateCreationPost;
+    public function getDateCreation($format = "Y-m-d"){
+        return ((new \DateTime($this->dateCreationPost))->format($format));
     }
 
-    public function getDateModification(){
-        return $this->dateModificationPost;
+    public function getDateModification($format = "Y-m-d"){
+        $dateModification = $this->dateModificationPost;
+    
+        if ($dateModification != null) {
+            $dateTime = new \DateTime($dateModification);
+            return $dateTime->format($format);
+        } else {
+            return "0000-00-00";
+        }
     }
 
     public function getTitle(){
@@ -54,6 +63,10 @@ class Post {
         
     public function getAuthor(){
         return $this->authorPost;
+    } 
+
+    public function getMainComments(){
+        return $this->mainComments;
     } 
 
     //Setters
@@ -87,6 +100,10 @@ class Post {
         
     public function setAuthor($authorPost){
         $this->authorPost = $authorPost;
+    }
+
+    public function setMainComments($mainComments){
+        $this->mainComments = $mainComments;
     }
 
 }

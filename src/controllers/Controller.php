@@ -3,10 +3,11 @@
 namespace application\src\controllers;
 
 class Controller{ 
+    protected $view;
 
-    protected function render($view, $data = []){
+    protected function render($data = []){
         extract($data);
 
-        require_once("../src/views/$view.php");
+        require_once("../src/views/$this->view.php");
     }
 }

@@ -1,0 +1,124 @@
+body {
+  position: relative;
+  display: flex;
+  background: rgb(234, 234, 234);
+  color: rgb(36, 36, 36);
+  font-family: "Noto Sans";
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#content {
+  width: 1000px;
+  margin-left: 300px;
+  padding: 40px 0 40px 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  font-family: "Noto Sans";
+}
+
+.navbar {
+  position: fixed;
+  height: 100vh;
+  background: rgb(6, 2, 51);
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  z-index: 1;
+}
+
+.link-container-navbar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 50px 30px;
+}
+
+.login-container-navbar {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-left: 30px;
+  bottom: 20px;
+}
+
+.navbar a {
+  color: rgb(238, 238, 238);
+  text-transform: uppercase;
+  font-size: 20px;
+  transition: 0.3s;
+  font-weight: 300;
+}
+
+.navbar a:hover {
+  color: rgb(238, 238, 238);
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.title1 {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: rgb(6, 2, 51);
+}
+
+.title2 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: rgb(6, 2, 51);
+}
+
+.svg {
+  width: 20px;
+  height: 20px;
+}
+
+.svg-plus-text {
+  display: flex;
+  gap: 10px;
+  justify-content: left;
+  align-items: center;
+}
+
+.success-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 30px;
+  background: green;
+  color: rgb(238, 238, 238);
+  border-radius: 0px 0px 0px 5px;
+  text-align: center;
+  font-weight: 200;
+  opacity: 0;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
+  transition: opacity 0.5s ease-in-out;
+  animation: fadeInOut 3s 0s forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

@@ -2,7 +2,10 @@
 
 namespace application\src\controllers;
 
-use application\src\models as Model;
+use application\src\models\post\PostManager;
+use application\src\models\comment\MainCommentManager;
+use application\src\models\comment\ResponseCommentManager;
+use application\src\models\comment\MainComment;
 use application\src\utils as Util;
 
 class PostController extends Controller{
@@ -10,7 +13,6 @@ class PostController extends Controller{
     private $mainCommentManager;
     private $responseCommentManager;
     private $categoryManager;
-    private $view;
     private $parsedUrl;
 
     public function __construct($explodedUrl){
@@ -19,39 +21,29 @@ class PostController extends Controller{
             $idPost=$explodedUrl[0];
             $this->showSinglePost($idPost);
         }
-        // var_dump(parse_url(($explodedUrl[0])));
-        // $this->parsedUrl = parse_url($explodedUrl[0]);
-        // $parsedUrl = $this->parsedUrl;
-        // if (isset($parsedUrl["query"])){
-        //     if (preg_match("#^id=\d+$#", $parsedUrl["query"], $matches)){
-        //         $idPost=$matches[1];
-        //         $this->showSinglePost($idPost);
-        //     }
-        // }
     }
 
     public function showPosts(){
-        $this->postManager = new Model\post\PostManager();
-        $posts = $this->postManager->getPosts();
+        $this->postManager = new PostManager();
+        $posts = $this->postManager->getAll();
         $this->view = "post/postsView";
         $this->render($this->view, ["posts"=> $posts]);
     }
 
     public function showSinglePost($idPost){
-        $this->postManager = new Model\post\PostManager();
+        $this->postManager = new PostManager();
         $post = $this->postManager->getPost($idPost);
 
-        $this->mainCommentManager = new Model\comment\MainCommentManager();
-        $mainComments = $this->mainCommentManager->getMainComments($idPost);
+        $this->mainCommentManager = new MainCommentManager();
+        $post->setMainComments($this->mainCommentManager->getAllApprovedByIdPost($idPost));
 
-        $this->responseCommentManager = new Model\comment\ResponseCommentManager();
-        foreach ($mainComments as $mainComment) {
-            $responseComments = $this->responseCommentManager->getResponseComments($mainComment->getId());
-            $mainComment->setResponseComments($responseComments);
+        $this->responseCommentManager = new ResponseCommentManager();
+        foreach ($post->getMainComments() as $mainComment) {
+            $mainComment->setResponseComments(call_user_func([$this->responseCommentManager, "getAllApprovedByIdMainComment"],$mainComment->getIdMainComment()));
         }
 
         $this->view = "post/singlePostView";
-        $this->render($this->view, ["post"=> $post, "mainComments" => $mainComments]);
+        $this->render(["post"=> $post]);
     }
 
 
