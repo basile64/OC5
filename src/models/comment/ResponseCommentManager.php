@@ -2,12 +2,13 @@
 
 namespace application\src\models\comment;
 
-use application\src\controllers as Controller;
-use application\src\models as Model;
+use application\src\models\database\DbConnect;
+use application\src\models\comment\MainComment;
+use application\src\models\comment\ResponseComment;
 
 class ResponseCommentManager {
 
-    public static function getResponseComments($idMainComment){
+    public static function getAll(){
         $query = "
             SELECT
                 responseComment.idResponseComment,
@@ -16,7 +17,41 @@ class ResponseCommentManager {
                 comment.textComment,
                 comment.statusComment,
                 user.firstNameUser as authorComment,
-                DATE_FORMAT(comment.dateComment, '%d/%m/%Y') AS dateComment
+                comment.dateComment
+            FROM 
+                responseComment
+            JOIN 
+                mainComment ON mainComment.idMainComment = responseComment.idMainComment
+            JOIN 
+                comment ON comment.idComment = responseComment.idComment
+            JOIN 
+                user ON user.idUser = comment.idUser
+            ORDER BY 
+                dateComment DESC;
+        ";
+
+        $result = DbConnect::executeQuery($query);
+
+        $responseComments = [];
+
+        foreach ($result as $responseComment) {
+            $responseComments[] = new ResponseComment($responseComment);
+        }
+        return $responseComments;
+
+    }
+
+    public static function getAllByIdMainComment($idMainComment){
+        $query = "
+            SELECT
+                responseComment.idResponseComment,
+                responseComment.idMainComment,
+                comment.idComment,
+                comment.textComment,
+                comment.statusComment,
+                user.firstNameUser as authorComment,
+                user.idUser,
+                comment.dateComment
             FROM 
                 responseComment
             JOIN 
@@ -34,17 +69,80 @@ class ResponseCommentManager {
 
         $params = [":idMainComment" => $idMainComment];
 
-        $result = Model\database\DbConnect::executeQuery($query, $params);
+        $result = DbConnect::executeQuery($query, $params);
 
         $responseComments = [];
 
-        if (is_array($result)) {
-            foreach ($result as $responseComment) {
-                $responseComments[] = new ResponseComment($responseComment);
-            }
-            return $responseComments;
-        }        
+        foreach ($result as $responseComment) {
+            $responseComments[] = new ResponseComment($responseComment);
+        }
+        return $responseComments;
+    }
 
-        return null;
+    public static function getAllApprovedByIdMainComment($idMainComment){
+        $query = "
+            SELECT
+                responseComment.idResponseComment,
+                responseComment.idMainComment,
+                comment.idComment,
+                comment.textComment,
+                comment.statusComment,
+                user.firstNameUser as authorComment,
+                user.idUser,
+                comment.dateComment
+            FROM 
+                responseComment
+            JOIN 
+                mainComment ON mainComment.idMainComment = responseComment.idMainComment
+            JOIN 
+                comment ON comment.idComment = responseComment.idComment
+            JOIN 
+                user ON user.idUser = comment.idUser
+            WHERE
+                mainComment.idMainComment = :idMainComment AND comment.statusComment = 'approved'
+            ORDER BY 
+                dateComment DESC;
+        ";
+
+
+        $params = [":idMainComment" => $idMainComment];
+
+        $result = DbConnect::executeQuery($query, $params);
+
+        $responseComments = [];
+
+        foreach ($result as $responseComment) {
+            $responseComments[] = new ResponseComment($responseComment);
+        }
+        return $responseComments;
+    }
+
+    public function addResponseComment($idComment){
+        $newComment = array_map("htmlspecialchars", $_POST);
+
+        $query="
+            INSERT 
+            INTO
+                responseComment (idComment, idMainComment)
+            VALUES
+                (:idComment, :idMainComment)
+        ";
+
+        $params = [
+            ":idComment" => $idComment,
+            ":idMainComment" => $newComment["idMainComment"],
+        ];
+
+        $result = DbConnect::executeQuery($query, $params);
+
+        $idPost = $newComment["idPost"];
+
+        if ($result !== false) {
+            $_SESSION["success_message"] = "Comment submitted.";
+            header("Location: http://localhost/OC5/post/$idPost");
+            exit();
+        } else {
+            echo "Error submitting comment.";
+        }
     }
 }
