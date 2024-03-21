@@ -16,6 +16,7 @@ class PostManager {
                 post.textPost,
                 post.dateCreationPost,
                 post.dateModificationPost,
+                post.imgPost,
                 category.nameCategory as categoryPost,
                 user.firstNameUser as authorPost
             FROM 
@@ -49,6 +50,7 @@ class PostManager {
                 textPost,
                 dateCreationPost,
                 dateModificationPost,
+                post.imgPost,
                 category.nameCategory as categoryPost,
                 user.firstNameUser as authorPost
             FROM 
@@ -127,7 +129,7 @@ class PostManager {
         return null;
     }
 
-    public function addPost(){
+    public function createPost(){
         $newPost = array_map("htmlspecialchars", $_POST);
 
         $query="

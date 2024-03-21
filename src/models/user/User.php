@@ -12,7 +12,7 @@ class User {
     private $roleUser;
 
     public function __construct($user){
-        $this->setIdUser($user['idUser'] ?? null);
+        $this->setId($user['idUser'] ?? null);
         $this->setFirstName($user['firstNameUser'] ?? null);
         $this->setLastName($user['lastNameUser'] ?? null);
         $this->setMail($user["mailUser"] ?? null);
@@ -21,7 +21,7 @@ class User {
         $this->setRole($user['roleUser'] ?? null);
     }
 
-    public function getIdUser(){
+    public function getId(){
         return $this->idUser;
     }
 
@@ -49,7 +49,7 @@ class User {
         return $this->roleUser;
     }
 
-    public function setIdUser($idUser){
+    public function setId($idUser){
         $this->idUser = $idUser;
     }
 

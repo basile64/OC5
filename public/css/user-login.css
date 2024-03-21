@@ -1,0 +1,46 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 400px;
+  background: rgb(240, 240, 240);
+  padding: 40px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+}
+
+#input-mail-user,
+#input-password-user {
+  padding: 5px 10px;
+  overflow-y: auto;
+  border-radius: 5px;
+  border: none;
+  transition: 0.3s;
+}
+
+#input-mail-user:focus,
+#input-password-user:focus {
+  outline: none;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
+}
+
+#btn-login-user {
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 10px;
+  transition: 0.3s;
+}
+
+.title2 {
+  margin-bottom: 0;
+  font-size: 22px;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

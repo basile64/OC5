@@ -68,11 +68,7 @@ class UserManager {
         return null;
     }
 
-    public function editUser($idUser){
-        return ($this->getUser($idUser));
-    }
-
-    public function addUser(){
+    public function createUser(){
         $newUser = array_map("htmlspecialchars", $_POST);
 
         $query="
@@ -102,6 +98,10 @@ class UserManager {
         }
     }
 
+    public function editUser($idUser){
+        return ($this->getUser($idUser));
+    }
+
     public function updateUser($idUser){
         $query ="
             UPDATE
@@ -123,7 +123,7 @@ class UserManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Utilisateur modifié avec succès.";
+            $_SESSION["success_message"] = "User updated !";
             header("Location: http://localhost/OC5/admin/usersManagement");
             exit();
         } else {
@@ -157,4 +157,89 @@ class UserManager {
         return null;
     }
 
+    public function connectUser(){
+        $post = array_map("htmlspecialchars", $_POST);
+        $mailUser = $post["mailUser"];
+        $passwordUser = $post["passwordUser"];
+        $query="
+            SELECT 
+                idUser,
+                firstNameUser,
+                lastNameUser,
+                mailUser,
+                passwordUser,
+                dateRegistrationUser,
+                roleUser
+            FROM
+                user
+            WHERE
+                mailUser = :mailUser AND passwordUser = :passwordUser
+        ";
+        $params = [":mailUser" => $mailUser, ":passwordUser" => $passwordUser];
+        $userData = DbConnect::executeQuery($query, $params)[0];
+
+        if ($userData != NULL){
+            $_SESSION["success_message"] = "Connected !";
+            $_SESSION["logged"] = true;
+            $this->openSession($userData);
+            header("Location: http://localhost/OC5/");
+        } else {
+            $_SESSION["error_message"] = "Incorrect email or password.";
+            header("Location: http://localhost/OC5/user/login");
+        }
+    }
+
+    public function openSession($userData){
+        $user = new User($userData);
+        $_SESSION["idUser"] = $user->getId();
+        $_SESSION["firstNameUser"] = $user->getFirstName();
+        $_SESSION["lastNameUser"] = $user->getLastName();
+        $_SESSION["mailUser"] = $user->getMail();
+        $_SESSION["dateRegistrationUser"] = $user->getDateRegistration();
+        $_SESSION["roleUser"] = $user->getRole();
+    }
+    
+    public function logoutUser(){
+        session_unset();
+        header("Location: http://localhost/OC5/");
+    }
+    
+    public function profileUser(){
+        return null;
+    }
+
+    public function saveUser(){
+        $filteredUser = array_map('htmlspecialchars', $_POST);
+
+        $query ="
+            UPDATE
+                user
+            SET
+                firstNameUser = :firstNameUser,
+                lastNameUser = :lastNameUser,
+                mailUser = :mailUser
+            WHERE
+                idUser = :idUser
+        ";
+    
+        // Utiliser les données filtrées pour les paramètres
+        $params = [
+            ":firstNameUser" => $filteredUser["firstNameUser"],
+            ":lastNameUser" => $filteredUser["lastNameUser"],
+            ":mailUser" => $filteredUser["mailUser"],
+            ":idUser" => $_SESSION["idUser"] // Assurez-vous que $idUser est défini quelque part dans votre code
+        ];
+
+        $result = DbConnect::executeQuery($query, $params);
+
+        if ($result !== false) {
+            $_SESSION["success_message"] = "Profile updated !";
+            $_SESSION["firstNameUser"] = $filteredUser["firstNameUser"];
+            $_SESSION["lastNameUser"] = $filteredUser["lastNameUser"];
+            $_SESSION["mailUser"] = $filteredUser["mailUser"];
+            header("Location: http://localhost/OC5/user/profile");
+        } else {
+            echo "Error saving your profile.";
+        }
+    }
 }
