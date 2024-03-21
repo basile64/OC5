@@ -120,18 +120,18 @@ class MainCommentManager {
 
     public function createMainComment($idComment){
         $newComment = array_map("htmlspecialchars", $_POST);
+        $idPost = $newComment["idPost"];
 
         $query="
             INSERT 
             INTO
-                mainComment (idComment, idPost)
+                mainComment (idComment)
             VALUES
-                (:idComment, :idPost)
+                (:idComment)
         ";
 
         $params = [
-            ":idComment" => $idComment,
-            ":idPost" => $newComment["idPost"],
+            ":idComment" => $idComment
         ];
 
         $result = DbConnect::executeQuery($query, $params);

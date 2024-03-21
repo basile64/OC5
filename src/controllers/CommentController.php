@@ -17,19 +17,23 @@ class CommentController extends Controller{
     private $action;
 
     public function __construct($explodedUrl){
-        $this->class = $explodedUrl[0];
-        $this->action = $explodedUrl[1];
-        //call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
-        $this->runAction($explodedUrl);
+        if (isset($_SESSION["logged"])){
+            $this->class = $explodedUrl[0];
+            $this->action = $explodedUrl[1];
+            //call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
+            $this->runAction($explodedUrl);
+        } else {
+            header("Location: http://localhost/OC5/");
+        }
     }
 
     private function runAction($explodedUrl){
-        call_user_func([$this, $this->action . ucfirst($this->class)]);
+        call_user_func([$this, $this->action . "Comment"]);
     }
 
     private function createComment(){
         $this->commentManager = new CommentManager();
-        if (call_user_func([$this->commentManager, $this->action . ucfirst($this->class)])){
+        if (call_user_func([$this->commentManager, $this->action . "Comment"])){
             $idComment = DbConnect::$connection->lastInsertId();
             //Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
             if (!isset($_POST["idMainComment"])){

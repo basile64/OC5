@@ -1,5 +1,5 @@
 <div class="comments">
-    <div class="title2">Commentaires</div>
+    <div class="title2">Comments</div>
 
     <div class="comments-container">
         <?= empty($post->getMainComments()) ? "Aucun commentaire." : ""; ?>
@@ -13,9 +13,20 @@
                     <div class="main-comment-text"><?= $mainComment->getText() ?></div>
                 </div>
                 <?php require("../src/views/comment/responseCommentsByMainCommentView.php")?>
-                <?php require("../src/views/comment/newResponseCommentView.php")?>
+                <?php 
+                    if (isset($_SESSION["logged"])){
+                        require("../src/views/comment/newResponseCommentView.php");
+                    }
+                ?>
             </div>
         <?php endforeach; ?>
     </div>
-    <?php require_once("../src/views/comment/newMainCommentView.php")?>
+
+    <?php 
+        if (isset($_SESSION["logged"])){
+            require_once("../src/views/comment/newMainCommentView.php");
+        } else {
+            echo "<div style='margin-top:50px'>You must be connected to publish a comment.</div>";
+        }
+    ?>
 </div>
