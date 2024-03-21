@@ -17,7 +17,7 @@ $page = "usersManagement";
             <option value="Basic">Basic</option>
             <option value="Admin">Admin</option>
         </select>
-        <button type="submit" id="btn-edit-user" name="submit">Valider la création de l'utilisateur</button>
+        <button type="submit" id="btn-edit-user" name="submit">Validate the creation</button>
     </form>
 </div>
 
