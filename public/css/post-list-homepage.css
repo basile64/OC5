@@ -15,16 +15,6 @@
 .date-creation-post-list {
   font-size: 14px;
   color: rgb(185, 185, 185);
-  position: absolute;
-  right: 15px;
-}
-
-.author-post-list {
-  bottom: 10px;
-}
-
-.date-creation-post-list {
-  top: 10px;
 }
 
 .posts-container-list {
@@ -34,7 +24,6 @@
 }
 
 .post-container-list {
-  position: relative;
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
@@ -48,7 +37,11 @@
   display: flex;
   flex-direction: column;
   padding: 30px;
-  gap: 15px;
+  gap: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .post-container-list:hover {
@@ -64,4 +57,15 @@ img {
   height: 100%;
   width: 100%;
   border-radius: 5px;
+}
+
+.post-top {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-bottom {
+  display: flex;
+  justify-content: space-between;
 }
