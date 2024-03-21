@@ -11,17 +11,20 @@ use application\src\models\user\AdminUserManager;
 class UserController extends Controller{
     private $userManager;
     private $parsedUrl;
+    private $class;
     private $action;
 
     public function __construct($explodedUrl){
-        $classToLoad = $explodedUrl[0];
+        $this->class = $explodedUrl[0];
         $this->action = $explodedUrl[1];
-        //call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
-        $this->runAction($classToLoad, $explodedUrl);
+        $this->runAction($explodedUrl);
     }
 
-    private function runAction($classToLoad, $explodedUrl){
-        call_user_func([$this, $this->action . "User"]);
+    private function runAction($explodedUrl){
+        $this->userManager = new UserManager;
+        $result = call_user_func([$this->userManager, $this->action . ucfirst($this->class)]);
+        $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
+        $this->render([$this->class => $result]);
     }
 
 }

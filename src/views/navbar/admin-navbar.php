@@ -14,9 +14,9 @@
         </a>
     </div>
     <div class="login-container-navbar">
-        <a id="login" href="http://localhost/OC5/login" class="svg-plus-text">
-            <img class="svg" src="http://localhost/OC5/public/img/person.svg"/>
-            <div>Login</div>
+        <a id="logout" href="http://localhost/OC5/user/logout" class="svg-plus-text">
+            <img class="svg" src="http://localhost/OC5/public/img/logout.svg"/>
+            <div>Logout</div>
         </a>
         <a id="back-home" href="http://localhost/OC5" class="svg-plus-text">
             <img class="svg" src="http://localhost/OC5/public/img/arrow-left.svg"/>

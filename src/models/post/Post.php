@@ -9,6 +9,7 @@ class Post {
     private $titlePost;
     private $chapoPost;
     private $textPost;
+    private $imgPost;
     private $categoryPost;
     private $authorPost;
     private $mainComments;
@@ -20,6 +21,7 @@ class Post {
         $this->setTitle($post['titlePost'] ?? null);
         $this->setChapo($post['chapoPost'] ?? null);
         $this->setText($post['textPost'] ?? null);
+        $this->setImg($post['imgPost'] ?? null);
         $this->setCategory($post['categoryPost'] ?? null);
         $this->setAuthor($post['authorPost'] ?? null);
         $this->setMainComments($post['mainComments'] ?? null);
@@ -55,6 +57,10 @@ class Post {
 
     public function getText(){
         return $this->textPost;
+    }
+
+    public function getImg(){
+        return $this->imgPost;
     }
     
     public function getCategory(){
@@ -92,6 +98,10 @@ class Post {
 
     public function setText($textPost){
         $this->textPost = $textPost;
+    }
+
+    public function setImg($imgPost){
+        $this->imgPost = $imgPost;
     }
     
     public function setCategory($categoryPost){

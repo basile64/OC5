@@ -114,7 +114,7 @@ class CommentManager {
 
     }
 
-    public function addComment(){
+    public function createComment(){
         $newComment = array_map("htmlspecialchars", $_POST);
 
         $query="

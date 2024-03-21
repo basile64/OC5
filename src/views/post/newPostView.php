@@ -5,7 +5,7 @@ $page = "postsManagement";
 <link rel="stylesheet" href="http://localhost/OC5/public/css/post-new.css">
 
 <div class="single-post">
-    <form method="post" action="./add">
+    <form method="post" action="./create">
         <div class="title2">Create a new post</div>
         <div class="container">
             <div class="left">

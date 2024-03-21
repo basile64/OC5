@@ -15,7 +15,7 @@ class AdminController extends Controller{
     private const ACTION_UPDATE = "update";
     private const ACTION_DELETE = "delete";
     private const ACTION_NEW = "new";
-    private const ACTION_ADD = "add";
+    private const ACTION_CREATE = "create";
     private $manager;
     private $dataKey;
 
@@ -23,11 +23,13 @@ class AdminController extends Controller{
         array_shift($explodedUrl);
         $this->class = str_replace("sManagement", "", $explodedUrl[0]);
 
-        if (count($explodedUrl)==1){
+        if (count($explodedUrl)==1 && $_SESSION["roleUser"] == "admin"){
             $this->loadClassManagement($this->class);
-        } elseif(count($explodedUrl)>1){
+        } elseif(count($explodedUrl)>1 && $_SESSION["roleUser"] == "admin"){
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
+        } else {
+            header("Location: http://localhost/OC5/");
         }
     }
 
