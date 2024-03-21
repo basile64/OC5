@@ -123,7 +123,7 @@ class UserManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Utilisateur modifié avec succès.";
+            $_SESSION["success_message"] = "User updated !";
             header("Location: http://localhost/OC5/admin/usersManagement");
             exit();
         } else {
@@ -203,7 +203,43 @@ class UserManager {
         session_unset();
         header("Location: http://localhost/OC5/");
     }
+    
+    public function profileUser(){
+        return null;
+    }
 
+    public function saveUser(){
+        $filteredUser = array_map('htmlspecialchars', $_POST);
 
+        $query ="
+            UPDATE
+                user
+            SET
+                firstNameUser = :firstNameUser,
+                lastNameUser = :lastNameUser,
+                mailUser = :mailUser
+            WHERE
+                idUser = :idUser
+        ";
+    
+        // Utiliser les données filtrées pour les paramètres
+        $params = [
+            ":firstNameUser" => $filteredUser["firstNameUser"],
+            ":lastNameUser" => $filteredUser["lastNameUser"],
+            ":mailUser" => $filteredUser["mailUser"],
+            ":idUser" => $_SESSION["idUser"] // Assurez-vous que $idUser est défini quelque part dans votre code
+        ];
 
+        $result = DbConnect::executeQuery($query, $params);
+
+        if ($result !== false) {
+            $_SESSION["success_message"] = "Profile updated !";
+            $_SESSION["firstNameUser"] = $filteredUser["firstNameUser"];
+            $_SESSION["lastNameUser"] = $filteredUser["lastNameUser"];
+            $_SESSION["mailUser"] = $filteredUser["mailUser"];
+            header("Location: http://localhost/OC5/user/profile");
+        } else {
+            echo "Error saving your profile.";
+        }
+    }
 }

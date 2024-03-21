@@ -8,7 +8,7 @@
             "
             <div style='display:flex;align-items:center;gap:10px'>
                 <img class='svg' src='http://localhost/OC5/public/img/person.svg'/>
-                <a id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page == "contact" ? "style='font-weight:bold;'" : "") . ">My account</a>
+                <a id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page == "profileUser" ? "style='font-weight:bold;'" : "") . ">My profile</a>
             </div>
             <div style='display:flex;align-items:center;gap:10px'>
                 <img class='svg' src='http://localhost/OC5/public/img/logout.svg'/>
