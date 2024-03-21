@@ -12,7 +12,7 @@ $page = "postsManagement";
                 <input id="input-title" name="titlePost" type="text" class="title-post-single" placeholder="Title"/>
                 <textarea id="textarea-chapo" name="chapoPost" class="chapo-post-single" placeholder="Chapo"></textarea>
                 <textarea id="textarea-text" name="textPost" class="text-post-single" placeholder="Text"></textarea>
-                <button type="submit" id="btn-edit-post" name="submit">Valider la création du post</button>
+                <button type="submit" id="btn-edit-post" name="submit">Validate the creation</button>
             </div>
             <div class="right">
                 <div class="info-post">

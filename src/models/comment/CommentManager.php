@@ -120,15 +120,18 @@ class CommentManager {
         $query="
             INSERT 
             INTO
-                comment (textComment, dateComment, idUser, statusComment)
+                comment (textComment, dateComment, statusComment, idPost, idUser)
             VALUES
-                (:textComment, NOW(), :idUser, :statusComment)
+                (:textComment, NOW(), :statusComment, :idPost,:idUser)
         ";
+
+        var_dump($newComment);
 
         $params = [
             ":textComment" => $newComment["textComment"],
-            ":idUser" => 1,
-            ":statusComment" => "pending"
+            ":statusComment" => "pending",
+            ":idPost" => $newComment["idPost"],
+            ":idUser" => $_SESSION["idUser"]
         ];
 
         $result = DbConnect::executeQuery($query, $params);

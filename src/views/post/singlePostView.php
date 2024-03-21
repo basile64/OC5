@@ -17,6 +17,7 @@
     </div>
 
     <div class="post-container-single">
+        <img src="/OC5/public/upload/<?= $post->getImg() ?>">
         <div class="title-post-single"><?=$post->getTitle()?></div>
         <div class="chapo-post-single"><?=$post->getChapo()?></div>
         <div class="text-post-single"><?=$post->getText()?></div>
