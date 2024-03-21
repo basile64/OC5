@@ -42,7 +42,7 @@
 .post-container-single {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   padding: 40px 80px 40px 80px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
   border-radius: 5px;
