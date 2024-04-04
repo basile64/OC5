@@ -2,15 +2,15 @@
 
 namespace application\src\models\comment;
 
+use application\src\models\comment\ResponseCommentManager;
+
 class MainComment extends Comment {
     private $idMainComment;
-    private $responseComments;
 
     public function __construct($mainComment){
         parent::__construct($mainComment);  
         
         $this->setIdMainComment($mainComment['idMainComment'] ?? null);
-        $this->setResponseComments($mainComment['responseComments'] ?? null);
     }
     
     public function getIdMainComment() {
@@ -18,15 +18,13 @@ class MainComment extends Comment {
     }
 
     public function getResponseComments(){
-        return $this->responseComments;
+        $responseCommentManager = new ResponseCommentManager;
+        $responseComments = $responseCommentManager->getAllApprovedByIdMainComment($this->idMainComment);
+        return $responseComments;
     }
 
     public function setIdMainComment($idMainComment) {
         $this->idMainComment = $idMainComment;
-    }
-
-    public function setResponseComments($responseComments){
-        $this->responseComments = $responseComments;
     }
 
 }

@@ -2,12 +2,13 @@
 
 namespace application\src\models\comment;
 
+use application\src\models\user\UserManager;
+
 class Comment {
     private $idComment;
     private $textComment;
     private $dateComment;
     private $statusComment;
-    private $authorComment;
     private $idPost;
     private $idUser;
 
@@ -16,7 +17,6 @@ class Comment {
         $this->setText($comment['textComment'] ?? null);
         $this->setDate($comment['dateComment'] ?? null);
         $this->setStatus($comment['statusComment'] ?? null);
-        $this->setAuthor($comment['authorComment'] ?? null);
         $this->setIdPost($comment["idPost"] ?? null); 
         $this->setIdUser($comment["idUser"] ?? null); 
     }
@@ -38,16 +38,18 @@ class Comment {
         return $this->statusComment;
     }
 
-    public function getAuthor(){
-        return $this->authorComment;
-    }
-
     public function getIdPost(){
         return $this->idPost;
     }
 
     public function getIdUser(){
         return $this->idUser;
+    }
+
+    public function getUser(){
+        $userManager = new UserManager;
+        $user = $userManager->getUser($this->idUser);
+        return $user;
     }
 
     // Setters
@@ -65,10 +67,6 @@ class Comment {
 
     public function setStatus($statusComment){
         $this->statusComment = $statusComment;
-    }
-
-    public function setAuthor($authorComment){
-        $this->authorComment = $authorComment;
     }
 
     public function setIdPost($idPost){
