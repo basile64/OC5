@@ -1,49 +1,61 @@
+
+
 <?php 
 ob_start();
 $page = "postsManagement";
 ?>
-<link rel="stylesheet" href="http://localhost/OC5/public/css/post-edit.css">
-    
+<link rel="stylesheet" href="http://localhost/OC5/public/css/post-new.css">
+<script src="http://localhost/OC5/public/js/edit-post.js"></script>
+
 <div class="single-post">
-    <div class="title2">Edit a post</div>
-    <div class="post-container-single">
-        <form method="post" action="../update/<?= $post->getId()?>">
-            <input id="input-title" name="input-title" type="text" class="title-post-single" value="<?=$post->getTitle()?>"/>
-            <textarea id="textarea-chapo" name="textarea-chapo" class="chapo-post-single"><?=$post->getChapo()?></textarea>
-            <textarea id="textarea-text" name="textarea-text" class="text-post-single"><?=$post->getText()?></textarea>
-            <button type="submit" id="btn-edit-post" name="submit">Sauvegarder</button>
-        </form>
-    </div>
-
-</div>
-
-<div class="right-post">
-    <div class="nav-post">
-        <a id="post-previous" href="">
-            <img class="svg" src="http://localhost/OC5/public/img/arrow-left.svg"/>
-        </a>
-        <a id="post-next" href="">
-            <img class="svg" src="http://localhost/OC5/public/img/arrow-right.svg"/>
-        </a>
-    </div>
-    <div class="infos-post">
-        <div class="info-post">
-            <div>Created </div>
-            <input  type="date" id="date-creation" class="date-creation-post-single" value="<?=$post->getDateCreation()?>" readonly/>
+<form method="post" action="../update/<?= $post->getId()?>" enctype="multipart/form-data">
+        <div class="title1 title1-edit">Edit a post</div>
+        <div class="container">
+            <div class="left">
+                <div><img src="http://localhost/OC5/public/upload/<?= $post->getImg() ?>" id="imagePreview"></div>
+                <div><div>Sélectionnez une autre image</div><input type="file" name="imgPost" id="imgPost" class="img-post-single" accept="image/*"></div>
+                <div class="container-title">
+                    <div class="label">Title</div>
+                    <input id="input-title" name="titlePost" type="text" class="title-post-single" value="<?=$post->getTitle()?>"> 
+                </div>
+                <div class="container-title">
+                    <div class="label">Chapo</div>
+                    <textarea id="textarea-chapo" name="chapoPost" class="chapo-post-single"><?=$post->getChapo()?></textarea>
+                </div>
+                <div class="container-title">
+                    <div class="label">Text</div>
+                    <textarea id="textarea-text" name="textPost" class="text-post-single"><?=$post->getText()?></textarea>
+                </div>
+                <button type="submit" id="btn-edit-post" name="submit">Sauvegarder</button>
+            </div>
+            <div class="right">
+                <div class="info-post">
+                    <div>Created </div>
+                    <input  type="date" id="date-creation" class="date-creation-post-single" value="<?= date("Y-m-d") ?>" readonly/>
+                </div>
+                <div class="info-post">
+                    <div>Author</div>
+                    <select id="author" name="idUser" class="date-creation-post-single">
+                    <?php foreach ($authors as $author): ?>
+                        <option value="<?php echo $author->getId(); ?>" <?php echo ($author->getId() == $post->getIdUser()) ? 'selected' : ''; ?>>
+                                <?php echo $author->getFirstName(); ?>
+                            </option>
+                    <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="info-post">
+                    <div>Category</div>
+                    <select id="category" name="idCategory" class="date-creation-post-single">
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?php echo $category->getId(); ?>" <?php echo ($category->getId() == $post->getIdCategory()) ? 'selected' : ''; ?>>
+                            <?php echo $category->getName(); ?>
+                        </option>
+                    <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
         </div>
-        <?php if ($post->getDateModification() != "0000-00-00") :?>
-        <div class="info-post">
-            <div>Edited</div>
-            <input  type="date" id="date-modification" class="date-modification-post-single" value="<?=$post->getDateModification()?>" readonly/>
-        </div>
-        <?php endif ?>
-        <div class="info-post">
-            <div>Author</div>
-            <select id="author" class="date-creation-post-single">
-                <option><?=$post->getAuthor()?></option>
-            </select>
-        </div>
-    </div>
+    </form>
 </div>
 
 </div>
@@ -53,3 +65,5 @@ $page = "postsManagement";
 $content = ob_get_clean();
 
 require_once("../src/views/adminEditLayout.php");
+
+

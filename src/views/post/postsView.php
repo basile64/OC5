@@ -1,5 +1,5 @@
 
-<div class="title1">My posts</div>
+<div class="title1">All my posts</div>
 
 <div class="posts-container-list">
     <?php
@@ -13,7 +13,7 @@
                     <div class="content-post-list"><?= strlen($post->getText()) > 200 ? substr($post->getText(), 0, 200) . "..." : $post->getText(); ?></div>
                 </div>
                     <div class="post-bottom">
-                    <div class="author-post-list"><?= $post->getAuthor() ?></div>
+                    <div class="author-post-list"><?= $post->getUser()->getFirstName() ?></div>
                     <div class="date-creation-post-list"><?= $post->getDateCreation("d-m-Y") ?></div>
                 </div>
             </a>
