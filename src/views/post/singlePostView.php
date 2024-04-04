@@ -1,19 +1,17 @@
 <?php ob_start()?>
 
 <script src="http://localhost/OC5/public/js/post-single.js"></script>
+<link rel="stylesheet" href="http://localhost/OC5/public/css/comment.css">
 
 <div class="single-post">
-    <div class="nav-post">
-        <a id="post-previous" href="">
-            <img class="svg" src="http://localhost/OC5/public/img/arrow-left.svg"/>
-        </a>
-        <a id="post-next" href="">
-            <img class="svg" src="http://localhost/OC5/public/img/arrow-right.svg"/>
-        </a>
-    </div>
     <div class="header-post-single">
-        <div class="date-creation-post-single">Article écrit le <?=$post->getDateCreation("d/m/Y")?></div>
-        <div class="date-creation-post-single">par <?=$post->getAuthor()?> </div>
+        <a id="post-previous" href="">
+            <img class="svg" src="http://localhost/OC5/public/svg/arrow-left.svg"/>
+        </a>
+        <div class="date-creation-post-single"><?=$post->getDateCreation("d/m/Y") ?><div style="font-weight:bold; margin-left:20px">by <?=$post->getUser()->getFirstName()?></div></div>
+        <a id="post-next" href="">
+            <img class="svg" src="http://localhost/OC5/public/svg/arrow-right.svg"/>
+        </a>
     </div>
 
     <div class="post-container-single">

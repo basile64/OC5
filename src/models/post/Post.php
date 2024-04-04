@@ -2,6 +2,10 @@
 
 namespace application\src\models\post;
 
+use application\src\models\user\UserManager;
+use application\src\models\category\CategoryManager;
+use application\src\models\comment\MainCommentManager;
+
 class Post {
     private $idPost;
     private $dateCreationPost;
@@ -10,9 +14,8 @@ class Post {
     private $chapoPost;
     private $textPost;
     private $imgPost;
-    private $categoryPost;
-    private $authorPost;
-    private $mainComments;
+    private $idUser;
+    private $idCategory;
 
     public function __construct($post){
         $this->setId($post['idPost'] ?? null);
@@ -22,9 +25,8 @@ class Post {
         $this->setChapo($post['chapoPost'] ?? null);
         $this->setText($post['textPost'] ?? null);
         $this->setImg($post['imgPost'] ?? null);
-        $this->setCategory($post['categoryPost'] ?? null);
-        $this->setAuthor($post['authorPost'] ?? null);
-        $this->setMainComments($post['mainComments'] ?? null);
+        $this->setIdCategory($post['idCategory'] ?? null);
+        $this->setIdUser($post['idUser'] ?? null);
     }
 
     //Getters
@@ -62,18 +64,26 @@ class Post {
     public function getImg(){
         return $this->imgPost;
     }
-    
-    public function getCategory(){
-        return $this->categoryPost;
-    }
         
-    public function getAuthor(){
-        return $this->authorPost;
+    public function getIdUser(){
+        return $this->idUser;
     } 
+    
+    public function getUser(){
+        $userManager = new UserManager;
+        $user = $userManager->getUser($this->idUser);
+        return $user;
+    }
+
+    public function getIdCategory(){
+        return $this->idCategory;
+    }
 
     public function getMainComments(){
-        return $this->mainComments;
-    } 
+        $mainCommentManager = new MainCommentManager;
+        $mainComments = $mainCommentManager->getAllApprovedByIdPost($this->idPost);
+        return $mainComments;
+    }
 
     //Setters
     public function setId($idPost){
@@ -103,17 +113,13 @@ class Post {
     public function setImg($imgPost){
         $this->imgPost = $imgPost;
     }
-    
-    public function setCategory($categoryPost){
-        $this->categoryPost = $categoryPost;
-    }
         
-    public function setAuthor($authorPost){
-        $this->authorPost = $authorPost;
+    public function setIdUser($idUser){
+        $this->idUser = $idUser;
     }
 
-    public function setMainComments($mainComments){
-        $this->mainComments = $mainComments;
+    public function setIdCategory($idCategory){
+        $this->idCategory = $idCategory;
     }
 
 }

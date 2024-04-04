@@ -29,11 +29,12 @@ form {
 #input-title,
 #textarea-chapo,
 #textarea-text {
-  padding: 20px;
+  padding: 30px;
   overflow-y: auto;
   border-radius: 5px;
   border: none;
   transition: 0.3s;
+  width: 100%;
 }
 
 #input-title:focus,
@@ -41,6 +42,7 @@ form {
 #textarea-text:focus {
   outline: none;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
+  border-left: 5px solid rgb(6, 2, 51);
 }
 
 #btn-edit-post {
@@ -107,4 +109,21 @@ form {
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.title1-edit {
+  border-bottom: 2px solid rgb(6, 2, 51);
+  padding-bottom: 10px;
+}
+.container-title {
+  position: relative;
+  display: flex;
+}
+
+.label {
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  z-index: 2;
+  font-size: 12px;
 }

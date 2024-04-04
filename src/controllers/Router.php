@@ -2,7 +2,7 @@
 
 namespace application\src\controllers;
 
-use application\src\utils as Util;
+use application\src\utils\UrlParser;
 
 class Router {
     private $url;
@@ -12,7 +12,7 @@ class Router {
     private $controller;
 
         public function __construct($url){
-            $this->urlParser = new Util\UrlParser();
+            $this->urlParser = new UrlParser();
             $explodedUrl = $this->urlParser->getExplodedUrl();
             if (!empty($explodedUrl)){
                 $controllerToLoad = $explodedUrl[0];

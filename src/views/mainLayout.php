@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="http://localhost/OC5/public/css/main-layout.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/post-list-homepage.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/post-single.css">
-    <link rel="stylesheet" href="http://localhost/OC5/public/css/comment.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

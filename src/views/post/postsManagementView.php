@@ -20,14 +20,14 @@ $page = "postsManagement";
                 <div class="title-post-list"><?= $post->getTitle() ?></div>
                 <div class="right-post-list">
                     <div class="date-creation-post-list"><?= $post->getDateCreation("d/m/Y") ?></div>
-                    <a href="/OC5/post/<?= $post->getId() ?>"><img class="svg" src="http://localhost/OC5/public/img/arrow-up.svg"/></a>
-                    <a href="/OC5/admin/postsManagement/delete/<?= $post->getId() ?>" style="background-color:#de0404"><img class="svg" src="http://localhost/OC5/public/img/trash.svg"/></a>
-                    <a href="/OC5/admin/postsManagement/edit/<?= $post->getId() ?>" style="background-color:#2020cf"><img class="svg" src="http://localhost/OC5/public/img/pencil.svg"/></a>
+                    <a href="/OC5/post/<?= $post->getId() ?>"><img class="svg" src="http://localhost/OC5/public/svg/arrow-up.svg"/></a>
+                    <a href="/OC5/admin/postsManagement/delete/<?= $post->getId() ?>" style="background-color:#de0404"><img class="svg" src="http://localhost/OC5/public/svg/trash.svg"/></a>
+                    <a href="/OC5/admin/postsManagement/edit/<?= $post->getId() ?>" style="background-color:#2020cf"><img class="svg" src="http://localhost/OC5/public/svg/pencil.svg"/></a>
                 </div>
                 <!-- <div class="chapo-post-list"><?= $post->getChapo() ?></div>
                 <div class="content-post-list"><?= strlen($post->getText()) > 200 ? substr($post->getText(), 0, 200) . "..." : $post->getText(); ?></div> -->
     </div>
-            <!-- <div class="author-post-list"><?= $post->getAuthor() ?></div> -->
+            <!-- <div class="author-post-list"><?= $post->getUser()->getFirstName() ?></div> -->
         </div>
     <?php } ?>
 </div>

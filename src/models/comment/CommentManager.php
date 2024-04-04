@@ -19,7 +19,6 @@ class CommentManager {
                 C.idPost,
                 C.idUser,
                 RC.idMainComment,
-                U.firstNameUser as authorComment
 
             FROM 
                 comment AS C
@@ -27,8 +26,6 @@ class CommentManager {
                 MainComment AS MC ON C.idComment = MC.idComment
             LEFT JOIN 
                 responseComment AS RC ON C.idComment = RC.idComment
-            JOIN
-                user as U ON U.idUser = C.idUser;
         ";
 
         $result = DbConnect::executeQuery($query);
@@ -56,8 +53,7 @@ class CommentManager {
                 C.statusComment,
                 C.idPost,
                 C.idUser,
-                RC.idMainComment,
-                U.firstNameUser as authorComment
+                RC.idMainComment
 
             FROM 
                 comment AS C
@@ -65,8 +61,6 @@ class CommentManager {
                 MainComment AS MC ON C.idComment = MC.idComment
             LEFT JOIN 
                 responseComment AS RC ON C.idComment = RC.idComment
-            JOIN
-                user as U ON U.idUser = C.idUser
             WHERE
                 C.statusComment = 'pending'
             ORDER BY
@@ -88,21 +82,56 @@ class CommentManager {
 
         return $comments;
     }
+    
+    public function getAllApprovedByUser(){
+        $query = "
+            SELECT 
+                C.idComment,
+                C.dateComment,
+                C.textComment,
+                C.statusComment,
+                C.idPost,
+                C.idUser,
+                RC.idMainComment
+
+            FROM 
+                comment AS C
+            LEFT JOIN 
+                MainComment AS MC ON C.idComment = MC.idComment
+            LEFT JOIN 
+                responseComment AS RC ON C.idComment = RC.idComment
+            WHERE
+                C.statusComment = 'approved' AND C.idUser = :idUser
+            ORDER BY
+                C.dateComment DESC
+        ";
+
+        $params= [
+            ":idUser" => $_SESSION["idUser"]
+        ];
+
+        $result = DbConnect::executeQuery($query, $params);
+
+        // Instanciation des commentaires en fonction du type
+        $comments = [];
+        foreach ($result as $commentData) {
+            if (!empty($commentData['idPost'])) {
+                $comment = new MainComment($commentData);
+            } else {
+                $comment = new ResponseComment($commentData);
+            }
+            $comments[] = $comment;
+        }
+
+        return $comments;
+    }
 
     public function getComment($idComment){
         $query = "
         SELECT 
-            idComment,
-            dateComment,
-            textComment,
-            statusComment,
-            idPost,
-            idUser,
-            U.firstNameUser as authorComment
+            *
         FROM 
             comment 
-        JOIN
-            User ON user.idUser = comment.idUser;
         WHERE
             idComment = :idComment
         ";
@@ -180,11 +209,15 @@ class CommentManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Commentaire supprimé avec succès.";
-            header("Location: http://localhost/OC5/admin/commentsManagement");
-            exit();
+            $_SESSION["success_message"] = "Comment deleted !";
         } else {
-            echo "Erreur lors de la suppression du commentaire.";
+            $_SESSION["error_message"] = "Error when deleting the comment.";
         }
+        if (strstr($_SERVER['REQUEST_URI'], '/OC5/admin/commentsManagement')) {
+            header("Location: http://localhost/OC5/admin/commentsManagement");
+        } else {
+            header("Location: http://localhost/OC5/user/comments");
+        }
+        exit();
     }
 }

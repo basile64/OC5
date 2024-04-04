@@ -113,7 +113,7 @@ form {
 }
 
 .title2 {
-  margin-bottom: 0;
+  margin-top: 30px;
 }
 
 .selected {
@@ -216,4 +216,6 @@ form {
 
 .label {
   margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 20px;
 }

@@ -1,14 +1,14 @@
 .title-post-list {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: bold;
 }
 
 .chapo-post-list {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .content-post-list {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .author-post-list,
@@ -19,8 +19,8 @@
 
 .posts-container-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 25px;
 }
 
 .post-container-list {
@@ -36,7 +36,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: 20px;
   gap: 30px;
   display: flex;
   flex-direction: column;
