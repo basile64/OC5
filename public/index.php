@@ -15,7 +15,7 @@ if (isset($_SESSION["success_message"])){
 }
 
 require_once("../config/autoload.php");
-use application\src\controllers as Controller;
+use application\src\controllers\Router;
 
-$router = new Controller\Router($_GET["url"]);
+$router = new Router($_GET["url"]);
 
