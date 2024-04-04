@@ -9,24 +9,6 @@
   justify-content: space-between;
 }
 
-.nav-post a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  text-align: center;
-  padding: 10px 20px;
-  font-size: 18px;
-  font-weight: 200;
-  margin-bottom: 30px;
-  background-color: rgb(6, 2, 51);
-  color: rgb(238, 238, 238);
-  border: none;
-  border-radius: 5px;
-  text-transform: uppercase;
-  transition: 0.3s;
-}
-
 #post-previous:hover,
 #post-next:hover {
   transform: scale(1.03);
@@ -35,8 +17,29 @@
 .header-post-single {
   display: flex;
   justify-content: space-between;
-  margin: 0 0px 30px 0px;
-  color: rgb(99, 99, 99);
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+}
+
+.header-post-single a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 200;
+  background-color: rgb(6, 2, 51);
+  color: rgb(238, 238, 238);
+  border: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: 0.3s;
 }
 
 .post-container-single {
@@ -60,4 +63,9 @@
 
 .text-post-single {
   font-size: 18px;
+}
+
+.date-creation-post-single {
+  display: flex;
+  font-size: 14px;
 }

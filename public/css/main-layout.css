@@ -5,6 +5,8 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   background-color: #eaeaea;
   background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23060233' fill-opacity='0.10' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
   color: rgb(36, 36, 36);
@@ -16,8 +18,11 @@ body {
 
 #content {
   width: 1000px;
-  margin: 0 auto;
   padding: 40px 0 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
 }
 
 button {
@@ -33,7 +38,8 @@ button {
 }
 
 button:hover {
-  background-color: rgb(106, 106, 106);
+  background-color: rgb(12, 4, 99);
+  cursor: pointer;
 }
 
 .navbar {
@@ -44,6 +50,18 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   gap: 50px;
+}
+
+.navbar a {
+  transition: 0.3s;
+}
+
+.navbar a:hover {
+  color: rgb(238, 238, 238);
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .link-container-navbar {

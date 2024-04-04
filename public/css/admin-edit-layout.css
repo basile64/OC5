@@ -28,7 +28,8 @@ button {
 }
 
 button:hover {
-  background-color: rgb(106, 106, 106);
+  background-color: rgb(12, 4, 99);
+  cursor: pointer;
 }
 
 .navbar {
