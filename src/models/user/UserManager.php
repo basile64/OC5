@@ -394,4 +394,21 @@ class UserManager {
             echo "Error saving your profile.";
         }
     }
+
+    public static function getNumberOfCommentsByUser($idUser){
+        $query = "
+        SELECT 
+            COUNT(*) as commentCount
+        FROM
+            comment
+        WHERE
+            idUser = :idUser
+        ";
+
+        $params = [":idUser" => $idUser];
+        $result = DbConnect::executeQuery($query, $params);
+
+        // Retourner le nombre de commentaires de l'utilisateur
+        return $result[0]['commentCount'];
+    }
 }

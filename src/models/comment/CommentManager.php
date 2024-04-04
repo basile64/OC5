@@ -213,7 +213,7 @@ class CommentManager {
         } else {
             $_SESSION["error_message"] = "Error when deleting the comment.";
         }
-        if ($_SERVER['REQUEST_URI'] === '/OC5/admin/commentsManagement') {
+        if (strstr($_SERVER['REQUEST_URI'], '/OC5/admin/commentsManagement')) {
             header("Location: http://localhost/OC5/admin/commentsManagement");
         } else {
             header("Location: http://localhost/OC5/user/comments");

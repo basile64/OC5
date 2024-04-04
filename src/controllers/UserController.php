@@ -21,7 +21,7 @@ class UserController extends Controller{
         if (isset($explodedUrl[2]) && $explodedUrl[2]=="delete" && isset($explodedUrl[3]) && is_numeric($explodedUrl[3])){
             $this->commentManager = new CommentManager();
             $this->commentManager->deleteComment($explodedUrl[3]);
-        } else {
+        } elseif (isset($explodedUrl[1])) {
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
         }
@@ -30,9 +30,17 @@ class UserController extends Controller{
     private function runAction($explodedUrl){
         if ($this->action != "comments"){
             $this->userManager = new UserManager();
-            $result = call_user_func([$this->userManager, $this->action . ucfirst($this->class)]);
-            $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
-            $this->render([$this->class => $result]);
+            //Cas pour afficher un profil public
+            if (is_numeric($explodedUrl[1])){
+                $user = call_user_func([$this->userManager, "get" . ucfirst($this->class)], $explodedUrl[1]);
+                $numberOfComments = $this->userManager->getNumberOfCommentsByUser($user->getId());
+                $this->view = $this->class . "/" . "publicProfile" . ucfirst($this->class) . "View";
+                $this->render([$this->class => $user, "numberOfComments" => $numberOfComments]);
+            } else {
+                $result = call_user_func([$this->userManager, $this->action . ucfirst($this->class)]);
+                $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
+                $this->render([$this->class => $result]);
+            }
         } else {
             $this->commentManager = new CommentManager();
             $result = $this->commentManager->getAllApprovedByUser(); 

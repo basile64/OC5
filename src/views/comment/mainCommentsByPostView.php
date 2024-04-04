@@ -6,7 +6,7 @@
         <?php foreach ($post->getMainComments() as $mainComment) :?>
             <div class="comment-container" id="comment<?=$mainComment->getIdMainComment()?>">
                 <div class="avatar-plus-header-main">
-                    <img src="http://localhost/OC5/public/avatar/<?= $mainComment->getUser()->getAvatar() ?>" class="avatar">
+                    <a class="avatar" href="http://localhost/OC5/user/<?= $mainComment->getUser()->getId() ?>"><img src="http://localhost/OC5/public/avatar/<?= $mainComment->getUser()->getAvatar() ?>" class="avatar"></a>
                     <div class="main-comment-container">
                         <div class="main-comment-header">
                             <div class="main-comment-author"><?= $mainComment->getUser()->getFirstName() ?></div>
