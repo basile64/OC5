@@ -27,7 +27,7 @@ class PostController extends Controller{
         $this->postManager = new PostManager();
         $posts = $this->postManager->getAll();
         $this->view = "post/postsView";
-        $this->render($this->view, ["posts"=> $posts]);
+        $this->render(["posts"=> $posts]);
     }
 
     public function showSinglePost($idPost){
@@ -35,16 +35,12 @@ class PostController extends Controller{
         $post = $this->postManager->getPost($idPost);
 
         $this->mainCommentManager = new MainCommentManager();
-        $post->setMainComments($this->mainCommentManager->getAllApprovedByIdPost($idPost));
+        $mainComments = $this->mainCommentManager->getAllApprovedByIdPost($idPost);
 
         $this->responseCommentManager = new ResponseCommentManager();
-        foreach ($post->getMainComments() as $mainComment) {
-            $mainComment->setResponseComments(call_user_func([$this->responseCommentManager, "getAllApprovedByIdMainComment"],$mainComment->getIdMainComment()));
-        }
 
         $this->view = "post/singlePostView";
         $this->render(["post"=> $post]);
     }
-
 
 }
