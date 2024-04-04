@@ -17,6 +17,10 @@ $page = "profileUser";
                 <form method="post" action="./save" enctype="multipart/form-data">
                     <img src="http://localhost/OC5/public/avatar/<?= $user->getAvatar() ?>" class="avatar" id="avatarPreview">
                     <div>
+                        <div class="label">Role</div>
+                        <div><?=ucfirst($user->getRole())?></div>
+                    </div>
+                    <div>
                         <div class="label">First name</div>
                         <div><?=$user->getFirstName()?></div>
                     </div>

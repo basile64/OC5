@@ -9,7 +9,7 @@
                     <a class="avatar" href="http://localhost/OC5/user/<?= $mainComment->getUser()->getId() ?>"><img src="http://localhost/OC5/public/avatar/<?= $mainComment->getUser()->getAvatar() ?>" class="avatar"></a>
                     <div class="main-comment-container">
                         <div class="main-comment-header">
-                            <div class="main-comment-author"><?= $mainComment->getUser()->getFirstName() ?></div>
+                            <div class="main-comment-author"><?= $mainComment->getUser()->getFirstName() ?> <?= ($mainComment->getUser()->getRole() == "admin")? " (Admin)" : "" ?></div>
                             <div class="main-comment-date"><?= $mainComment->getDate("d/m/Y") ?></div>
                         </div>
                         <div class="main-comment-text"><?= $mainComment->getText() ?></div>
