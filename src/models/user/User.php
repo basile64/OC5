@@ -7,6 +7,7 @@ class User {
     private $firstNameUser;
     private $lastNameUser;
     private $mailUser;
+    private $avatarUser;
     private $passwordUser;
     private $dateRegistrationUser;
     private $roleUser;
@@ -16,6 +17,7 @@ class User {
         $this->setFirstName($user['firstNameUser'] ?? null);
         $this->setLastName($user['lastNameUser'] ?? null);
         $this->setMail($user["mailUser"] ?? null);
+        $this->setAvatar($user["avatarUser"] ?? null);
         $this->setPassword($user['passwordUser'] ?? null);
         $this->setDateRegistration($user['dateRegistrationUser'] ?? null);
         $this->setRole($user['roleUser'] ?? null);
@@ -35,6 +37,10 @@ class User {
 
     public function getMail(){
         return $this->mailUser;
+    }
+
+    public function getAvatar(){
+        return $this->avatarUser;
     }
 
     public function getPassword(){
@@ -63,6 +69,10 @@ class User {
 
     public function setMail($mailUser){
         $this->mailUser = $mailUser;
+    }
+
+    public function setAvatar($avatarUser){
+        $this->avatarUser = $avatarUser;
     }
 
     public function setPassword($passwordUser){
