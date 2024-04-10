@@ -60,6 +60,7 @@ class PostController extends Controller{
         if ($idNextPost != null){
             header("Location: http://localhost/OC5/post/".$idNextPost);
         } else {
+            $_SESSION["error_message"] = "This is the last post.";
             header("Location: http://localhost/OC5/post/".$idPost);
         }
     }
@@ -71,6 +72,7 @@ class PostController extends Controller{
         if ($idPreviousPost != null){
             header("Location: http://localhost/OC5/post/".$idPreviousPost);
         } else {
+            $_SESSION["error_message"] = "This is the first post.";
             header("Location: http://localhost/OC5/post/".$idPost);
         }
     }
