@@ -1,15 +1,16 @@
 <?php ob_start()?>
+<?php $currentUrl = $_SERVER['REQUEST_URI'];?>
 
 <script src="http://localhost/OC5/public/js/post-single.js"></script>
 <link rel="stylesheet" href="http://localhost/OC5/public/css/comment.css">
 
 <div class="single-post">
     <div class="header-post-single">
-        <a id="post-previous" href="">
+        <a id="post-previous" href="<?=$currentUrl?>/getPreviousPost">
             <img class="svg" src="http://localhost/OC5/public/svg/arrow-left.svg"/>
         </a>
         <div class="date-creation-post-single"><?=$post->getDateCreation("d/m/Y") ?><div style="font-weight:bold; margin-left:20px">by <?=$post->getUser()->getFirstName()?></div></div>
-        <a id="post-next" href="">
+        <a id="post-next" href="<?=$currentUrl?>/getNextPost">
             <img class="svg" src="http://localhost/OC5/public/svg/arrow-right.svg"/>
         </a>
     </div>

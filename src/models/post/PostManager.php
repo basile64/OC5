@@ -99,7 +99,6 @@ class PostManager {
         }
     }
     
-
     public function deletePost($idPost){
         $query="
             DELETE
@@ -209,6 +208,52 @@ class PostManager {
         $user = $userManager::getUser($idUser);
 
         return $user->getFirstName();
+    }
+
+    public function getNextPost($idPost){
+        $post = $this->getPost($idPost);
+        $dateCreationPost = $post->getDateCreation();
+
+        $query = "
+        SELECT
+            *
+        FROM 
+            post
+        WHERE dateCreationPost < :dateCreationPost
+            ORDER BY dateCreationPost DESC
+        LIMIT
+            1
+    ";
+
+    $params = [":dateCreationPost" => $dateCreationPost];
+    $result = DbConnect::executeQuery($query, $params);
+
+    $nextPost = new Post($result[0]);
+
+    return $nextPost;
+    }
+
+    public function getPreviousPost($idPost){
+        $post = $this->getPost($idPost);
+        $dateCreationPost = $post->getDateCreation();
+
+        $query = "
+        SELECT
+            *
+        FROM 
+            post
+        WHERE dateCreationPost > :dateCreationPost
+            ORDER BY dateCreationPost ASC
+        LIMIT
+            1
+    ";
+
+    $params = [":dateCreationPost" => $dateCreationPost];
+    $result = DbConnect::executeQuery($query, $params);
+
+    $previousPost = new Post($result[0]);
+
+    return $previousPost;
     }
 
 }

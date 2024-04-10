@@ -13,13 +13,23 @@ class PostController extends Controller{
     private $mainCommentManager;
     private $responseCommentManager;
     private $categoryManager;
-    private $parsedUrl;
+    private $action;
 
     public function __construct($explodedUrl){
-        array_shift($explodedUrl);
-        if (is_numeric($explodedUrl[0])){
-            $idPost=$explodedUrl[0];
+        if (is_numeric($explodedUrl[1]) && !isset($explodedUrl[2])){
+            $idPost=$explodedUrl[1];
             $this->showSinglePost($idPost);
+        //Pour les getNextPost et getPreviousPost
+        } elseif (isset($explodedUrl[2])){
+            $idPost = $explodedUrl[1];
+            $action = $explodedUrl[2];
+            if (method_exists($this, $action)) {
+                $this->$action($idPost);
+            } else {
+                header("Location: http://localhost/OC5/");
+            }
+        } else {
+            header("Location: http://localhost/OC5/");
         }
     }
 
@@ -41,6 +51,28 @@ class PostController extends Controller{
 
         $this->view = "post/singlePostView";
         $this->render(["post"=> $post]);
+    }
+
+    private function getNextPost($idPost){
+        $this->postManager = new PostManager();
+        $nextPost = $this->postManager->getNextPost($idPost);
+        $idNextPost = $nextPost->getId();
+        if ($idNextPost != null){
+            header("Location: http://localhost/OC5/post/".$idNextPost);
+        } else {
+            header("Location: http://localhost/OC5/post/".$idPost);
+        }
+    }
+
+    private function getPreviousPost($idPost){
+        $this->postManager = new PostManager();
+        $previousPost = $this->postManager->getPreviousPost($idPost);
+        $idPreviousPost = $previousPost->getId();
+        if ($idPreviousPost != null){
+            header("Location: http://localhost/OC5/post/".$idPreviousPost);
+        } else {
+            header("Location: http://localhost/OC5/post/".$idPost);
+        }
     }
 
 }
