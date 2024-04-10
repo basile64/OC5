@@ -219,13 +219,13 @@ class PostManager {
             *
         FROM 
             post
-        WHERE dateCreationPost < :dateCreationPost
+        WHERE dateCreationPost < :dateCreationPost && idPost != :idPost
             ORDER BY dateCreationPost DESC
         LIMIT
             1
     ";
 
-    $params = [":dateCreationPost" => $dateCreationPost];
+    $params = [":dateCreationPost" => $dateCreationPost, ":idPost" => $idPost];
     $result = DbConnect::executeQuery($query, $params);
 
     $nextPost = new Post($result[0]);
@@ -242,13 +242,13 @@ class PostManager {
             *
         FROM 
             post
-        WHERE dateCreationPost > :dateCreationPost
+        WHERE dateCreationPost > :dateCreationPost && idPost != :idPost
             ORDER BY dateCreationPost ASC
         LIMIT
             1
     ";
 
-    $params = [":dateCreationPost" => $dateCreationPost];
+    $params = [":dateCreationPost" => $dateCreationPost, ":idPost" => $idPost];
     $result = DbConnect::executeQuery($query, $params);
 
     $previousPost = new Post($result[0]);
