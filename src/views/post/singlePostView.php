@@ -9,7 +9,7 @@
         <a id="post-previous" href="<?=$currentUrl?>/getPreviousPost">
             <img class="svg" src="http://localhost/OC5/public/svg/arrow-left.svg"/>
         </a>
-        <div class="date-creation-post-single"><?=$post->getDateCreation("d/m/Y") ?><div style="font-weight:bold; margin-left:20px">by <?=$post->getUser()->getFirstName()?></div></div>
+        <div class="date-creation-post-single"><?=$post->getDateCreation("d/m/Y") ?><div style="font-weight:bold;">by <?=$post->getUser()->getFirstName()?></div><div style="font-size:11px"><?= ($post->getDateModification()!="0000-00-00")?"(edited ".$post->getDateModification("d/m/Y").")":""?></div></div>
         <a id="post-next" href="<?=$currentUrl?>/getNextPost">
             <img class="svg" src="http://localhost/OC5/public/svg/arrow-right.svg"/>
         </a>
