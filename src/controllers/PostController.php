@@ -18,7 +18,7 @@ class PostController extends Controller{
     public function __construct($explodedUrl){
         if (is_numeric($explodedUrl[1]) && !isset($explodedUrl[2])){
             $idPost=$explodedUrl[1];
-            $this->showSinglePost($idPost);
+            $this->showSingle($idPost);
         //Pour les getNextPost et getPreviousPost
         } elseif (isset($explodedUrl[2])){
             $idPost = $explodedUrl[1];
@@ -40,12 +40,12 @@ class PostController extends Controller{
         $this->render(["posts"=> $posts]);
     }
 
-    public function showSinglePost($idPost){
+    public function showSingle($postId){
         $this->postManager = new PostManager();
-        $post = $this->postManager->getPost($idPost);
+        $post = $this->postManager->get($postId);
 
         $this->mainCommentManager = new MainCommentManager();
-        $mainComments = $this->mainCommentManager->getAllApprovedByIdPost($idPost);
+        $mainComments = $this->mainCommentManager->getAllApprovedByPostId($postId);
 
         $this->responseCommentManager = new ResponseCommentManager();
 
@@ -53,27 +53,27 @@ class PostController extends Controller{
         $this->render(["post"=> $post]);
     }
 
-    private function getNextPost($idPost){
+    private function getNext($postId){
         $this->postManager = new PostManager();
-        $nextPost = $this->postManager->getNextPost($idPost);
-        $idNextPost = $nextPost->getId();
-        if ($idNextPost != null){
-            header("Location: http://localhost/OC5/post/".$idNextPost);
+        $nextPost = $this->postManager->getNext($postId);
+        $nextPostId = $nextPost->getId();
+        if ($nextPostId != null){
+            header("Location: http://localhost/OC5/post/".$nextPostId);
         } else {
             $_SESSION["error_message"] = "This is the last post.";
-            header("Location: http://localhost/OC5/post/".$idPost);
+            header("Location: http://localhost/OC5/post/".$postId);
         }
     }
 
-    private function getPreviousPost($idPost){
+    private function getPrevious($postId){
         $this->postManager = new PostManager();
-        $previousPost = $this->postManager->getPreviousPost($idPost);
-        $idPreviousPost = $previousPost->getId();
-        if ($idPreviousPost != null){
-            header("Location: http://localhost/OC5/post/".$idPreviousPost);
+        $previousPost = $this->postManager->getPrevious($postId);
+        $previousPostId = $previousPost->getId();
+        if ($previousPostId != null){
+            header("Location: http://localhost/OC5/post/".$previousPostId);
         } else {
             $_SESSION["error_message"] = "This is the first post.";
-            header("Location: http://localhost/OC5/post/".$idPost);
+            header("Location: http://localhost/OC5/post/".$postId);
         }
     }
 

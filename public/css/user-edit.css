@@ -64,3 +64,28 @@ form {
   display: flex;
   flex-direction: column;
 }
+
+@media screen and (max-width: 767px) {
+  .user {
+    width: 95%;
+    margin-bottom: 80px;
+  }
+
+  form {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .user {
+    width: 95%;
+    margin-bottom: 80px;
+  }
+
+  form {
+    width: 95%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+}

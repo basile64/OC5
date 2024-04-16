@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="http://localhost/OC5/public/css/main-layout.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/post-list-homepage.css">
     <link rel="stylesheet" href="http://localhost/OC5/public/css/post-single.css">
+    <link rel="stylesheet" href="http://localhost/OC5/public/css/footer.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,6 +27,8 @@
     <div id ="content">
         <?= $content ?>
     </div>
+
+    <?php require_once("../src/views/footer.php");?>
     
 </body>
 </html>

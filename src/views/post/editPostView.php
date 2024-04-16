@@ -8,49 +8,49 @@ $page = "postsManagement";
 <script src="http://localhost/OC5/public/js/edit-post.js"></script>
 
 <div class="single-post">
-<form method="post" action="../update/<?= $post->getId()?>" enctype="multipart/form-data">
+    <form method="post" action="../update/<?= htmlspecialchars($post->getId()) ?>" enctype="multipart/form-data">
         <div class="title1 title1-edit">Edit a post</div>
         <div class="container">
             <div class="left">
-                <div><img src="http://localhost/OC5/public/upload/<?= $post->getImg() ?>" id="imagePreview"></div>
-                <div><div>Sélectionnez une autre image</div><input type="file" name="imgPost" id="imgPost" class="img-post-single" accept="image/*"></div>
+                <div style="align-self:center"><img src="http://localhost/OC5/public/upload/<?= htmlspecialchars($post->getImg()) ?>" id="imagePreview"></div>
+                <div style="display:flex; flex-direction:column; align-items:center"><div>Sélectionnez une autre image</div><input type="file" name="postImg" id="imgPost" class="img-post-single" accept="image/*"></div>
                 <div class="container-title">
                     <div class="label">Title</div>
-                    <input id="input-title" name="titlePost" type="text" class="title-post-single" value="<?=$post->getTitle()?>"> 
+                    <input id="input-title" name="postTitle" type="text" class="title-post-single" value="<?= htmlspecialchars($post->getTitle()) ?>"> 
                 </div>
                 <div class="container-title">
                     <div class="label">Chapo</div>
-                    <textarea id="textarea-chapo" name="chapoPost" class="chapo-post-single"><?=$post->getChapo()?></textarea>
+                    <textarea id="textarea-chapo" name="postChapo" class="chapo-post-single"><?= htmlspecialchars($post->getChapo()) ?></textarea>
                 </div>
                 <div class="container-title">
                     <div class="label">Text</div>
-                    <textarea id="textarea-text" name="textPost" class="text-post-single"><?=$post->getText()?></textarea>
+                    <textarea id="textarea-text" name="postText" class="text-post-single"><?= htmlspecialchars($post->getText()) ?></textarea>
                 </div>
                 <button type="submit" id="btn-edit-post" name="submit">Sauvegarder</button>
             </div>
             <div class="right">
                 <div class="info-post">
                     <div>Created </div>
-                    <input  type="date" id="date-creation" class="date-creation-post-single" value="<?= date("Y-m-d") ?>" readonly/>
+                    <input  type="date" id="date-creation" class="date-creation-post-single" value="<?= htmlspecialchars(date("Y-m-d")) ?>" readonly disabled/>
                 </div>
                 <div class="info-post">
                     <div>Author</div>
-                    <select id="author" name="idUser" class="date-creation-post-single">
-                    <?php foreach ($authors as $author): ?>
-                        <option value="<?php echo $author->getId(); ?>" <?php echo ($author->getId() == $post->getIdUser()) ? 'selected' : ''; ?>>
-                                <?php echo $author->getFirstName(); ?>
+                    <select id="author" name="userId" class="date-creation-post-single">
+                        <?php foreach ($authors as $author): ?>
+                            <option value="<?= htmlspecialchars($author->getId()) ?>" <?= ($author->getId() == $post->getUserId()) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($author->getFirstName()) ?>
                             </option>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="info-post">
                     <div>Category</div>
-                    <select id="category" name="idCategory" class="date-creation-post-single">
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category->getId(); ?>" <?php echo ($category->getId() == $post->getIdCategory()) ? 'selected' : ''; ?>>
-                            <?php echo $category->getName(); ?>
-                        </option>
-                    <?php endforeach; ?>
+                    <select id="category" name="categoryId" class="date-creation-post-single">
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars($category->getId()) ?>" <?= ($category->getId() == $post->getCategoryId()) ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($category->getName()) ?>
+                            </option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
@@ -58,7 +58,6 @@ $page = "postsManagement";
     </form>
 </div>
 
-</div>
 
 <?php
 

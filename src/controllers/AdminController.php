@@ -24,9 +24,9 @@ class AdminController extends Controller{
         array_shift($explodedUrl);
         $this->class = str_replace("sManagement", "", $explodedUrl[0]);
 
-        if (count($explodedUrl)==1 && $_SESSION["roleUser"] == "admin"){
+        if (count($explodedUrl)==1 && $_SESSION["userRole"] == "admin"){
             $this->loadClassManagement($this->class);
-        } elseif(count($explodedUrl)>1 && $_SESSION["roleUser"] == "admin"){
+        } elseif(count($explodedUrl)>1 && $_SESSION["userRole"] == "admin"){
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
         } else {
@@ -71,7 +71,7 @@ class AdminController extends Controller{
 
         $managerClassName = "application\src\models\\" . $this->class . "\\" . ucfirst($this->class). "Manager";
 
-        $actionName = $this->action.ucfirst($this->class);
+        $actionName = $this->action;
 
         $this->manager = new $managerClassName();
         if ($id != null){

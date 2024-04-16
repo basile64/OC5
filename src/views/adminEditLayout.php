@@ -22,10 +22,13 @@
 </head>
 <body>
     <?php require_once("../src/views/navbar/admin-navbar.php");?>
+    <?php require_once("../src/views/navbar/admin-navbar-mobile-top.php");?>
 
     <div id ="content">
         <?= $content ?>
     </div>
+
+    <?php require_once("../src/views/navbar/admin-navbar-mobile-bottom.php");?>
     
 </body>
 </html>

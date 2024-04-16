@@ -12,19 +12,18 @@ use application\src\models\user\AdminUserManager;
 class UserController extends Controller{
     private $userManager;
     private $commentManager;
-    private $parsedUrl;
     private $class;
     private $action;
 
     public function __construct($explodedUrl){
         $this->class = $explodedUrl[0];
-        if (isset($explodedUrl[2]) && $explodedUrl[2]=="delete" && isset($explodedUrl[3]) && is_numeric($explodedUrl[3])){
-            $this->commentManager = new CommentManager();
-            $this->commentManager->deleteComment($explodedUrl[3]);
-        } elseif (isset($explodedUrl[1])) {
-            $this->action = $explodedUrl[1];
-            $this->runAction($explodedUrl);
-        }
+            if (isset($explodedUrl[2]) && $explodedUrl[2]=="delete" && isset($explodedUrl[3]) && is_numeric($explodedUrl[3])){
+                $this->commentManager = new CommentManager();
+                $this->commentManager->delete($explodedUrl[3]);
+            } elseif (isset($explodedUrl[1])) {
+                $this->action = $explodedUrl[1];
+                $this->runAction($explodedUrl);
+            }
     }
 
     private function runAction($explodedUrl){
@@ -32,12 +31,12 @@ class UserController extends Controller{
             $this->userManager = new UserManager();
             //Cas pour afficher un profil public
             if (is_numeric($explodedUrl[1])){
-                $user = call_user_func([$this->userManager, "get" . ucfirst($this->class)], $explodedUrl[1]);
+                $user = call_user_func([$this->userManager, "get"], $explodedUrl[1]);
                 $numberOfComments = $this->userManager->getNumberOfCommentsByUser($user->getId());
                 $this->view = $this->class . "/" . "publicProfile" . ucfirst($this->class) . "View";
                 $this->render([$this->class => $user, "numberOfComments" => $numberOfComments]);
             } else {
-                $result = call_user_func([$this->userManager, $this->action . ucfirst($this->class)]);
+                $result = call_user_func([$this->userManager, $this->action]);
                 $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
                 $this->render([$this->class => $result]);
             }
