@@ -50,10 +50,6 @@
   bottom: 10px;
 }
 
-.date-creation-user-list {
-  margin-right: 80px;
-}
-
 .users-container-list {
   display: flex;
   flex-direction: column;
@@ -90,6 +86,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 30px;
+  width: 40%;
 }
 
 .right-user-list a {
@@ -104,4 +101,56 @@
 .right-user-list a:hover {
   transform: scale(1.1);
   background-color: rgb(106, 106, 106);
+}
+
+.icons {
+  display: flex;
+  gap: 40px;
+}
+
+@media screen and (max-width: 767px) {
+  .user-container {
+    flex-direction: column;
+    align-items: start;
+    padding: 20px 30px;
+  }
+
+  .users-container-list {
+    gap: 15px;
+  }
+
+  .title-user-list {
+    font-weight: bold;
+    width: auto;
+    font-size: 16px;
+  }
+
+  .right-user-list {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .user-container {
+    flex-direction: column;
+    align-items: start;
+    padding: 20px 30px;
+  }
+
+  .users-container-list {
+    gap: 15px;
+  }
+
+  .title-user-list {
+    font-weight: bold;
+    width: auto;
+    font-size: 16px;
+  }
+
+  .right-user-list {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
 }

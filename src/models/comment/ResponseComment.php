@@ -3,30 +3,33 @@
 namespace application\src\models\comment;
 
 class ResponseComment extends Comment {
-    private $idResponseComment;
-    private $idMainComment;
+    private const RESPONSE_COMMENT_ID_COLUMN = 'id';
+    private const MAIN_COMMENT_ID_COLUMN = 'mainCommentId';
+
+    private $responseCommentId;
+    private $mainCommentId;
 
     public function __construct($responseComment) {
         parent::__construct($responseComment);
 
-        $this->setIdResponseComent($responseComment['idResponseComment'] ?? null);
-        $this->setIdMainComment($responseComment['idMainComment'] ?? null);
+        $this->setResponseCommentId($responseComment[self::RESPONSE_COMMENT_ID_COLUMN] ?? null);
+        $this->setMainCommentId($responseComment[self::MAIN_COMMENT_ID_COLUMN] ?? null);
     }
     
-    public function getIdResponseComent() {
-        return $this->idResponseComment;
+    public function getResponseCommentId() {
+        return $this->responseCommentId;
     }
 
-    public function getIdMainComment() {
-        return $this->idMainComment;
+    public function getMainCommentId() {
+        return $this->mainCommentId;
     }
 
-    public function setIdResponseComent($idResponseComment) {
-        $this->idResponseComment = $idResponseComment;
+    private function setResponseCommentId($responseCommentId) {
+        $this->responseCommentId = $responseCommentId;
     }
 
-    public function setIdMainComment($idMainComment) {
-        $this->idMainComment = $idMainComment;
+    private function setMainCommentId($mainCommentId) {
+        $this->mainCommentId = $mainCommentId;
     }
     
 }

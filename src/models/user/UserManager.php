@@ -17,7 +17,7 @@ class UserManager {
             FROM
                 user
             ORDER BY
-                dateRegistrationUser DESC
+                dateRegistration DESC
         ";
 
         $result = DbConnect::executeQuery($query);
@@ -39,9 +39,9 @@ class UserManager {
             FROM
                 user
             WHERE
-                roleUser = 'admin'
+                role = 'admin'
             ORDER BY
-                firstNameUser ASC
+                firstName ASC
         ";
 
         $result = DbConnect::executeQuery($query);
@@ -63,9 +63,9 @@ class UserManager {
             FROM
                 user
             WHERE
-                roleUser = 'basic'
+                role = 'basic'
             ORDER BY
-                firstNameUser ASC
+                firstName ASC
         ";
 
         $result = DbConnect::executeQuery($query);
@@ -80,17 +80,17 @@ class UserManager {
         return $users;
     }
 
-    public function getUser($idUser){
+    public function get($id){
         $query = "
             SELECT
                 *
             FROM
                 user
             WHERE 
-                idUser = :idUser
+                id = :id
         ";
 
-        $params = [":idUser" => $idUser];
+        $params = [":id" => $id];
         $result = DbConnect::executeQuery($query, $params);
 
         $user = new User($result[0]);
@@ -99,65 +99,85 @@ class UserManager {
 
     }
 
-    public function registerUser(){
-        //Pas besoin de retourner une variable, la vue nous suffit
+    public function register(){
         return null;
     }
 
-    public function createUser(){
-        $newUser = array_map("htmlspecialchars", $_POST);
+    public function create(){
+        $formData = $_POST;
 
-        if ($this->checkIfEmailExists($newUser["mailUser"])) {
-            $_SESSION["error_message"] = "An account with this email address already exists.";
+        $firstName = filter_var($formData["userFirstName"], FILTER_SANITIZE_STRING);
+        $lastName = filter_var($formData["userLastName"], FILTER_SANITIZE_STRING);
+        $email = filter_var($formData["userMail"], FILTER_VALIDATE_EMAIL);
+        $password = $formData["password"];
+        $confirmPassword = $formData["confirmPassword"];
+    
+        if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($confirmPassword)) {
+            $_SESSION["error_message"] = "All fields are required.";
+            $_SESSION["formData"] = $formData;
             header("Location: http://localhost/OC5/user/register");
             exit();
         }
-
-        if ($newUser["passwordUser"] == $newUser["confirmPasswordUser"]){
-            $hashedPassword = password_hash($newUser["passwordUser"], PASSWORD_DEFAULT);
-
-            $query="
-                INSERT 
-                INTO
-                    user (firstNameUser, lastNameUser, mailUser, passwordUser, dateRegistrationUser)
-                VALUES
-                    (:firstNameUser, :lastNameUser, :mailUser, :passwordUser, NOW())
-            ";
-
-            $params = [
-                ":firstNameUser" => $newUser["firstNameUser"],
-                ":lastNameUser" => $newUser["lastNameUser"],
-                ":mailUser" => $newUser["mailUser"],
-                ":passwordUser" => $hashedPassword,
-            ];
-            //Insertion table User
-            $result = DbConnect::executeQuery($query, $params);
-
-            if ($result !== false) {
-                $_SESSION["success_message"] = "Your account is created.";
-                header("Location: http://localhost/OC5/user/login");
-            }else{
-                $_SESSION["error_message"] = "Error creating your account.";
-                header("Location: http://localhost/OC5/user/register");
-            }
-        } else {
-            $_SESSION["error_message"] = "Password do not match.";
+    
+        if ($this->checkIfEmailExists($email)) {
+            $_SESSION["error_message"] = "An account with this email address already exists.";
+            $_SESSION["formData"] = $formData;
             header("Location: http://localhost/OC5/user/register");
+            exit();
+        }
+    
+        if ($password != $confirmPassword){
+            $_SESSION["error_message"] = "Passwords do not match.";
+            $_SESSION["formData"] = $formData;
+            header("Location: http://localhost/OC5/user/register");
+            exit();
+        }
+    
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    
+        $query="
+            INSERT 
+            INTO
+                user (firstName, lastName, mail, password, dateRegistration)
+            VALUES
+                (:firstName, :lastName, :mail, :password, NOW())
+        ";
+    
+        $params = [
+            ":firstName" => $firstName,
+            ":lastName" => $lastName,
+            ":mail" => $email,
+            ":password" => $hashedPassword,
+        ];
+    
+        $result = DbConnect::executeQuery($query, $params);
+    
+        if ($result !== false) {
+            $_SESSION["success_message"] = "Your account is created.";
+            unset($_SESSION['formData']);
+            header("Location: http://localhost/OC5/user/login");
+            exit();
+        } else {
+            $_SESSION["error_message"] = "Error creating your account.";
+            $_SESSION["formData"] = $formData;
+            header("Location: http://localhost/OC5/user/register");
+            exit();
         }
     }
+    
 
     public function checkIfEmailExists($mail){
         $query="
             SELECT
-                mailUser
+                mail
             FROM
                 user
             WHERE
-                mailUser = :mailUser
+                mail = :mail
         ";
 
         $params = [
-            ":mailUser" => $mail
+            ":mail" => $mail
         ];
 
         $result = DbConnect::executeQuery($query, $params);
@@ -168,60 +188,68 @@ class UserManager {
 
     }
 
-    public function editUser($idUser){
-        return ($this->getUser($idUser));
+    public function edit($id){
+        return ($this->get($id));
     }
 
-    public function updateUser($idUser){
-        if(isset($_POST["firstNameUser"], $_POST["lastNameUser"], $_POST["mailUser"], $_POST["roleUser"])) {
+    public function update($id){
+        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
+        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
+        $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $role = filter_var($_POST["userRole"], FILTER_SANITIZE_STRING);
     
-            $params = [
-                ":firstNameUser" => $_POST["firstNameUser"],
-                ":lastNameUser" => $_POST["lastNameUser"],
-                ":mailUser" => $_POST["mailUser"],
-                ":roleUser" => $_POST["roleUser"],
-                ":idUser" => $idUser
-            ];
+        // Vérifier que tous les champs sont remplis
+        if (empty($firstName) || empty($lastName) || empty($mail) || empty($role)) {
+            $_SESSION["error_message"] = "All fields are required.";
+            header("Location: http://localhost/OC5/admin/usersManagement/edit/".$id);
+            exit();
+        }
     
-            $query = "
-                UPDATE
-                    user
-                SET
-                    firstNameUser = :firstNameUser,
-                    lastNameUser = :lastNameUser,
-                    mailUser = :mailUser,
-                    roleUser = :roleUser
-            ";
+        $params = [
+            ":firstName" => $firstName,
+            ":lastName" => $lastName,
+            ":mail" => $mail,
+            ":role" => $role,
+            ":id" => $id
+        ];
     
-            $query .= "
-                WHERE
-                    idUser = :idUser
-            ";
+        $query = "
+            UPDATE
+                user
+            SET
+                firstName = :firstName,
+                lastName = :lastName,
+                mail = :mail,
+                role = :role
+            WHERE
+                id = :id
+        ";
     
-            $result = DbConnect::executeQuery($query, $params);
+        $result = DbConnect::executeQuery($query, $params);
     
-            if ($result !== false) {
-                $_SESSION["success_message"] = "User updated!";
-                header("Location: http://localhost/OC5/admin/usersManagement");
-                exit();
-            } else {
-                echo "Erreur lors de la modification de l'utilisateur.";
-            }
+        if ($result !== false) {
+            $_SESSION["success_message"] = "User updated!";
+            header("Location: http://localhost/OC5/admin/usersManagement");
+            exit();
         } else {
-            echo "Tous les champs requis ne sont pas remplis.";
+            $_SESSION["error_message"] = "Error updating user.";
+            header("Location: http://localhost/OC5/admin/usersManagement/edit/".$id);
+            exit();
         }
     }
+    
+    
 
-    public function deleteUser($idUser){
+    public function delete($id){
         $query="
             DELETE
             FROM
                 user
             WHERE
-                idUser = :idUser
+                id = :id
         ";
 
-        $params = [":idUser" => $idUser];
+        $params = [":id" => $id];
 
         $result = DbConnect::executeQuery($query, $params);
 
@@ -234,74 +262,91 @@ class UserManager {
         }
     }
 
-    public function loginUser(){
+    public function login(){
         return null;
     }
 
-    public function connectUser(){
-        $post = array_map("htmlspecialchars", $_POST);
-        $mailUser = $post["mailUser"];
-        $passwordUser = $post["passwordUser"];
+    public function connect(){
+        $post = $_POST;
+        $userMail = filter_var($post["userMail"], FILTER_VALIDATE_EMAIL);
+        $userPassword = $post["userPassword"];
+    
+        if (!$userMail) {
+            $_SESSION["error_message"] = "Invalid email format.";
+            $_SESSION["formData"] = $post;
+            header("Location: http://localhost/OC5/user/login");
+            exit();
+        }
+    
         $query="
             SELECT 
-                idUser,
-                firstNameUser,
-                lastNameUser,
-                mailUser,
-                passwordUser,
-                dateRegistrationUser,
-                roleUser
+                id,
+                firstName,
+                lastName,
+                mail,
+                password,
+                dateRegistration,
+                role
             FROM
                 user
             WHERE
-                mailUser = :mailUser 
+                mail = :mail 
         ";
-        $params = [":mailUser" => $mailUser];
+        $params = [":mail" => $userMail];
         $userData = DbConnect::executeQuery($query, $params)[0];
-
-        if ($userData != NULL && password_verify($passwordUser, $userData['passwordUser'])) {
+    
+        if ($userData != NULL && password_verify($userPassword, $userData['password'])) {
             $_SESSION["success_message"] = "Connected !";
             $_SESSION["logged"] = true;
             $this->openSession($userData);
+            unset($_SESSION['formData']);
             header("Location: http://localhost/OC5/");
+            exit();
         } else {
             $_SESSION["error_message"] = "Incorrect email or password.";
+            $_SESSION["formData"] = $post;
             header("Location: http://localhost/OC5/user/login");
+            exit();
         }
     }
+    
 
     public function openSession($userData){
         $user = new User($userData);
-        $_SESSION["idUser"] = $user->getId();
-        $_SESSION["firstNameUser"] = $user->getFirstName();
-        $_SESSION["lastNameUser"] = $user->getLastName();
-        $_SESSION["mailUser"] = $user->getMail();
-        $_SESSION["avatarUser"] = $user->getAvatar();
-        $_SESSION["dateRegistrationUser"] = $user->getDateRegistration();
-        $_SESSION["roleUser"] = $user->getRole();
+        $_SESSION["userId"] = $user->getId();
+        $_SESSION["userFirstName"] = $user->getFirstName();
+        $_SESSION["userLastName"] = $user->getLastName();
+        $_SESSION["userMail"] = $user->getMail();
+        $_SESSION["userAvatar"] = $user->getAvatar();
+        $_SESSION["userDateRegistration"] = $user->getDateRegistration();
+        $_SESSION["userRole"] = $user->getRole();
     }
     
-    public function logoutUser(){
+    public function logout(){
         session_unset();
         header("Location: http://localhost/OC5/");
     }
     
-    public function profileUser(){
-        $user = $this->getUser($_SESSION["idUser"]);
+    public function profile(){
+        $user = $this->get($_SESSION["userId"]);
         return $user;
     }
 
-    public function passwordUser(){
+    public function password(){
         return null;
     }
 
-    public function changePasswordUser(){
-        $userId = $_SESSION["idUser"];
-        $user = $this->getUser($userId);
+    public function changePassword(){
+        $userId = $_SESSION["userId"];
+        $user = $this->get($userId);
     
         $oldPassword = $_POST["oldPassword"];
         $newPassword = $_POST["newPassword"];
         $confirmPassword = $_POST["confirmPassword"];
+    
+        $oldPassword = filter_var($oldPassword, FILTER_SANITIZE_STRING);
+        $newPassword = filter_var($newPassword, FILTER_SANITIZE_STRING);
+        $confirmPassword = filter_var($confirmPassword, FILTER_SANITIZE_STRING);
     
         if (!password_verify($oldPassword, $user->getPassword())) {
             $_SESSION["error_message"] = "Incorrect old password.";
@@ -321,14 +366,14 @@ class UserManager {
             UPDATE
                 user
             SET
-                passwordUser = :passwordUser
+                password = :password
             WHERE  
-                idUser = :idUser
+                id = :id
         ";
     
         $params = [
-            ":passwordUser" => $hashedNewPassword,
-            ":idUser" => $userId
+            ":password" => $hashedNewPassword,
+            ":id" => $userId
         ];
     
         $result = DbConnect::executeQuery($query, $params);
@@ -344,68 +389,79 @@ class UserManager {
         }
     }
     
+    
 
-    public function saveUser(){
-        $user = $this->getUser($_SESSION["idUser"]);
+    public function save(){
+        $user = $this->get($_SESSION["userId"]);
         $currentAvatar = $user->getAvatar();
-        $filteredUser = array_map('htmlspecialchars', $_POST);
-
-        if (isset($_FILES["avatarUser"]) && $_FILES["avatarUser"]["error"] === UPLOAD_ERR_OK) {
-            $filteredAvatar = array_map('htmlspecialchars', $_FILES['avatarUser']);
-            $avatarPath = basename($filteredAvatar["name"]);
-            move_uploaded_file($filteredAvatar["tmp_name"], "../public/avatar/" . $avatarPath);
+    
+        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
+        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
+        $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+    
+        if (empty($firstName) || empty($lastName) || empty($mail)) {
+            $_SESSION["error_message"] = "All fields are required.";
+            header("Location: http://localhost/OC5/user/profile");
+            exit();
+        }
+    
+        if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] === UPLOAD_ERR_OK) {
+            $avatarName = filter_var($_FILES["avatar"]["name"], FILTER_SANITIZE_STRING);
+            $avatarPath = "../public/avatar/" . basename($avatarName);
+            move_uploaded_file($_FILES["avatar"]["tmp_name"], $avatarPath);
         } else {
             $avatarPath = $currentAvatar;
         }
     
-        $query ="
+        $query = "
             UPDATE
                 user
             SET
-                avatarUser = :avatarUser,
-                firstNameUser = :firstNameUser,
-                lastNameUser = :lastNameUser,
-                mailUser = :mailUser
+                avatar = :avatar,
+                firstName = :firstName,
+                lastName = :lastName,
+                mail = :mail
             WHERE
-                idUser = :idUser
+                id = :id
         ";
     
-        // Paramètres de la requête
         $params = [
-            ":avatarUser" => $avatarPath,  
-            ":firstNameUser" => $filteredUser["firstNameUser"],
-            ":lastNameUser" => $filteredUser["lastNameUser"],
-            ":mailUser" => $filteredUser["mailUser"],
-            ":idUser" => $_SESSION["idUser"] 
+            ":avatar" => $avatarPath,  
+            ":firstName" => $firstName,
+            ":lastName" => $lastName,
+            ":mail" => $mail,
+            ":id" => $_SESSION["userId"] 
         ];
-
-
-
+    
         $result = DbConnect::executeQuery($query, $params);
-
+    
         if ($result !== false) {
-            $_SESSION["success_message"] = "Profile updated !";
-            $_SESSION["avatarUser"] = $avatarPath;
-            $_SESSION["firstNameUser"] = $filteredUser["firstNameUser"];
-            $_SESSION["lastNameUser"] = $filteredUser["lastNameUser"];
-            $_SESSION["mailUser"] = $filteredUser["mailUser"];
+            $_SESSION["success_message"] = "Profile updated!";
+            $_SESSION["userAvatar"] = $avatarPath;
+            $_SESSION["userFirstName"] = $firstName;
+            $_SESSION["userLastName"] = $lastName;
+            $_SESSION["userMail"] = $mail;
             header("Location: http://localhost/OC5/user/profile");
+            exit();
         } else {
-            echo "Error saving your profile.";
+            $_SESSION["error_message"] = "Error saving your profile.";
+            header("Location: http://localhost/OC5/user/profile");
+            exit();
         }
     }
+    
 
-    public static function getNumberOfCommentsByUser($idUser){
+    public static function getNumberOfCommentsByUser($id){
         $query = "
         SELECT 
             COUNT(*) as commentCount
         FROM
             comment
         WHERE
-            idUser = :idUser
+            userId = :id
         ";
 
-        $params = [":idUser" => $idUser];
+        $params = [":id" => $id];
         $result = DbConnect::executeQuery($query, $params);
 
         // Retourner le nombre de commentaires de l'utilisateur

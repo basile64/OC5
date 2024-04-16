@@ -11,29 +11,29 @@ $page = "postsManagement";
         <div class="container">
             <div class="left">
                 <div><img src="" id="imagePreview"></div>
-                <div><div>Sélectionnez une image</div><input type="file" name="imgPost" id="imgPost" class="img-post-single" accept="image/*"></div>
+                <div><div>Sélectionnez une image</div><input type="file" name="postImg" id="imgPost" class="img-post-single" accept="image/*"></div>
                 <div class="container-title">
                     <div class="label">Title</div>
-                    <input id="input-title" name="titlePost" type="text" class="title-post-single">
+                    <input id="input-title" name="postTitle" type="text" class="title-post-single" value="<?= $_SESSION["formData"]['postTitle'] ?? '' ?>">
                 </div>
                 <div class="container-title">
                     <div class="label">Chapo</div>
-                    <textarea id="textarea-chapo" name="chapoPost" class="chapo-post-single"></textarea>
+                    <textarea id="textarea-chapo" name="postChapo" class="chapo-post-single"><?= $_SESSION["formData"]['postChapo'] ?? '' ?></textarea>
                 </div>
                 <div class="container-title">
                     <div class="label">Text</div>
-                    <textarea id="textarea-text" name="textPost" class="text-post-single"></textarea>
+                    <textarea id="textarea-text" name="postText" class="text-post-single"><?= $_SESSION["formData"]['postText'] ?? '' ?></textarea>
                 </div>
                 <button type="submit" id="btn-edit-post" name="submit">Validate the creation</button>
             </div>
             <div class="right">
                 <div class="info-post">
                     <div>Created </div>
-                    <input  type="date" id="date-creation" class="date-creation-post-single" value="<?= date("Y-m-d") ?>" readonly/>
+                    <input  type="date" id="date-creation" class="date-creation-post-single" value="<?= date("Y-m-d") ?>" readonly disabled/>
                 </div>
                 <div class="info-post">
                     <div>Author</div>
-                    <select id="author" name="idUser" class="date-creation-post-single">
+                    <select id="author" name="userId" class="date-creation-post-single">
                     <?php foreach ($authors as $author): ?>
                         <option value="<?php echo $author->getId(); ?>"><?php echo $author->getFirstName(); ?></option>
                     <?php endforeach; ?>
@@ -41,7 +41,7 @@ $page = "postsManagement";
                 </div>
                 <div class="info-post">
                     <div>Category</div>
-                    <select id="category" name="idCategory" class="date-creation-post-single">
+                    <select id="category" name="categoryId" class="date-creation-post-single">
                     <?php foreach ($categories as $category): ?>
                         <option value="<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></option>
                     <?php endforeach; ?>

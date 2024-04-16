@@ -5,26 +5,28 @@ namespace application\src\models\comment;
 use application\src\models\comment\ResponseCommentManager;
 
 class MainComment extends Comment {
-    private $idMainComment;
+    private const MAIN_COMMENT_ID_COLUMN = 'id';
+
+    private $mainCommentId;
 
     public function __construct($mainComment){
         parent::__construct($mainComment);  
         
-        $this->setIdMainComment($mainComment['idMainComment'] ?? null);
+        $this->setMainCommentId($mainComment[self::MAIN_COMMENT_ID_COLUMN] ?? null);
     }
     
-    public function getIdMainComment() {
-        return $this->idMainComment;
+    public function getMainCommentId() {
+        return $this->mainCommentId;
     }
 
     public function getResponseComments(){
         $responseCommentManager = new ResponseCommentManager;
-        $responseComments = $responseCommentManager->getAllApprovedByIdMainComment($this->idMainComment);
+        $responseComments = $responseCommentManager->getAllApprovedByMainCommentId($this->mainCommentId);
         return $responseComments;
     }
 
-    public function setIdMainComment($idMainComment) {
-        $this->idMainComment = $idMainComment;
+    private function setMainCommentId($mainCommentId) {
+        $this->mainCommentId = $mainCommentId;
     }
 
 }
