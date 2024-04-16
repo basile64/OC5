@@ -11,23 +11,23 @@ class ResponseCommentManager {
     public static function getAll(){
         $query = "
             SELECT
-                responseComment.idResponseComment,
-                responseComment.idMainComment,
-                comment.idComment,
-                comment.textComment,
-                comment.statusComment,
-                user.firstNameUser as authorComment,
-                comment.dateComment
+                responseComment.id,
+                responseComment.mainCommentId,
+                comment.id,
+                comment.text,
+                comment.status,
+                user.firstName as author,
+                comment.date as date,
             FROM 
                 responseComment
             JOIN 
-                mainComment ON mainComment.idMainComment = responseComment.idMainComment
+                mainComment ON mainComment.id = responseComment.mainCommentId
             JOIN 
-                comment ON comment.idComment = responseComment.idComment
+                comment ON comment.id = responseComment.commentId
             JOIN 
-                user ON user.idUser = comment.idUser
+                user ON user.id = comment.userId
             ORDER BY 
-                dateComment DESC;
+                date DESC;
         ";
 
         $result = DbConnect::executeQuery($query);
@@ -41,33 +41,33 @@ class ResponseCommentManager {
 
     }
 
-    public static function getAllByIdMainComment($idMainComment){
+    public static function getAllByMainCommentId($id){
         $query = "
             SELECT
-                responseComment.idResponseComment,
-                responseComment.idMainComment,
-                comment.idComment,
-                comment.textComment,
-                comment.statusComment,
-                user.firstNameUser as authorComment,
-                user.idUser,
-                comment.dateComment
+                responseComment.id,
+                responseComment.mainCommentId,
+                comment.id,
+                comment.text,
+                comment.status,
+                user.firstName as author,
+                user.id,
+                comment.date as date,
             FROM 
                 responseComment
             JOIN 
-                mainComment ON mainComment.idMainComment = responseComment.idMainComment
+                mainComment ON mainComment.id = responseComment.mainCommentId
             JOIN 
-                comment ON comment.idComment = responseComment.idComment
+                comment ON comment.id = responseComment.commentId
             JOIN 
-                user ON user.idUser = comment.idUser
+                user ON user.id = comment.userId
             WHERE
-                mainComment.idMainComment = :idMainComment
+                mainComment.id = :id
             ORDER BY 
-                dateComment DESC;
+                date DESC;
         ";
 
 
-        $params = [":idMainComment" => $idMainComment];
+        $params = [":id" => $id];
 
         $result = DbConnect::executeQuery($query, $params);
 
@@ -79,33 +79,33 @@ class ResponseCommentManager {
         return $responseComments;
     }
 
-    public static function getAllApprovedByIdMainComment($idMainComment){
+    public static function getAllApprovedByMainCommentId($id){
         $query = "
-            SELECT
-                responseComment.idResponseComment,
-                responseComment.idMainComment,
-                comment.idComment,
-                comment.textComment,
-                comment.statusComment,
-                user.firstNameUser as authorComment,
-                user.idUser,
-                comment.dateComment
-            FROM 
-                responseComment
-            JOIN 
-                mainComment ON mainComment.idMainComment = responseComment.idMainComment
-            JOIN 
-                comment ON comment.idComment = responseComment.idComment
-            JOIN 
-                user ON user.idUser = comment.idUser
-            WHERE
-                mainComment.idMainComment = :idMainComment AND comment.statusComment = 'approved'
-            ORDER BY 
-                dateComment DESC;
+        SELECT
+            responseComment.id,
+            responseComment.mainCommentId,
+            comment.id,
+            comment.text,
+            comment.status,
+            user.firstName as author,
+            user.id as userId,
+            comment.date
+        FROM 
+            responseComment
+        JOIN 
+            mainComment ON mainComment.id = responseComment.mainCommentId
+        JOIN 
+            comment ON comment.id = responseComment.commentId
+        JOIN 
+            user ON user.id = comment.userId
+        WHERE
+            mainComment.id = :id AND comment.status = 'approved'
+        ORDER BY 
+            date DESC;
         ";
 
 
-        $params = [":idMainComment" => $idMainComment];
+        $params = [":id" => $id];
 
         $result = DbConnect::executeQuery($query, $params);
 
@@ -117,32 +117,40 @@ class ResponseCommentManager {
         return $responseComments;
     }
 
-    public function createResponseComment($idComment){
-        $newComment = array_map("htmlspecialchars", $_POST);
-
+    public function create($commentId){
+        $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
+        $mainCommentId = filter_var($_POST["mainCommentId"], FILTER_VALIDATE_INT);
+    
+        if (empty($postId) || empty($mainCommentId)) {
+            $_SESSION["error_message"] = "Error submitting comment.";
+            header("Location: http://localhost/OC5/$postId");
+            exit();
+        }
+    
         $query="
             INSERT 
             INTO
-                responseComment (idComment, idMainComment)
+                responseComment (commentId, mainCommentId)
             VALUES
-                (:idComment, :idMainComment)
+                (:commentId, :mainCommentId)
         ";
-
+    
         $params = [
-            ":idComment" => $idComment,
-            ":idMainComment" => $newComment["idMainComment"],
+            ":commentId" => $commentId,
+            ":mainCommentId" => $mainCommentId,
         ];
-
+    
         $result = DbConnect::executeQuery($query, $params);
-
-        $idPost = $newComment["idPost"];
-
+    
         if ($result !== false) {
             $_SESSION["success_message"] = "Comment submitted.";
-            header("Location: http://localhost/OC5/post/$idPost");
+            header("Location: http://localhost/OC5/post/$postId");
             exit();
         } else {
-            echo "Error submitting comment.";
+            $_SESSION["error_message"] = "Error submitting comment.";
+            header("Location: http://localhost/OC5/$postId");
+            exit();
         }
     }
+    
 }

@@ -3,16 +3,21 @@
 namespace application\src\models\contact;
 
 class Contact {
+    private const FIRST_NAME_COLUMN = 'firstName';
+    private const LAST_NAME_COLUMN = 'lastName';
+    private const EMAIL_COLUMN = 'email';
+    private const MESSAGE_COLUMN = 'message';
+
     private $firstName;
     private $lastName;
     private $email;
     private $message;
 
     public function __construct($contact){
-        $this->setFirstName($contact['firstName'] ?? null);
-        $this->setLastName($contact['lastName'] ?? null);
-        $this->setEmail($contact['email'] ?? null);
-        $this->setMessage($contact['message'] ?? null);
+        $this->setFirstName($contact[self::FIRST_NAME_COLUMN] ?? null);
+        $this->setLastName($contact[self::LAST_NAME_COLUMN] ?? null);
+        $this->setEmail($contact[self::EMAIL_COLUMN] ?? null);
+        $this->setMessage($contact[self::MESSAGE_COLUMN] ?? null);
     }
 
     // Getters
@@ -33,19 +38,19 @@ class Contact {
     }
 
     // Setters
-    public function setFirstName($firstName){
+    private function setFirstName($firstName){
         $this->firstName = $firstName;
     }
 
-    public function setLastName($lastName){
+    private function setLastName($lastName){
         $this->lastName = $lastName;
     }
 
-    public function setEmail($email){
+    private function setEmail($email){
         $this->email = $email;
     }
 
-    public function setMessage($message){
+    private function setMessage($message){
         $this->message = $message;
     }
 }

@@ -7,119 +7,130 @@ use application\src\models\category\CategoryManager;
 use application\src\models\comment\MainCommentManager;
 
 class Post {
-    private $idPost;
-    private $dateCreationPost;
-    private $dateModificationPost;
-    private $titlePost;
-    private $chapoPost;
-    private $textPost;
-    private $imgPost;
-    private $idUser;
-    private $idCategory;
+    private const ID_COLUMN = 'id';
+    private const DATE_CREATION_COLUMN = 'dateCreation';
+    private const DATE_MODIFICATION_COLUMN = 'dateModification';
+    private const TITLE_COLUMN = 'title';
+    private const CHAPO_COLUMN = 'chapo';
+    private const TEXT_COLUMN = 'text';
+    private const IMG_COLUMN = 'img';
+    private const USER_ID_COLUMN = 'userId';
+    private const CATEGORY_ID_COLUMN = 'categoryId';
+
+    private $id;
+    private $dateCreation;
+    private $dateModification;
+    private $title;
+    private $chapo;
+    private $text;
+    private $img;
+    private $userId;
+    private $categoryId;
 
     public function __construct($post){
-        $this->setId($post['idPost'] ?? null);
-        $this->setDateCreation($post['dateCreationPost'] ?? null);
-        $this->setDateModification($post['dateModificationPost'] ?? null);
-        $this->setTitle($post['titlePost'] ?? null);
-        $this->setChapo($post['chapoPost'] ?? null);
-        $this->setText($post['textPost'] ?? null);
-        $this->setImg($post['imgPost'] ?? null);
-        $this->setIdCategory($post['idCategory'] ?? null);
-        $this->setIdUser($post['idUser'] ?? null);
+        $this->setId($post[self::ID_COLUMN] ?? null);
+        $this->setDateCreation($post[self::DATE_CREATION_COLUMN] ?? null);
+        $this->setDateModification($post[self::DATE_MODIFICATION_COLUMN] ?? null);
+        $this->setTitle($post[self::TITLE_COLUMN] ?? null);
+        $this->setChapo($post[self::CHAPO_COLUMN] ?? null);
+        $this->setText($post[self::TEXT_COLUMN] ?? null);
+        $this->setImg($post[self::IMG_COLUMN] ?? null);
+        $this->setUserId($post[self::USER_ID_COLUMN] ?? null);
+        $this->setCategoryId($post[self::CATEGORY_ID_COLUMN] ?? null);
     }
 
     //Getters
     public function getId(){
-        return $this->idPost;
+        return $this->id;
     }
 
     public function getDateCreation($format = "Y-m-d"){
-        return ((new \DateTime($this->dateCreationPost))->format($format));
+        return $this->dateCreation;
     }
 
     public function getDateModification($format = "Y-m-d"){
-        $dateModification = $this->dateModificationPost;
-    
-        if ($dateModification != null) {
-            $dateTime = new \DateTime($dateModification);
-            return $dateTime->format($format);
-        } else {
-            return "0000-00-00";
-        }
+        return $this->dateModification;
     }
 
     public function getTitle(){
-        return $this->titlePost;
+        return $this->title;
     }
 
     public function getChapo(){
-        return $this->chapoPost;
+        return $this->chapo;
     }
 
     public function getText(){
-        return $this->textPost;
+        return $this->text;
     }
 
     public function getImg(){
-        return $this->imgPost;
+        return $this->img;
     }
         
-    public function getIdUser(){
-        return $this->idUser;
+    public function getUserId(){
+        return $this->userId;
     } 
     
     public function getUser(){
         $userManager = new UserManager;
-        $user = $userManager->getUser($this->idUser);
+        $user = $userManager->get($this->userId);
         return $user;
     }
 
-    public function getIdCategory(){
-        return $this->idCategory;
+    public function getCategoryId(){
+        return $this->categoryId;
     }
 
     public function getMainComments(){
         $mainCommentManager = new MainCommentManager;
-        $mainComments = $mainCommentManager->getAllApprovedByIdPost($this->idPost);
+        $mainComments = $mainCommentManager->getAllApprovedByPostId($this->id);
         return $mainComments;
     }
 
     //Setters
-    public function setId($idPost){
-        $this->idPost = $idPost;
+    private function setId($id){
+        $this->id = $id;
     }
 
-    public function setDateCreation($dateCreationPost){
-        $this->dateCreationPost = $dateCreationPost;
+    private function setDateCreation($dateCreation){
+        if ($dateCreation != null){
+            $this->dateCreation = new \DateTime($dateCreation);
+        } else {
+            $this->dateCreation = null;
+        }
     }
 
-    public function setDateModification($dateModificationPost){
-        $this->dateModificationPost = $dateModificationPost;
+    private function setDateModification($dateModification){
+        if ($dateModification != null){
+            $this->dateModification = new \DateTime($dateModification);
+        } else {
+            $this->dateModification = null;
+        }
     }
 
-    public function setTitle($titlePost){
-        $this->titlePost = $titlePost;
+    private function setTitle($title){
+        $this->title = $title;
     }
 
-    public function setChapo($chapoPost){
-        $this->chapoPost = $chapoPost;
+    private function setChapo($chapo){
+        $this->chapo = $chapo;
     }
 
-    public function setText($textPost){
-        $this->textPost = $textPost;
+    private function setText($text){
+        $this->text = $text;
     }
 
-    public function setImg($imgPost){
-        $this->imgPost = $imgPost;
+    private function setImg($img){
+        $this->img = $img;
     }
         
-    public function setIdUser($idUser){
-        $this->idUser = $idUser;
+    private function setUserId($userId){
+        $this->userId = $userId;
     }
 
-    public function setIdCategory($idCategory){
-        $this->idCategory = $idCategory;
+    private function setCategoryId($categoryId){
+        $this->categoryId = $categoryId;
     }
 
 }

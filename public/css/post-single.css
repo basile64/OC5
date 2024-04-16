@@ -1,7 +1,6 @@
 .single-post {
-  width: 800px;
   margin: 0 auto;
-  font-family: "Noto Sans";
+  width: 90%;
 }
 
 .nav-post {
@@ -68,4 +67,29 @@
 .date-creation-post-single {
   display: flex;
   font-size: 14px;
+  gap: 10px;
+  align-items: baseline;
+}
+
+@media screen and (max-width: 767px) {
+  .single-post {
+    width: 95%;
+  }
+
+  .post-container-single {
+    padding: 20px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .single-post {
+    width: 95%;
+  }
+
+  .post-container-single {
+    padding: 20px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
 }

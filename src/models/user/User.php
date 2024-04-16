@@ -3,88 +3,97 @@
 namespace application\src\models\user;
 
 class User {
-    private $idUser;
-    private $firstNameUser;
-    private $lastNameUser;
-    private $mailUser;
-    private $avatarUser;
-    private $passwordUser;
-    private $dateRegistrationUser;
-    private $roleUser;
+    private const ID_COLUMN = 'id';
+    private const FIRST_NAME_COLUMN = 'firstName';
+    private const LAST_NAME_COLUMN = 'lastName';
+    private const MAIL_COLUMN = 'mail';
+    private const AVATAR_COLUMN = 'avatar';
+    private const PASSWORD_COLUMN = 'password';
+    private const DATE_REGISTRATION_COLUMN = 'dateRegistration';
+    private const ROLE_COLUMN = 'role';
+
+    private $id;
+    private $firstName;
+    private $lastName;
+    private $mail;
+    private $avatar;
+    private $password;
+    private $dateRegistration;
+    private $role;
 
     public function __construct($user){
-        $this->setId($user['idUser'] ?? null);
-        $this->setFirstName($user['firstNameUser'] ?? null);
-        $this->setLastName($user['lastNameUser'] ?? null);
-        $this->setMail($user["mailUser"] ?? null);
-        $this->setAvatar($user["avatarUser"] ?? null);
-        $this->setPassword($user['passwordUser'] ?? null);
-        $this->setDateRegistration($user['dateRegistrationUser'] ?? null);
-        $this->setRole($user['roleUser'] ?? null);
+        $this->setId($user[self::ID_COLUMN] ?? null);
+        $this->setFirstName($user[self::FIRST_NAME_COLUMN] ?? null);
+        $this->setLastName($user[self::LAST_NAME_COLUMN] ?? null);
+        $this->setMail($user[self::MAIL_COLUMN] ?? null);
+        $this->setAvatar($user[self::AVATAR_COLUMN] ?? null);
+        $this->setPassword($user[self::PASSWORD_COLUMN] ?? null);
+        $this->setDateRegistration($user[self::DATE_REGISTRATION_COLUMN] ?? null);
+        $this->setRole($user[self::ROLE_COLUMN] ?? null);
     }
 
     public function getId(){
-        return $this->idUser;
+        return $this->id;
     }
 
     public function getFirstName(){
-        return $this->firstNameUser;
+        return $this->firstName;
     }
 
     public function getLastName(){
-        return $this->lastNameUser;
+        return $this->lastName;
     }
 
     public function getMail(){
-        return $this->mailUser;
+        return $this->mail;
     }
 
     public function getAvatar(){
-        return $this->avatarUser;
+        return $this->avatar;
     }
 
     public function getPassword(){
-        return $this->passwordUser;
+        return $this->password;
     }
     
     public function getDateRegistration($format = "Y-m-d"){
-        return ((new \DateTime($this->dateRegistrationUser))->format($format));
+        return ((new \DateTime($this->dateRegistration))->format($format));
     }
 
     public function getRole(){
-        return $this->roleUser;
+        return $this->role;
     }
 
-    public function setId($idUser){
-        $this->idUser = $idUser;
+    private function setId($id){
+        $this->id = $id;
     }
 
-    public function setFirstName($firstNameUser){
-        $this->firstNameUser = $firstNameUser;
+    private function setFirstName($firstName){
+        $this->firstName = $firstName;
     }
 
-    public function setLastName($lastNameUser){
-        $this->lastNameUser = $lastNameUser;
+    private function setLastName($lastName){
+        $this->lastName = $lastName;
     }
 
-    public function setMail($mailUser){
-        $this->mailUser = $mailUser;
+    private function setMail($mail){
+        $this->mail = $mail;
     }
 
-    public function setAvatar($avatarUser){
-        $this->avatarUser = $avatarUser;
+    private function setAvatar($avatar){
+        $this->avatar = $avatar;
     }
 
-    public function setPassword($passwordUser){
-        $this->passwordUser = $passwordUser;
+    private function setPassword($password){
+        $this->password = $password;
     }
 
-    public function setDateRegistration($dateRegistrationUser){
-        $this->dateRegistrationUser = $dateRegistrationUser;
+    private function setDateRegistration($dateRegistration){
+        $this->dateRegistration = $dateRegistration;
     }
 
-    public function setRole($roleUser){
-        $this->roleUser = $roleUser;
+    private function setRole($role){
+        $this->role = $role;
     }
 
 }

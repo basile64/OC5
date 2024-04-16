@@ -5,76 +5,83 @@ namespace application\src\models\comment;
 use application\src\models\user\UserManager;
 
 class Comment {
-    private $idComment;
-    private $textComment;
-    private $dateComment;
-    private $statusComment;
-    private $idPost;
-    private $idUser;
+    private const ID_COLUMN = 'id';
+    private const TEXT_COLUMN = 'text';
+    private const DATE_COLUMN = 'date';
+    private const STATUS_COLUMN = 'status';
+    private const POST_ID_COLUMN = 'postId';
+    private const USER_ID_COLUMN = 'userId';
+
+    private $id;
+    private $text;
+    private $date;
+    private $status;
+    private $postId;
+    private $userId;
 
     public function __construct($comment){
-        $this->setIdComment($comment['idComment'] ?? null);
-        $this->setText($comment['textComment'] ?? null);
-        $this->setDate($comment['dateComment'] ?? null);
-        $this->setStatus($comment['statusComment'] ?? null);
-        $this->setIdPost($comment["idPost"] ?? null); 
-        $this->setIdUser($comment["idUser"] ?? null); 
+        $this->setCommentId($comment[self::ID_COLUMN] ?? null);
+        $this->setText($comment[self::TEXT_COLUMN] ?? null);
+        $this->setDate($comment[self::DATE_COLUMN] ?? null);
+        $this->setStatus($comment[self::STATUS_COLUMN] ?? null);
+        $this->setPostId($comment[self::POST_ID_COLUMN] ?? null); 
+        $this->setUserId($comment[self::USER_ID_COLUMN] ?? null); 
     }
 
     // Getters
-    public function getIdComment(){
-        return $this->idComment;
+    public function getCommentId(){
+        return $this->id;
     }
 
     public function getText(){
-        return $this->textComment;
+        return $this->text;
     }
 
     public function getDate($format = "Y-m-d"){
-        return ((new \DateTime($this->dateComment))->format($format));
+        return ((new \DateTime($this->date))->format($format));
     }
 
     public function getStatus(){
-        return $this->statusComment;
+        return $this->status;
     }
 
-    public function getIdPost(){
-        return $this->idPost;
+    public function getPostId(){
+        return $this->postId;
     }
 
-    public function getIdUser(){
-        return $this->idUser;
+    public function getUserId(){
+        return $this->userId;
     }
 
     public function getUser(){
         $userManager = new UserManager;
-        $user = $userManager->getUser($this->idUser);
+        $user = $userManager->get($this->userId);
         return $user;
     }
 
     // Setters
-    public function setIdComment($idComment){
-        $this->idComment = $idComment;
+    private function setCommentId($id){
+        $this->id = $id;
     }
 
-    public function setText($textComment){
-        $this->textComment = $textComment;
+    private function setText($text){
+        $this->text = $text;
     }
 
-    public function setDate($dateComment){
-        $this->dateComment = $dateComment;
+    private function setDate($date){
+        $this->date = $date;
     }
 
-    public function setStatus($statusComment){
-        $this->statusComment = $statusComment;
+    private function setStatus($status){
+        $this->status = $status;
     }
 
-    public function setIdPost($idPost){
-        $this->idPost = $idPost;
+    private function setPostId($postId){
+        $this->postId = $postId;
     }
 
-    public function setIdUser($idUser){
-        $this->idUser = $idUser;
+    private function setUserId($userId){
+        $this->userId = $userId;
     }
 
 }

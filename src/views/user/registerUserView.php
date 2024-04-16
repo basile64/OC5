@@ -7,11 +7,11 @@ $page = "login";
 <div class="user">
     <form method="post" action="./create">
         <div class="title2">Create your account</div>
-        <input class="input-register" id="input-first-name-user" name="firstNameUser" type="text" placeholder="First name"/>
-        <input class="input-register" id="input-last-name-user" name="lastNameUser" type="text" placeholder="Last name"/>
-        <input class="input-register" id="input-mail-user" name="mailUser" type="text" placeholder="Email name"/>
-        <input class="input-register" id="input-password-user" name="passwordUser" type="password" placeholder="Password"/>
-        <input class="input-register" id="input-confirm-password-user" name="confirmPasswordUser" type="password" placeholder="Confirm your password"/>
+        <input class="input-register" id="input-first-name-user" name="userFirstName" type="text" placeholder="First name" value="<?= $_SESSION["formData"]['userFirstName'] ?? '' ?>" />
+        <input class="input-register" id="input-last-name-user" name="userLastName" type="text" placeholder="Last name" value="<?= $_SESSION["formData"]['userLastName'] ?? '' ?>" />
+        <input class="input-register" id="input-mail-user" name="userMail" type="text" placeholder="Email" value="<?= $_SESSION["formData"]['userMail'] ?? '' ?>" />
+        <input class="input-register" id="input-password-user" name="password" type="password" placeholder="Password" />
+        <input class="input-register" id="input-confirm-password-user" name="confirmPassword" type="password" placeholder="Confirm your password"/>
         <button type="submit" id="btn-create-user" name="submit">Validate the creation</button>
     </form>
 </div>

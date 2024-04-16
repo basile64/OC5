@@ -174,3 +174,12 @@
   align-self: center;
   border-radius: 100px;
 }
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: rgb(6, 2, 51);
+}
