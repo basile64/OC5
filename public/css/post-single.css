@@ -17,11 +17,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(240, 240, 240);
+  background-color: rgb(240 240 240);
   padding: 10px;
   margin-bottom: 10px;
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  box-shadow: rgb(0 0 0 / 0.1) 0 0 8px -3px;
 }
 
 .header-post-single a {
@@ -33,8 +33,8 @@
   padding: 10px 20px;
   font-size: 18px;
   font-weight: 200;
-  background-color: rgb(6, 2, 51);
-  color: rgb(238, 238, 238);
+  background-color: rgb(6 2 51);
+  color: rgb(238 238 238);
   border: none;
   border-radius: 5px;
   text-transform: uppercase;
@@ -46,9 +46,9 @@
   flex-direction: column;
   gap: 30px;
   padding: 40px 80px 40px 80px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  box-shadow: rgb(0 0 0 / 0.1) 0 0 8px -3px;
   border-radius: 5px;
-  background: rgb(240, 240, 240);
+  background: rgb(240 240 240);
   margin-bottom: 40px;
 }
 
@@ -71,7 +71,7 @@
   align-items: baseline;
 }
 
-@media screen and (max-width: 767px) {
+@media (width <= 767px) {
   .single-post {
     width: 95%;
   }
@@ -81,7 +81,7 @@
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media (768px <= width <= 1023px) {
   .single-post {
     width: 95%;
   }
@@ -91,5 +91,5 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media (width >= 1024px) {
 }

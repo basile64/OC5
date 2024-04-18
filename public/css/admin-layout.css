@@ -1,12 +1,12 @@
 * {
-  font-family: "Raleway" !important;
-  color: rgb(6, 2, 51);
+  font-family: Raleway !important;
+  color: rgb(6 2 51);
 }
 
 body {
   position: relative;
   display: flex;
-  background: rgb(234, 234, 234);
+  background: rgb(234 234 234);
   margin: 0;
   padding: 0;
   width: 100%;
@@ -16,22 +16,22 @@ body {
   width: 1000px;
   margin-left: 300px;
   margin-right: 50px;
-  padding: 40px 0 40px 0;
+  padding: 40px 0;
 }
 
 a {
   text-decoration: none;
-  color: rgb(234, 234, 234);
+  color: rgb(234 234 234);
 }
 
 .navbar-text {
-  color: rgb(234, 234, 234);
+  color: rgb(234 234 234);
 }
 
 .navbar {
   position: fixed;
   height: 100vh;
-  background: rgb(6, 2, 51);
+  background: rgb(6 2 51);
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@ a {
 }
 
 .navbar a {
-  color: rgb(238, 238, 238);
+  color: rgb(238 238 238);
   text-transform: uppercase;
   font-size: 20px;
   transition: 0.3s;
@@ -65,7 +65,7 @@ a {
 }
 
 a:hover {
-  color: rgb(238, 238, 238);
+  color: rgb(238 238 238);
   text-transform: uppercase;
   font-size: 20px;
   font-weight: bold;
@@ -76,14 +76,14 @@ a:hover {
   font-size: 40px;
   font-weight: bold;
   margin-bottom: 30px;
-  color: rgb(6, 2, 51);
+  color: rgb(6 2 51);
 }
 
 .title2 {
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 30px;
-  color: rgb(6, 2, 51);
+  color: rgb(6 2 51);
 }
 
 .svg {
@@ -104,12 +104,12 @@ a:hover {
   right: 0;
   padding: 10px 30px;
   background: green;
-  color: rgb(238, 238, 238);
-  border-radius: 0px 0px 0px 5px;
+  color: rgb(238 238 238);
+  border-radius: 0 0 0 5px;
   text-align: center;
   font-weight: 200;
   opacity: 0;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
+  box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
   transition: opacity 0.5s ease-in-out;
   animation: fadeInOut 3s 0s forwards;
 }
@@ -140,17 +140,17 @@ a:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgb(6, 2, 51);
+  background: rgb(6 2 51);
 }
 
 .navbar-mobile-top a,
 .navbar-mobile-bottom a {
-  color: rgb(238, 238, 238);
+  color: rgb(238 238 238);
   text-transform: uppercase;
   font-size: 14px;
 }
 
-@media screen and (max-width: 767px) {
+@media (width <= 767px) {
   body {
     flex-direction: column;
   }
@@ -173,7 +173,7 @@ a:hover {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media (768px <= width <= 1023px) {
   body {
     flex-direction: column;
   }
@@ -196,7 +196,7 @@ a:hover {
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media (width >= 1024px) {
   .navbar-mobile-top,
   .navbar-mobile-bottom {
     display: none;

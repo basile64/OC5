@@ -10,10 +10,10 @@ form {
   flex-direction: column;
   gap: 20px;
   width: 300px;
-  background: rgb(240, 240, 240);
+  background: rgb(240 240 240);
   padding: 40px;
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  box-shadow: rgb(0 0 0 / 0.1) 0 0 8px -3px;
 }
 
 #input-first-name-user,
@@ -32,8 +32,8 @@ form {
 #input-mail-user:focus,
 #input-password-user:focus {
   outline: none;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
-  border-left: 5px solid rgb(6, 2, 51);
+  box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
+  border-left: 5px solid rgb(6 2 51);
 }
 
 #btn-edit-user {
@@ -65,7 +65,7 @@ form {
   flex-direction: column;
 }
 
-@media screen and (max-width: 767px) {
+@media (width <= 767px) {
   .user {
     width: 95%;
     margin-bottom: 80px;
@@ -76,7 +76,7 @@ form {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media (768px <= width <= 1023px) {
   .user {
     width: 95%;
     margin-bottom: 80px;
@@ -87,5 +87,5 @@ form {
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media (width >= 1024px) {
 }

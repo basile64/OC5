@@ -1,10 +1,8 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-session_start();
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 if (isset($_SESSION["success_message"])){
     echo '<div class="success-message">' . $_SESSION['success_message'] . '</div>';
@@ -18,4 +16,3 @@ require_once("../config/autoload.php");
 use application\src\controllers\Router;
 
 $router = new Router($_GET["url"]);
-

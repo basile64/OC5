@@ -6,8 +6,8 @@ use application\src\models\database\DbConnect;
 use application\src\models\comment\MainComment;
 use application\src\models\comment\ResponseComment;
 
-class ResponseCommentManager {
-
+class ResponseCommentManager 
+{
     public static function getAll(){
         $query = "
             SELECT
@@ -152,5 +152,4 @@ class ResponseCommentManager {
             exit();
         }
     }
-    
 }

@@ -19,9 +19,9 @@
   display: flex;
   flex-direction: column;
   background-color: #eaeaea;
-  padding: 20px 40px 5px 40px;
+  padding: 20px 40px 5px;
   border-radius: 5px;
-  border: 1px solid rgb(214, 214, 214);
+  border: 1px solid rgb(214 214 214);
 }
 
 .main-comment-container {
@@ -32,7 +32,7 @@
 
 .main-comment-date {
   font-size: 16px;
-  color: rgb(117, 117, 117);
+  color: rgb(117 117 117);
 }
 
 .main-comment-author {
@@ -63,7 +63,7 @@
   gap: 5px;
   margin-bottom: 10px;
   margin-left: 10px;
-  padding: 10px 0px 10px 20px;
+  padding: 10px 0 10px 20px;
 }
 
 .response-comment-container::after {
@@ -82,7 +82,7 @@
 
 .response-comment-date {
   font-size: 12px;
-  color: rgb(117, 117, 117);
+  color: rgb(117 117 117);
 }
 
 .response-comment-author {
@@ -121,9 +121,9 @@
 
 .reply-comment {
   cursor: pointer;
-  margin: 10px 0px;
+  margin: 10px 0;
   font-size: 14px;
-  color: rgb(6, 2, 51);
+  color: rgb(6 2 51);
   text-align: right;
   transition: 0.3s;
 }
@@ -181,5 +181,5 @@ button:disabled {
 }
 
 button:disabled:hover {
-  background-color: rgb(6, 2, 51);
+  background-color: rgb(6 2 51);
 }

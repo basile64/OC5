@@ -23,15 +23,16 @@ class AdminController extends Controller{
     public function __construct($explodedUrl){
         array_shift($explodedUrl);
         $this->class = str_replace("sManagement", "", $explodedUrl[0]);
-
-        if (count($explodedUrl)==1 && $_SESSION["userRole"] == "admin"){
+        if (count($explodedUrl) == 1 && $_SESSION["userRole"] == "admin"){
             $this->loadClassManagement($this->class);
-        } elseif(count($explodedUrl)>1 && $_SESSION["userRole"] == "admin"){
+            return; 
+        }
+        if (count($explodedUrl) > 1 && $_SESSION["userRole"] == "admin"){
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
-        } else {
-            header("Location: http://localhost/OC5/");
+            return; 
         }
+        header("Location: http://localhost/OC5/");
     }
 
     private function loadClassManagement(){
@@ -80,7 +81,7 @@ class AdminController extends Controller{
             $result = call_user_func([$this->manager, $actionName]);
         }
 
-        //Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
+        // Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
         if ($this->action == self::ACTION_EDIT || $this->action == self::ACTION_NEW){
             $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
             $this->manager = new PostManager();
@@ -91,5 +92,3 @@ class AdminController extends Controller{
     }
 
 }
-
-// $this->render([$this->class => $result, "categories" => $categories]);
