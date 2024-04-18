@@ -19,3 +19,4 @@ use application\src\controllers\Router;
 
 $router = new Router($_GET["url"]);
 
+//Codacy quality
