@@ -8,8 +8,8 @@ use application\src\models\user\BasicUser;
 use application\src\models\user\AdminUser;
 
 
-class UserManager {
-
+class UserManager
+{
     public static function getAll(){
         $query = "
             SELECT 

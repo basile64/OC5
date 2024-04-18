@@ -4,7 +4,8 @@ namespace application\src\controllers;
 
 use application\src\utils\UrlParser;
 
-class Router {
+class Router
+{
     private $url;
     private $routes = [];
     private $urlParser;

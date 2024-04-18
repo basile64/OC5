@@ -2,8 +2,8 @@
 
 namespace application\src\models\database;
 
-class DbConnect{
-
+class DbConnect
+{
     private const HOST = "localhost";
     private const DBNAME = "OC5";
     private const USER = "root";

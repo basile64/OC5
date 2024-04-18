@@ -2,7 +2,8 @@
 
 namespace application\src\models\contact;
 
-class Contact {
+class Contact
+{
     private const FIRST_NAME_COLUMN = 'firstName';
     private const LAST_NAME_COLUMN = 'lastName';
     private const EMAIL_COLUMN = 'email';

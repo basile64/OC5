@@ -9,7 +9,8 @@ use application\src\models\category\CategoryManager;
 
 use application\src\utils as Util;
 
-class AdminController extends Controller{
+class AdminController extends Controller
+{
     private $class;
     private $action;
     private const ACTION_EDIT = "edit";

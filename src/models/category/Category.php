@@ -2,7 +2,8 @@
 
 namespace application\src\models\category;
 
-class Category {
+class Category
+{
     private const ID_COLUMN = 'id';
     private const NAME_COLUMN = 'name';
 

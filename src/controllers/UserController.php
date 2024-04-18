@@ -9,7 +9,8 @@ use application\src\models\comment\CommentManager;
 use application\src\models\user\BasicUserManager;
 use application\src\models\user\AdminUserManager;
 
-class UserController extends Controller{
+class UserController extends Controller
+{
     private $userManager;
     private $commentManager;
     private $class;

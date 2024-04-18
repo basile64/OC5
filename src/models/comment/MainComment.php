@@ -4,7 +4,8 @@ namespace application\src\models\comment;
 
 use application\src\models\comment\ResponseCommentManager;
 
-class MainComment extends Comment {
+class MainComment extends Comment
+{
     private const MAIN_COMMENT_ID_COLUMN = 'id';
 
     private $mainCommentId;

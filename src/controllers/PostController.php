@@ -8,12 +8,11 @@ use application\src\models\comment\ResponseCommentManager;
 use application\src\models\comment\MainComment;
 use application\src\utils as Util;
 
-class PostController extends Controller{
+class PostController extends Controller
+{
     private $postManager;
     private $mainCommentManager;
     private $responseCommentManager;
-    private $categoryManager;
-    private $action;
 
     public function __construct($explodedUrl){
         if (is_numeric($explodedUrl[1]) && !isset($explodedUrl[2])){

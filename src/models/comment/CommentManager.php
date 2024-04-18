@@ -5,10 +5,8 @@ namespace application\src\models\comment;
 use application\src\models\comment\Comment;
 use application\src\models\database\DbConnect;
 
-class CommentManager {
-    private $mainCommentManager;
-    private $responseCommentManager;
-
+class CommentManager
+{
     public function getAll(){
         $query = "
             SELECT 

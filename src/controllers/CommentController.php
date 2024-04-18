@@ -8,11 +8,11 @@ use application\src\models\comment\CommentManager;
 use application\src\models\comment\MainCommentManager;
 use application\src\models\comment\ResponseCommentManager;
 
-class CommentController extends Controller{
+class CommentController extends Controller
+{
     private $commentManager;
     private $mainCommentManager;
     private $responseCommentManager;
-    private $parsedUrl;
     private $class;
     private $action;
 
@@ -21,7 +21,7 @@ class CommentController extends Controller{
             $this->class = $explodedUrl[0];
             $this->action = $explodedUrl[1];
             // call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
-            $this->runAction($explodedUrl);
+            $this->runAction();
         } else {
             $_SESSION["error_message"] = "You have to be logged.";
             header("Location: http://localhost/OC5/");
@@ -29,7 +29,7 @@ class CommentController extends Controller{
         }
     }
 
-    private function runAction($explodedUrl){
+    private function runAction(){
         call_user_func([$this, $this->action . "Comment"]);
     }
 

@@ -4,10 +4,11 @@ namespace application\src\controllers;
 
 use application\src\models\contact\ContactManager;
 
-class ContactController extends Controller{
+class ContactController extends Controller
+{
     private $contactManager;
 
-    public function __construct($explodedUrl){
+    public function __construct(){
         if(isset($_POST['submit'])) {
             $this->processContactForm();
         } else {

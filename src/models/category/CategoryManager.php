@@ -5,7 +5,8 @@ namespace application\src\models\category;
 use application\src\models\database\DbConnect;
 use application\src\models\category\Category;
 
-class CategoryManager {
+class CategoryManager
+{
     public static function getAll() {
         $query = "SELECT * FROM category";
         $result = DbConnect::executeQuery($query);

@@ -2,7 +2,8 @@
 
 namespace application\src\controllers;
 
-class Controller{ 
+class Controller
+{ 
     protected $view;
 
     protected function render($data = []){

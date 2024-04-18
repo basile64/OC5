@@ -2,7 +2,8 @@
 
 namespace application\src\models\comment;
 
-class ResponseComment extends Comment {
+class ResponseComment extends Comment
+{
     private const RESPONSE_COMMENT_ID_COLUMN = 'id';
     private const MAIN_COMMENT_ID_COLUMN = 'mainCommentId';
 

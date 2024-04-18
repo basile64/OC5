@@ -7,8 +7,8 @@ use application\src\models\database\DbConnect;
 use application\src\models\category\CategoryManager;
 use application\src\models\user\UserManager;
 
-class PostManager {
-
+class PostManager
+{
     public static function getAll(){
         $query = "
         SELECT
@@ -214,7 +214,7 @@ class PostManager {
         $params = [":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        $idCategory = $result[0]["idCategory"];
+        $categoryId = $result[0]["idCategory"];
 
         $categoryManager = new CategoryManager;
         $category = $categoryManager::getCategory($categoryId);
@@ -235,7 +235,7 @@ class PostManager {
         $params = [":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        $idCategory = $result[0]["categoryId"];
+        $userId = $result[0]["userId"];
 
         $userManager = new UserManager;
         $user = $userManager->get($userId);

@@ -2,7 +2,8 @@
 
 namespace application\src\utils;
 
-class UrlParser{
+class UrlParser
+{
     private $url;
     private $explodedUrl;
 
