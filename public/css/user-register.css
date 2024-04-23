@@ -12,10 +12,10 @@ form {
   align-items: center;
   gap: 20px;
   width: 400px;
-  background: rgb(240, 240, 240);
+  background: rgb(240 240 240);
   padding: 40px;
   border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  box-shadow: rgb(0 0 0 / 0.1) 0 0 8px -3px;
 }
 
 .input-register {
@@ -29,8 +29,8 @@ form {
 
 .input-register:focus {
   outline: none;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 15px -3px;
-  border-left: 5px solid rgb(6, 2, 51);
+  box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
+  border-left: 5px solid rgb(6 2 51);
 }
 
 #btn-create-user {

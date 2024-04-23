@@ -4,7 +4,8 @@ namespace application\src\models\comment;
 
 use application\src\models\user\UserManager;
 
-class Comment {
+class Comment
+{
     private const ID_COLUMN = 'id';
     private const TEXT_COLUMN = 'text';
     private const DATE_COLUMN = 'date';

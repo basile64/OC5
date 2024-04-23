@@ -14,11 +14,11 @@
 
 #add-comment {
   padding: 10px 30px;
-  background: rgb(6, 2, 51);
+  background: rgb(6 2 51);
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgb(238, 238, 238);
+  color: rgb(238 238 238);
   border-radius: 5px;
   text-transform: uppercase;
   font-size: 18px;
@@ -26,7 +26,7 @@
 }
 
 #add-comment:hover {
-  background: rgb(22, 17, 80);
+  background: rgb(22 17 80);
   transform: scale(1.03);
 }
 
@@ -63,9 +63,9 @@
 .comment-container-list {
   display: flex;
   flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 8px -3px;
+  box-shadow: rgb(0 0 0 / 0.1) 0 0 8px -3px;
   border-radius: 5px;
-  background: rgb(240, 240, 240);
+  background: rgb(240 240 240);
   transition: 0.3s;
   justify-content: center;
   transition: 0.3s;
@@ -81,7 +81,7 @@
   padding: 5px 30px;
   gap: 15px;
   text-decoration: none;
-  color: rgb(36, 36, 36);
+  color: rgb(36 36 36);
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
@@ -97,7 +97,7 @@
 }
 
 .right-comment-list a {
-  background: rgb(75, 75, 75);
+  background: rgb(75 75 75);
   padding: 5px;
   border-radius: 5px;
   display: flex;
@@ -108,7 +108,7 @@
 
 .right-comment-list a:hover {
   transform: scale(1.1);
-  background-color: rgb(106, 106, 106);
+  background-color: rgb(106 106 106);
 }
 
 .icons {
@@ -116,7 +116,7 @@
   gap: 40px;
 }
 
-@media screen and (max-width: 767px) {
+@media (width <= 767px) {
   .comment-container {
     flex-direction: column;
     align-items: start;
@@ -138,7 +138,7 @@
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media (768px <= width <= 1023px) {
   .comment-container {
     flex-direction: column;
     align-items: start;
@@ -160,5 +160,5 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media (width >= 1024px) {
 }

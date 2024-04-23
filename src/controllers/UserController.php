@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         if ($this->action != "comments"){
             $this->userManager = new UserManager();
-            //Cas pour afficher un profil public
+            //C as pour afficher un profil public
             if (is_numeric($explodedUrl[1])){
                 $user = $this->userManager->get($explodedUrl[1]);
                 $numberOfComments = $this->userManager->getNumberOfCommentsByUser($user->getId());

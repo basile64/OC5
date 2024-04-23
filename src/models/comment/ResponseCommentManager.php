@@ -156,5 +156,4 @@ class ResponseCommentManager
             return;
         }
     }
-    
 }

@@ -6,7 +6,8 @@ use application\src\models\user\UserManager;
 use application\src\models\category\CategoryManager;
 use application\src\models\comment\MainCommentManager;
 
-class Post {
+class Post
+{
     private const ID_COLUMN = 'id';
     private const DATE_CREATION_COLUMN = 'dateCreation';
     private const DATE_MODIFICATION_COLUMN = 'dateModification';

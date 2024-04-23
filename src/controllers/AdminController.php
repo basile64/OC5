@@ -36,8 +36,7 @@ class AdminController extends Controller
         if (count($explodedUrl) > 1 && $this->sessionManager->getSessionVariable("userRole") === "admin") {
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
-        } else {
-            header("Location: http://localhost/OC5/");
+            return; 
         }
         header("Location: ".BASE_URL);
         return;
@@ -91,7 +90,7 @@ class AdminController extends Controller
             $result = $this->manager->{$actionName}();
         }
 
-        //Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
+        // Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
         if ($this->action == self::ACTION_EDIT || $this->action == self::ACTION_NEW){
             $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
             $this->manager = new PostManager();
@@ -104,5 +103,3 @@ class AdminController extends Controller
     }
 
 }
-
-// $this->render([$this->class => $result, "categories" => $categories]);

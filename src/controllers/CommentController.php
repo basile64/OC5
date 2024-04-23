@@ -14,7 +14,6 @@ class CommentController extends Controller
     private $commentManager;
     private $mainCommentManager;
     private $responseCommentManager;
-    private $parsedUrl;
     private $class;
     private $action;
 

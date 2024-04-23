@@ -1,6 +1,6 @@
 .footer {
-  color: rgb(238, 238, 238);
-  background: rgb(6, 2, 51);
+  color: rgb(238 238 238);
+  background: rgb(6 2 51);
   margin-top: 100px;
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@
   flex-direction: row;
   gap: 200px;
   align-items: center;
-  padding: 50px 0px 50px 0px;
+  padding: 50px 0 50px 0;
 }
 
 .footer-contact {
@@ -31,7 +31,7 @@
 }
 
 .footer a {
-  color: rgb(238, 238, 238);
+  color: rgb(238 238 238);
 }
 
 .logo-network a {
@@ -46,22 +46,22 @@
 }
 
 .footer2 {
-  border-top: 0.5px solid rgb(41, 41, 41);
+  border-top: 0.5px solid rgb(41 41 41);
   font-size: 11px;
   width: 100%;
   text-align: center;
   padding: 10px;
 }
 
-@media screen and (max-width: 767px) {
+@media (width <= 767px) {
   .footer1 {
     gap: 20px;
     width: 80%;
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 1023px) {
+@media (768px <= width <= 1023px) {
 }
 
-@media screen and (min-width: 1024px) {
+@media (width >= 1024px) {
 }

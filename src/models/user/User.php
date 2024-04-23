@@ -2,7 +2,8 @@
 
 namespace application\src\models\user;
 
-class User {
+class User
+{
     private const ID_COLUMN = 'id';
     private const FIRST_NAME_COLUMN = 'firstName';
     private const LAST_NAME_COLUMN = 'lastName';

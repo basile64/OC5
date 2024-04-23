@@ -225,7 +225,7 @@ class PostManager
         $params = [":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        $idCategory = $result[0]["idCategory"];
+        $categoryId = $result[0]["idCategory"];
 
         $categoryManager = new CategoryManager;
         $category = $categoryManager->getCategory($categoryId);
@@ -247,7 +247,7 @@ class PostManager
         $params = [":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        $idCategory = $result[0]["categoryId"];
+        $userId = $result[0]["userId"];
 
         $userManager = new UserManager;
         $user = $userManager->get($userId);

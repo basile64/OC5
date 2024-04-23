@@ -13,8 +13,6 @@ class PostController extends Controller
     private $postManager;
     private $mainCommentManager;
     private $responseCommentManager;
-    private $categoryManager;
-    private $action;
 
     public function __construct($explodedUrl)
     {
