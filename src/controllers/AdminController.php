@@ -9,7 +9,9 @@ use application\src\models\category\CategoryManager;
 
 use application\src\utils as Util;
 
-class AdminController extends Controller{
+class AdminController extends Controller
+{
+    
     private $class;
     private $action;
     private const ACTION_EDIT = "edit";
@@ -19,23 +21,30 @@ class AdminController extends Controller{
     private const ACTION_CREATE = "create";
     private $manager;
     private $dataKey;
+    private $categoryManager;
+    private $userManager;
 
-    public function __construct($explodedUrl){
+    public function __construct($explodedUrl)
+    {
+        parent::__construct(); 
         array_shift($explodedUrl);
         $this->class = str_replace("sManagement", "", $explodedUrl[0]);
-
-        if (count($explodedUrl)==1 && $_SESSION["userRole"] == "admin"){
+        if (count($explodedUrl) == 1 && $this->sessionManager->getSessionVariable("userRole") === "admin"){
             $this->loadClassManagement($this->class);
-        } elseif(count($explodedUrl)>1 && $_SESSION["userRole"] == "admin"){
+            return; 
+        }
+        if (count($explodedUrl) > 1 && $this->sessionManager->getSessionVariable("userRole") === "admin") {
             $this->action = $explodedUrl[1];
             $this->runAction($explodedUrl);
         } else {
             header("Location: http://localhost/OC5/");
         }
+        header("Location: ".BASE_URL);
+        return;
     }
 
     private function loadClassManagement(){
-        switch ($this->class){
+        switch ($this->class) {
             case "post":
                 $this->manager = new PostManager;
                 $this->view = "post/postsManagementView";
@@ -57,8 +66,9 @@ class AdminController extends Controller{
         $this->loadManagement();
     }
     
-    private function loadManagement(){
-        if ($this->class != "comment"){
+    private function loadManagement()
+    {
+        if ($this->class !== "comment") {
             $data = [$this->dataKey => $this->manager->getAll()];
         } else {
             $data = [$this->dataKey => $this->manager->getAllPending()];
@@ -66,26 +76,29 @@ class AdminController extends Controller{
         $this->render($data);
     }
     
-    private function runAction($explodedUrl){
-        $id = $explodedUrl[2] ?? null;
+    private function runAction($explodedUrl)
+    {
+        $id = ($explodedUrl[2] ?? null);
 
-        $managerClassName = "application\src\models\\" . $this->class . "\\" . ucfirst($this->class). "Manager";
+        $managerClassName = "application\src\models\\".$this->class."\\".ucfirst($this->class)."Manager";
 
         $actionName = $this->action;
 
         $this->manager = new $managerClassName();
-        if ($id != null){
-            $result = call_user_func([$this->manager, $actionName], $id);
+        if ($id !== null) {
+            $result = $this->manager->{$actionName}($id);
         } else {
-            $result = call_user_func([$this->manager, $actionName]);
+            $result = $this->manager->{$actionName}();
         }
 
         //Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
         if ($this->action == self::ACTION_EDIT || $this->action == self::ACTION_NEW){
             $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
             $this->manager = new PostManager();
-            $categories = CategoryManager::getAll();
-            $authors = UserManager::getAllAdmin();
+            $this->categoryManager = new CategoryManager;
+            $categories = $this->categoryManager->getAll();
+            $this->userManager = new UserManager;
+            $authors = $this->userManager->getAllAdmin();
             $this->render([$this->class => $result, "categories" => $categories, "authors" => $authors]);
         }
     }

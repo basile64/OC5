@@ -24,7 +24,7 @@
         <div class="text-post-single"><?= htmlspecialchars($post->getText()) ?></div>
     </div>
 
-<?php require_once("../src/views/comment/mainCommentsByPostView.php");?>
+<?php require_once "../src/views/comment/mainCommentsByPostView.php";?>
 
 </div>
 
@@ -32,4 +32,4 @@
 
 $content = ob_get_clean();
 
-require_once("../src/views/mainLayout.php");
+require_once "../src/views/mainLayout.php";

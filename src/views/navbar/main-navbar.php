@@ -6,17 +6,17 @@
         <a class='navbar-text' id="contact" href="http://localhost/OC5/contact"  <?=(isset($page)&&$page=="contact")?"style='font-weight:bold;'":""?>>Contact</a>
     </div>
     <div class="login-container-navbar">
-        <?= isset($_SESSION["logged"]) ?
+        <?= ($sessionManager->getSessionVariable("logged") === true) ?
             "
             <a class='svg-plus-text' id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page == "profileUser" ? "style='font-weight:bold;'" : "") . ">
                 <img class='svg' src='http://localhost/OC5/public/svg/person.svg'/>
                 <div class='navbar-text'>My profile</div>
             </a>
             " 
-            : "<a id='logout' href='http://localhost/OC5/user/login'" . (isset($page) && $page == "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>";
+            : "<a class='navbar-text' id='logout' href='http://localhost/OC5/user/login'" . (isset($page) && $page == "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>";
         ?>
 
-        <?= (isset($_SESSION["logged"])&&($_SESSION["userRole"]=="admin")) ?
+        <?= (($sessionManager->getSessionVariable("logged") === true)  && ($sessionManager->getSessionVariable("userRole") === "admin")) ?
             "
             <a class='svg-plus-text' id='admin' href='http://localhost/OC5/admin/postsManagement'>
                 <img class='svg' src='http://localhost/OC5/public/svg/gear.svg'/>
@@ -26,7 +26,7 @@
             : ""
         ?>
 
-        <?= isset($_SESSION["logged"]) ?
+        <?= ($sessionManager->getSessionVariable("logged") === true) ?
             "
             <a class='svg-plus-text' id='login' href='http://localhost/OC5/user/logout'>
                 <img class='svg' src='http://localhost/OC5/public/svg/logout.svg'/>
@@ -53,7 +53,7 @@
                 <img class='svg' src='http://localhost/OC5/public/svg/contact.svg'/>
                 <a id='contact' href='http://localhost/OC5/contact' <?= (isset($page) && $page == "contact" ? "style='font-weight:bold;'" : "")?>>Contact</a>
         </div>
-        <?= isset($_SESSION["logged"]) ?
+        <?= ($sessionManager->getSessionVariable("logged") == true) ?
             "
             <div class='svg-plus-text'>
                 <img class='svg' src='http://localhost/OC5/public/svg/person.svg'/>
@@ -63,7 +63,7 @@
             : "";
         ?>
 
-        <?= (isset($_SESSION["logged"])&&($_SESSION["userRole"]=="admin")) ?
+        <?= (($sessionManager->getSessionVariable("logged") === true)  && ($sessionManager->getSessionVariable("userRole") === "admin")) ?
             "
             <div class='svg-plus-text'>
                 <img class='svg' src='http://localhost/OC5/public/svg/gear.svg'/>
@@ -73,7 +73,7 @@
             : ""
         ?>
 
-        <?= isset($_SESSION["logged"]) ?
+        <?= ($sessionManager->getSessionVariable("logged") === true) ?
             "
             <div class='svg-plus-text'>
                 <img class='svg' src='http://localhost/OC5/public/svg/logout.svg'/>

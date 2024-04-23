@@ -4,14 +4,17 @@ namespace application\src\controllers;
 
 use application\src\utils\UrlParser;
 
-class Router {
+class Router
+{
+    
     private $url;
     private $routes = [];
     private $urlParser;
     private $className;
     private $controller;
 
-        public function __construct($url){
+        public function __construct($url)
+        {
             $this->urlParser = new UrlParser();
             $explodedUrl = $this->urlParser->getExplodedUrl();
             if (!empty($explodedUrl)){

@@ -2,7 +2,9 @@
 
 namespace application\src\models\contact;
 
-class Contact {
+class Contact
+{
+
     private const FIRST_NAME_COLUMN = 'firstName';
     private const LAST_NAME_COLUMN = 'lastName';
     private const EMAIL_COLUMN = 'email';
@@ -13,7 +15,8 @@ class Contact {
     private $email;
     private $message;
 
-    public function __construct($contact){
+    public function __construct($contact)
+    {
         $this->setFirstName($contact[self::FIRST_NAME_COLUMN] ?? null);
         $this->setLastName($contact[self::LAST_NAME_COLUMN] ?? null);
         $this->setEmail($contact[self::EMAIL_COLUMN] ?? null);
@@ -21,36 +24,44 @@ class Contact {
     }
 
     // Getters
-    public function getFirstName(){
+    public function getFirstName()
+    {
         return $this->firstName;
     }
 
-    public function getLastName(){
+    public function getLastName()
+    {
         return $this->lastName;
     }
 
-    public function getEmail(){
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getMessage(){
+    public function getMessage()
+    {
         return $this->message;
     }
 
     // Setters
-    private function setFirstName($firstName){
+    private function setFirstName($firstName)
+    {
         $this->firstName = $firstName;
     }
 
-    private function setLastName($lastName){
+    private function setLastName($lastName)
+    {
         $this->lastName = $lastName;
     }
 
-    private function setEmail($email){
+    private function setEmail($email)
+    {
         $this->email = $email;
     }
 
-    private function setMessage($message){
+    private function setMessage($message)
+    {
         $this->message = $message;
     }
 }

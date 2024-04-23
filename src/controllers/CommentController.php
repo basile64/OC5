@@ -8,7 +8,9 @@ use application\src\models\comment\CommentManager;
 use application\src\models\comment\MainCommentManager;
 use application\src\models\comment\ResponseCommentManager;
 
-class CommentController extends Controller{
+class CommentController extends Controller
+{
+
     private $commentManager;
     private $mainCommentManager;
     private $responseCommentManager;
@@ -16,35 +18,38 @@ class CommentController extends Controller{
     private $class;
     private $action;
 
-    public function __construct($explodedUrl){
-        if (isset($_SESSION["logged"])){
+    public function __construct($explodedUrl)
+    {
+        parent::__construct(); 
+        if ($this->sessionManager->getSessionVariable("logged") === true) {
             $this->class = $explodedUrl[0];
             $this->action = $explodedUrl[1];
-            //call_user_func([$Instance dans laquelle nous voulons exécuter la méthode, $méthode à exécuter], $arguments)
-            $this->runAction($explodedUrl);
-        } else {
-            $_SESSION["error_message"] = "You have to be logged.";
-            header("Location: http://localhost/OC5/");
-            exit();
+            $this->runAction();
+            return;
         }
+        $this->sessionManager->setSessionVariable("error_message", "You have to be logged.");
+        header("Location: ".BASE_URL);
+        return;
     }
 
-    private function runAction($explodedUrl){
-        call_user_func([$this, $this->action . "Comment"]);
+    private function runAction()
+    {
+        $this->{$this->action . "Comment"}();
     }
 
-    private function createComment(){
+    private function createComment()
+    {
         $this->commentManager = new CommentManager();
-        if (call_user_func([$this->commentManager, $this->action])){
+        if ($this->commentManager->{$this->action}() == true) {
             $commentId = DbConnect::$connection->lastInsertId();
-            //Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
-            if (!isset($_POST["idMainComment"])){
+            // Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
+            if (isset($_POST["idMainComment"]) == false) {
                 $this->mainCommentManager = new MainCommentManager();
-                call_user_func([$this->mainCommentManager, "create"], $commentId);
-            } else {
-                $this->responseCommentManager = new ResponseCommentManager();
-                call_user_func([$this->responseCommentManager, "create"], $commentId);
+                $this->mainCommentManager->create($commentId);
+                return;
             }
+            $this->responseCommentManager = new ResponseCommentManager();
+            $this->responseCommentManager->create($commentId);
         }
     }
 }

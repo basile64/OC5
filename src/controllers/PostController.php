@@ -6,41 +6,46 @@ use application\src\models\post\PostManager;
 use application\src\models\comment\MainCommentManager;
 use application\src\models\comment\ResponseCommentManager;
 use application\src\models\comment\MainComment;
-use application\src\utils as Util;
 
-class PostController extends Controller{
+class PostController extends Controller
+{
+
     private $postManager;
     private $mainCommentManager;
     private $responseCommentManager;
     private $categoryManager;
     private $action;
 
-    public function __construct($explodedUrl){
-        if (is_numeric($explodedUrl[1]) && !isset($explodedUrl[2])){
-            $idPost=$explodedUrl[1];
+    public function __construct($explodedUrl)
+    {
+        parent::__construct(); 
+        if (is_numeric($explodedUrl[1]) == true && isset($explodedUrl[2]) == false){
+            $idPost = $explodedUrl[1];
             $this->showSingle($idPost);
         //Pour les getNextPost et getPreviousPost
-        } elseif (isset($explodedUrl[2])){
+        } else if (isset($explodedUrl[2])) {
             $idPost = $explodedUrl[1];
             $action = $explodedUrl[2];
-            if (method_exists($this, $action)) {
+            if (method_exists($this, $action) == true) {
                 $this->$action($idPost);
             } else {
-                header("Location: http://localhost/OC5/");
+                header("Location: ".BASE_URL);
             }
         } else {
-            header("Location: http://localhost/OC5/");
+            header("Location: ".BASE_URL);
         }
     }
 
-    public function showPosts(){
+    public function showPosts()
+    {
         $this->postManager = new PostManager();
         $posts = $this->postManager->getAll();
         $this->view = "post/postsView";
-        $this->render(["posts"=> $posts]);
+        $this->render(["posts" => $posts]);
     }
 
-    public function showSingle($postId){
+    public function showSingle($postId)
+    {
         $this->postManager = new PostManager();
         $post = $this->postManager->get($postId);
 
@@ -53,27 +58,33 @@ class PostController extends Controller{
         $this->render(["post"=> $post]);
     }
 
-    private function getNext($postId){
+    private function getNext($postId)
+    {
         $this->postManager = new PostManager();
         $nextPost = $this->postManager->getNext($postId);
         $nextPostId = $nextPost->getId();
-        if ($nextPostId != null){
-            header("Location: http://localhost/OC5/post/".$nextPostId);
+        if ($nextPostId !== null) {
+            header("Location: ".BASE_URL."post/".$nextPostId);
+            return;
         } else {
-            $_SESSION["error_message"] = "This is the last post.";
-            header("Location: http://localhost/OC5/post/".$postId);
+            $this->sessionManager->setSessionVariable("error_message", "This is the last post.");
+            header("Location: ".BASE_URL."post/".$postId);
+            return;
         }
     }
 
-    private function getPrevious($postId){
+    private function getPrevious($postId)
+    {
         $this->postManager = new PostManager();
         $previousPost = $this->postManager->getPrevious($postId);
         $previousPostId = $previousPost->getId();
-        if ($previousPostId != null){
-            header("Location: http://localhost/OC5/post/".$previousPostId);
+        if ($previousPostId !== null) {
+            header("Location: ".BASE_URL."post/".$previousPostId);
+            return;
         } else {
-            $_SESSION["error_message"] = "This is the first post.";
-            header("Location: http://localhost/OC5/post/".$postId);
+            $this->sessionManager->setSessionVariable("error_message", "This is the first post.");
+            header("Location: ".BASE_URL."post/".$postId);
+            return;
         }
     }
 

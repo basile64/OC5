@@ -4,12 +4,20 @@ namespace application\src\models\comment;
 
 use application\src\models\comment\Comment;
 use application\src\models\database\DbConnect;
+use application\src\utils\SessionManager;
 
-class CommentManager {
-    private $mainCommentManager;
-    private $responseCommentManager;
+class CommentManager
+{
 
-    public function getAll(){
+    private $sessionManager;
+
+    public function __construct()
+    {
+        $this->sessionManager = new SessionManager;
+    }
+
+    public function getAll()
+    {
         $query = "
             SELECT 
                 C.id,
@@ -44,7 +52,8 @@ class CommentManager {
         return $comments;
     }
 
-    public function getAllPending(){
+    public function getAllPending()
+    {
         $query = "
             SELECT 
                 C.id,
@@ -83,7 +92,10 @@ class CommentManager {
         return $comments;
     }
     
-    public function getAllApprovedByUser(){
+    public function getAllApprovedByUser()
+    {
+        $this->sessionManager = new SessionManager;
+
         $query = "
             SELECT 
                 C.id,
@@ -107,7 +119,7 @@ class CommentManager {
         ";
 
         $params= [
-            ":userId" => $_SESSION["userId"]
+            ":userId" => $this->sessionManager->getSessionVariable("userId")
         ];
 
         $result = DbConnect::executeQuery($query, $params);
@@ -126,7 +138,8 @@ class CommentManager {
         return $comments;
     }
 
-    public function get($id){
+    public function get($id)
+    {
         $query = "
         SELECT 
             *
@@ -143,14 +156,15 @@ class CommentManager {
 
     }
 
-    public function create(){
+    public function create()
+    {
         $textComment = filter_var($_POST["textComment"], FILTER_SANITIZE_STRING);
         $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
     
         if (empty($textComment) || empty($postId)) {
-            $_SESSION["error_message"] = "Error submitting comment.";
-            header("Location: http://localhost/OC5/$postId");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
+            header("Location: ".BASE_URL."$postId");
+            return;
         }
         
         $query="
@@ -165,7 +179,7 @@ class CommentManager {
             ":text" => $textComment,
             ":status" => "pending",
             ":postId" => $postId,
-            ":userId" => $_SESSION["userId"]
+            ":userId" => $this->sessionManager->getSessionVariable("userId")
         ];
     
         $result = DbConnect::executeQuery($query, $params);
@@ -173,14 +187,15 @@ class CommentManager {
         if ($result !== false) {
             return true;
         } else {
-            $_SESSION["error_message"] = "Error submitting comment.";
-            header("Location: http://localhost/OC5/$postId");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
+            header("Location: ".BASE_URL."$postId");
+            return;
         }
     }
     
 
-    public function approve($id){
+    public function approve($id)
+    {
         $query="
         UPDATE
             comment
@@ -195,15 +210,16 @@ class CommentManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Comment approved.";
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "Comment approved.");
+            return;
         } else {
-            $_SESSION["error_message"] = "Error when approving the comment.";
+            $this->sessionManager->setSessionVariable("error_message", "Error when approving the comment.");
         }
-        header("Location: http://localhost/OC5/admin/commentsManagement");
+        header("Location: ".BASE_URL."admin/commentsManagement");
     }
     
-    public function delete($id){
+    public function delete($id)
+    {
         $query="
             DELETE
             FROM
@@ -217,14 +233,14 @@ class CommentManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Comment deleted !";
+            $this->sessionManager->setSessionVariable("success_message", "Comment deleted !");
         } else {
-            $_SESSION["error_message"] = "Error when deleting the comment.";
+            $this->sessionManager->setSessionVariable("error_message", "Error when deleting the comment.");
         }
         if (strstr($_SERVER['REQUEST_URI'], '/OC5/admin/commentsManagement')) {
-            header("Location: http://localhost/OC5/admin/commentsManagement");
+            header("Location: ".BASE_URL."admin/commentsManagement");
         } else {
-            header("Location: http://localhost/OC5/user/comments");
+            header("Location: ".BASE_URL."user/comments");
         }
         exit();
     }

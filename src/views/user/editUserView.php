@@ -36,4 +36,4 @@ $page = "usersManagement";
 
 $content = ob_get_clean();
 
-require_once("../src/views/adminEditLayout.php");
+require_once "../src/views/adminEditLayout.php";

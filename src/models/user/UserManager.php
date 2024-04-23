@@ -6,11 +6,20 @@ use application\src\models\database\DbConnect;
 use application\src\models\user\User;
 use application\src\models\user\BasicUser;
 use application\src\models\user\AdminUser;
+use application\src\utils\SessionManager;
 
+class UserManager
+{
 
-class UserManager {
+    public $sessionManager;
 
-    public static function getAll(){
+    public function __construct()
+    {
+        $this->sessionManager = new SessionManager;
+    }
+
+    public function getAll()
+    {
         $query = "
             SELECT 
                 *
@@ -32,7 +41,8 @@ class UserManager {
         return $users;
     }
 
-    public static function getAllAdmin(){
+    public static function getAllAdmin()
+    {
         $query = "
             SELECT 
                 *
@@ -56,7 +66,8 @@ class UserManager {
         return $users;
     }
 
-    public function getAllBasic(){
+    public function getAllBasic()
+    {
         $query = "
             SELECT 
                 *
@@ -80,7 +91,8 @@ class UserManager {
         return $users;
     }
 
-    public function get($id){
+    public function get($id)
+    {
         $query = "
             SELECT
                 *
@@ -97,40 +109,40 @@ class UserManager {
 
         return $user;
 
-    }
+    } 
 
-    public function register(){
+    public function register()
+    {
         return null;
     }
 
-    public function create(){
-        $formData = $_POST;
-
-        $firstName = filter_var($formData["userFirstName"], FILTER_SANITIZE_STRING);
-        $lastName = filter_var($formData["userLastName"], FILTER_SANITIZE_STRING);
-        $email = filter_var($formData["userMail"], FILTER_VALIDATE_EMAIL);
-        $password = $formData["password"];
-        $confirmPassword = $formData["confirmPassword"];
+    public function create()
+    {
+        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
+        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
+        $email = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $password = $_POST["password"];
+        $confirmPassword = $_POST["confirmPassword"];
     
         if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($confirmPassword)) {
-            $_SESSION["error_message"] = "All fields are required.";
-            $_SESSION["formData"] = $formData;
-            header("Location: http://localhost/OC5/user/register");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/register");
+            return;
         }
     
         if ($this->checkIfEmailExists($email)) {
-            $_SESSION["error_message"] = "An account with this email address already exists.";
-            $_SESSION["formData"] = $formData;
-            header("Location: http://localhost/OC5/user/register");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "An account with this email address already exists.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/register");
+            return;
         }
     
         if ($password != $confirmPassword){
-            $_SESSION["error_message"] = "Passwords do not match.";
-            $_SESSION["formData"] = $formData;
-            header("Location: http://localhost/OC5/user/register");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Passwords do not match.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/register");
+            return;
         }
     
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -152,21 +164,22 @@ class UserManager {
     
         $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            $_SESSION["success_message"] = "Your account is created.";
-            unset($_SESSION['formData']);
-            header("Location: http://localhost/OC5/user/login");
-            exit();
-        } else {
-            $_SESSION["error_message"] = "Error creating your account.";
-            $_SESSION["formData"] = $formData;
-            header("Location: http://localhost/OC5/user/register");
-            exit();
+        if ($result === false) {
+            $this->sessionManager->setSessionVariable("error_message", "Error creating your account.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/register");
+            return;
         }
+
+        $this->sessionManager->setSessionVariable("success_message", "Your account is created.");
+        $this->sessionManager->unsetSessionVariable("formData");
+        header("Location: ".BASE_URL."user/login");
+        return;
     }
     
 
-    public function checkIfEmailExists($mail){
+    public function checkIfEmailExists($mail)
+    {
         $query="
             SELECT
                 mail
@@ -188,11 +201,13 @@ class UserManager {
 
     }
 
-    public function edit($id){
+    public function edit($id)
+    {
         return ($this->get($id));
     }
 
-    public function update($id){
+    public function update($id)
+    {
         $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
         $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
         $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
@@ -200,9 +215,9 @@ class UserManager {
     
         // Vérifier que tous les champs sont remplis
         if (empty($firstName) || empty($lastName) || empty($mail) || empty($role)) {
-            $_SESSION["error_message"] = "All fields are required.";
-            header("Location: http://localhost/OC5/admin/usersManagement/edit/".$id);
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
+            header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
+            return;
         }
     
         $params = [
@@ -228,19 +243,20 @@ class UserManager {
         $result = DbConnect::executeQuery($query, $params);
     
         if ($result !== false) {
-            $_SESSION["success_message"] = "User updated!";
-            header("Location: http://localhost/OC5/admin/usersManagement");
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "User updated !");
+            header("Location: ".BASE_URL."admin/usersManagement");
+            return;
         } else {
-            $_SESSION["error_message"] = "Error updating user.";
-            header("Location: http://localhost/OC5/admin/usersManagement/edit/".$id);
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error updating user.");
+            header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
+            return;
         }
     }
     
     
 
-    public function delete($id){
+    public function delete($id)
+    {
         $query="
             DELETE
             FROM
@@ -254,28 +270,29 @@ class UserManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Utilisateur supprimé avec succès.";
-            header("Location: http://localhost/OC5/admin/usersManagement");
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "User deleted !");
+            header("Location: ".BASE_URL."admin/usersManagement");
+            return;
         } else {
             echo "Erreur lors de la suppression de l'utilisation.";
         }
     }
 
-    public function login(){
+    public function login()
+    {
         return null;
     }
 
-    public function connect(){
-        $post = $_POST;
-        $userMail = filter_var($post["userMail"], FILTER_VALIDATE_EMAIL);
-        $userPassword = $post["userPassword"];
+    public function connect()
+    {
+        $userMail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $userPassword = $_POST["userPassword"];
     
         if (!$userMail) {
-            $_SESSION["error_message"] = "Invalid email format.";
-            $_SESSION["formData"] = $post;
-            header("Location: http://localhost/OC5/user/login");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/login");
+            return;
         }
     
         $query="
@@ -296,48 +313,54 @@ class UserManager {
         $userData = DbConnect::executeQuery($query, $params)[0];
     
         if ($userData != NULL && password_verify($userPassword, $userData['password'])) {
-            $_SESSION["success_message"] = "Connected !";
-            $_SESSION["logged"] = true;
+            $this->sessionManager->setSessionVariable("success_message", "Connected !");
+            $this->sessionManager->setSessionVariable("logged", true);
+
             $this->openSession($userData);
-            unset($_SESSION['formData']);
-            header("Location: http://localhost/OC5/");
-            exit();
+            $this->sessionManager->unsetSessionVariable("formData");
+            header("Location: ".BASE_URL);
+            return;
         } else {
-            $_SESSION["error_message"] = "Incorrect email or password.";
-            $_SESSION["formData"] = $post;
-            header("Location: http://localhost/OC5/user/login");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Incorrect email or password.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."user/login");
+            return;
         }
     }
     
 
-    public function openSession($userData){
+    public function openSession($userData)
+    {
         $user = new User($userData);
-        $_SESSION["userId"] = $user->getId();
-        $_SESSION["userFirstName"] = $user->getFirstName();
-        $_SESSION["userLastName"] = $user->getLastName();
-        $_SESSION["userMail"] = $user->getMail();
-        $_SESSION["userAvatar"] = $user->getAvatar();
-        $_SESSION["userDateRegistration"] = $user->getDateRegistration();
-        $_SESSION["userRole"] = $user->getRole();
+        $this->sessionManager->setSessionVariable("userId", $user->getId());
+        $this->sessionManager->setSessionVariable("userFirstName", $user->getFirstName());
+        $this->sessionManager->setSessionVariable("userLastName", $user->getLastName());
+        $this->sessionManager->setSessionVariable("userMail", $user->getMail());
+        $this->sessionManager->setSessionVariable("userAvatar", $user->getAvatar());
+        $this->sessionManager->setSessionVariable("userDateRegistration", $user->getDateRegistration());
+        $this->sessionManager->setSessionVariable("userRole", $user->getRole());
     }
     
-    public function logout(){
+    public function logout()
+    {
         session_unset();
-        header("Location: http://localhost/OC5/");
+        header("Location: ".BASE_URL);
     }
     
-    public function profile(){
-        $user = $this->get($_SESSION["userId"]);
+    public function profile()
+    {
+        $user = $this->get($this->sessionManager->getSessionVariable("userId"));
         return $user;
     }
 
-    public function password(){
+    public function password()
+    {
         return null;
     }
 
-    public function changePassword(){
-        $userId = $_SESSION["userId"];
+    public function changePassword()
+    {
+        $userId = $this->sessionManager->getSessionVariable("userId");
         $user = $this->get($userId);
     
         $oldPassword = $_POST["oldPassword"];
@@ -349,15 +372,15 @@ class UserManager {
         $confirmPassword = filter_var($confirmPassword, FILTER_SANITIZE_STRING);
     
         if (!password_verify($oldPassword, $user->getPassword())) {
-            $_SESSION["error_message"] = "Incorrect old password.";
-            header("Location: http://localhost/OC5/user/password");
-            exit;
+            $this->sessionManager->setSessionVariable("error_message", "Incorrect old password.");
+            header("Location: ".BASE_URL."user/password");
+            return;
         }
     
         if ($newPassword !== $confirmPassword) {
-            $_SESSION["error_message"] = "New password and confirmation do not match.";
-            header("Location: http://localhost/OC5/user/password");
-            exit;
+            $this->sessionManager->setSessionVariable("error_message", "New password and confirmation do not match.");
+            header("Location: ".BASE_URL."user/password");
+            return;
         }
     
         $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -378,21 +401,23 @@ class UserManager {
     
         $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            $_SESSION["success_message"] = "Password updated successfully.";
-            header("Location: http://localhost/OC5/user/profile");
-            exit;
-        } else {
-            $_SESSION["error_message"] = "Error updating password.";
-            header("Location: http://localhost/OC5/user/change-password");
-            exit;
+        if ($result === false) {
+            $this->sessionManager->setSessionVariable("error_message", "Error updating password.");
+            header("Location: ".BASE_URL."user/change-password");
+            return;
         }
+
+        $this->sessionManager->setSessionVariable("success_message", "Password successfully updated.");
+        header("Location: ".BASE_URL."user/profile");
+        return;
+        
     }
     
     
 
-    public function save(){
-        $user = $this->get($_SESSION["userId"]);
+    public function save()
+    {
+        $user = $this->get($this->sessionManager->getSessionVariable("userId"));
         $currentAvatar = $user->getAvatar();
     
         $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
@@ -400,9 +425,9 @@ class UserManager {
         $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
     
         if (empty($firstName) || empty($lastName) || empty($mail)) {
-            $_SESSION["error_message"] = "All fields are required.";
-            header("Location: http://localhost/OC5/user/profile");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
+            header("Location: ".BASE_URL."user/profile");
+            return;
         }
     
         if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] === UPLOAD_ERR_OK) {
@@ -430,28 +455,29 @@ class UserManager {
             ":firstName" => $firstName,
             ":lastName" => $lastName,
             ":mail" => $mail,
-            ":id" => $_SESSION["userId"] 
+            ":id" => $this->sessionManager->getSessionVariable("userId")
         ];
     
         $result = DbConnect::executeQuery($query, $params);
     
         if ($result !== false) {
-            $_SESSION["success_message"] = "Profile updated!";
-            $_SESSION["userAvatar"] = $avatarPath;
-            $_SESSION["userFirstName"] = $firstName;
-            $_SESSION["userLastName"] = $lastName;
-            $_SESSION["userMail"] = $mail;
-            header("Location: http://localhost/OC5/user/profile");
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "Profile updated !");
+            $this->sessionManager->setSessionVariable("userAvatar", $avatarPath);
+            $this->sessionManager->setSessionVariable("userFirstName", $firstName);
+            $this->sessionManager->setSessionVariable("userLastName", $lastName);
+            $this->sessionManager->setSessionVariable("userMail", $mail);            
+            header("Location: ".BASE_URL."user/profile");
+            return;
         } else {
-            $_SESSION["error_message"] = "Error saving your profile.";
-            header("Location: http://localhost/OC5/user/profile");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error saving your profile.");
+            header("Location: ".BASE_URL."user/profile");
+            return;
         }
     }
     
 
-    public static function getNumberOfCommentsByUser($id){
+    public static function getNumberOfCommentsByUser($id)
+    {
         $query = "
         SELECT 
             COUNT(*) as commentCount

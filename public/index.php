@@ -6,16 +6,21 @@ error_reporting(E_ALL);
 
 session_start();
 
-if (isset($_SESSION["success_message"])){
-    echo '<div class="success-message">' . $_SESSION['success_message'] . '</div>';
-    unset($_SESSION['success_message']);
-} elseif (isset($_SESSION["error_message"])){
-    echo '<div class="error-message">' . $_SESSION['error_message'] . '</div>';
-    unset($_SESSION['error_message']);
-}
-
-require_once("../config/autoload.php");
+use application\src\utils\SessionManager;
 use application\src\controllers\Router;
 
-$router = new Router($_GET["url"]);
+require_once "../config/autoload.php";
+require_once "../config/config.php";
 
+$sessionManager = new SessionManager;
+
+if ($sessionManager->getSessionVariable("success_message") !== null) {
+    echo '<div class="success-message">'.$sessionManager->getSessionVariable("success_message").'</div>';
+    $sessionManager->unsetSessionVariable("success_message");
+} else if ($sessionManager->getSessionVariable("error_message") !== null) {
+    echo '<div class="error-message">'.$sessionManager->getSessionVariable("error_message").'</div>';
+    $sessionManager->unsetSessionVariable("error_message");
+}
+
+$url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_URL);
+$router = new Router($url);

@@ -4,8 +4,10 @@ namespace application\src\models\contact;
 
 use \PHPMailer\PHPMailer\PHPMailer;
 
-class ContactManager {
-    public function sendEmail($firstName, $lastName, $email, $message) {
+class ContactManager
+{
+    public function sendEmail($firstName, $lastName, $email, $message)
+    {
         // Configuration de PHPMailer
         $mail = new PHPMailer();
         $mail->isSMTP();

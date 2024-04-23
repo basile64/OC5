@@ -19,7 +19,8 @@ class Comment {
     private $postId;
     private $userId;
 
-    public function __construct($comment){
+    public function __construct($comment)
+    {
         $this->setCommentId($comment[self::ID_COLUMN] ?? null);
         $this->setText($comment[self::TEXT_COLUMN] ?? null);
         $this->setDate($comment[self::DATE_COLUMN] ?? null);
@@ -29,58 +30,71 @@ class Comment {
     }
 
     // Getters
-    public function getCommentId(){
+    public function getCommentId()
+    {
         return $this->id;
     }
 
-    public function getText(){
+    public function getText()
+    {
         return $this->text;
     }
 
-    public function getDate($format = "Y-m-d"){
+    public function getDate($format = "Y-m-d")
+    {
         return ((new \DateTime($this->date))->format($format));
     }
 
-    public function getStatus(){
+    public function getStatus()
+    {
         return $this->status;
     }
 
-    public function getPostId(){
+    public function getPostId()
+    {
         return $this->postId;
     }
 
-    public function getUserId(){
+    public function getUserId()
+    {
         return $this->userId;
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         $userManager = new UserManager;
         $user = $userManager->get($this->userId);
         return $user;
     }
 
     // Setters
-    private function setCommentId($id){
+    private function setCommentId($id)
+    {
         $this->id = $id;
     }
 
-    private function setText($text){
+    private function setText($text)
+    {
         $this->text = $text;
     }
 
-    private function setDate($date){
+    private function setDate($date)
+    {
         $this->date = $date;
     }
 
-    private function setStatus($status){
+    private function setStatus($status)
+    {
         $this->status = $status;
     }
 
-    private function setPostId($postId){
+    private function setPostId($postId)
+    {
         $this->postId = $postId;
     }
 
-    private function setUserId($userId){
+    private function setUserId($userId)
+    {
         $this->userId = $userId;
     }
 

@@ -6,10 +6,19 @@ use application\src\controllers as Controller;
 use application\src\models\database\DbConnect;
 use application\src\models\category\CategoryManager;
 use application\src\models\user\UserManager;
+use application\src\utils\SessionManager;
 
-class PostManager {
+class PostManager
+{
 
-    public static function getAll(){
+    public $sessionManager;
+
+    public function __construct()
+    {
+        $this->sessionManager = new SessionManager;
+    }
+    
+    public function getAll(){
         $query = "
         SELECT
             *,
@@ -60,9 +69,9 @@ class PostManager {
         $categoryId = filter_var($_POST["categoryId"], FILTER_VALIDATE_INT);
     
         if (empty($title) || empty($chapo) || empty($text) || empty($categoryId)) {
-            $_SESSION["error_message"] = "All the fields are required.";
-            header("Location: http://localhost/OC5/admin/postsManagement/edit/".$postId);
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
+            header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+            return;
         }
     
         $params = [
@@ -93,9 +102,9 @@ class PostManager {
                 $query .= ", img = :postImg";
                 $params[":postImg"] = $imageName;
             } else {
-                $_SESSION["error_message"] = "Error when uploading the image.";
-                header("Location: http://localhost/OC5/admin/postsManagement/edit/".$postId);
-                exit();
+                $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                return;
             }
         }
 
@@ -104,18 +113,19 @@ class PostManager {
         $result = DbConnect::executeQuery($query, $params);
     
         if ($result !== false) {
-            $_SESSION["success_message"] = "Post updated !";
-            header("Location: http://localhost/OC5/admin/postsManagement");
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "Post updated !");
+            header("Location: ".BASE_URL."admin/postsManagement");
+            return;
         } else {
-            $_SESSION["error_message"] = "Error creating the post.";
-            header("Location: http://localhost/OC5/admin/postsManagement/edit/".$postId);
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error creating the post.");
+            header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+            return;
         }
     }
     
     
-    public function delete($postId){
+    public function delete($postId)
+    {
         $query="
             DELETE
             FROM
@@ -129,28 +139,28 @@ class PostManager {
         $result = DbConnect::executeQuery($query, $params);
 
         if ($result !== false) {
-            $_SESSION["success_message"] = "Post supprimé avec succès.";
-            header("Location: http://localhost/OC5/admin/postsManagement");
-            exit();
+            $this->sessionManager->setSessionVariable("success_message", "Post supprimé avec succès.");
+            header("Location: ".BASE_URL."admin/postsManagement");
+            return;
         } else {
             echo "Erreur lors de la suppression du post.";
         }
     }
 
-    public function new(){
+    public function new()
+    {
         $categoryManager = new CategoryManager();
         $categories = $categoryManager->getAll();
         return $categories;
     }
 
-    public function create(){
-        $newPost = $_POST;
-    
-        $title = filter_var($newPost["postTitle"], FILTER_SANITIZE_STRING);
-        $chapo = filter_var($newPost["postChapo"], FILTER_SANITIZE_STRING);
-        $text = filter_var($newPost["postText"], FILTER_SANITIZE_STRING);
-        $userId = filter_var($newPost["userId"], FILTER_VALIDATE_INT);
-        $categoryId = filter_var($newPost["categoryId"], FILTER_VALIDATE_INT);
+    public function create()
+    {
+        $title = filter_var($_POST["postTitle"], FILTER_SANITIZE_STRING);
+        $chapo = filter_var($_POST["postChapo"], FILTER_SANITIZE_STRING);
+        $text = filter_var($_POST["postText"], FILTER_SANITIZE_STRING);
+        $userId = filter_var($_POST["userId"], FILTER_VALIDATE_INT);
+        $categoryId = filter_var($_POST["categoryId"], FILTER_VALIDATE_INT);
     
         if (isset($_FILES["postImg"]) && $_FILES['postImg']['error'] === UPLOAD_ERR_OK){
             $uploadDir = "../public/upload/";
@@ -177,31 +187,32 @@ class PostManager {
                 $result = DbConnect::executeQuery($query, $params);
     
                 if ($result !== false) {
-                    $_SESSION["success_message"] = "Post created.";
-                    unset($_SESSION['formData']);
-                    header("Location: http://localhost/OC5/admin/postsManagement");
-                    exit();
+                    $this->sessionManager->setSessionVariable("success_message", "Post created.");
+                    $this->sessionManager->unsetSessionVariable("formData");
+                    header("Location: ".BASE_URL."admin/postsManagement");
+                    return;
                 } else {
-                    $_SESSION["error_message"] = "Error when creating the post.";
-                    $_SESSION["formData"] = $newPost;
-                    header("Location: http://localhost/OC5/admin/postsManagement/new");
-                    exit();
+                    $this->sessionManager->setSessionVariable("error_message", "Error when creating the post.");
+                    $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+                    header("Location: ".BASE_URL."admin/postsManagement/new");
+                    return;
                 }
             } else {
-                $_SESSION["error_message"] = "Error when uploading the image.";
-                $_SESSION["formData"] = $newPost;
-                header("Location: http://localhost/OC5/admin/postsManagement/new");
-                exit();
+                $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
+                $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+                header("Location: ".BASE_URL."admin/postsManagement/new");
+                return;
             }
         } else {
-            $_SESSION["error_message"] = "Error when uploading the image.";
-            $_SESSION["formData"] = $newPost;
-            header("Location: http://localhost/OC5/admin/postsManagement/new");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."admin/postsManagement/new");
+            return;
         }
     }
     
-    public function getCategoryByPost($postId){
+    public function getCategoryByPost($postId)
+    {
         $query = "
             SELECT
                 idCategory
@@ -217,12 +228,13 @@ class PostManager {
         $idCategory = $result[0]["idCategory"];
 
         $categoryManager = new CategoryManager;
-        $category = $categoryManager::getCategory($categoryId);
+        $category = $categoryManager->getCategory($categoryId);
 
         return $category->getName();
     }
 
-    public function getAuthorByPost($postId){
+    public function getAuthorByPost($postId)
+    {
         $query = "
             SELECT
                 userId
@@ -243,7 +255,8 @@ class PostManager {
         return $user->getFirstName();
     }
 
-    public function getNext($postId){
+    public function getNext($postId)
+    {
         $post = $this->get($postId);
         $dateCreationPost = $post->getDateCreation()->format("Y-m-d H:i:s");
         $dateModificationPost = $post->getDateModification();
@@ -271,7 +284,8 @@ class PostManager {
         return $nextPost;
     }
 
-    public function getPrevious($postId){
+    public function getPrevious($postId)
+    {
         $post = $this->get($postId);
         $dateCreationPost = $post->getDateCreation()->format("Y-m-d H:i:s");
         $dateModificationPost = $post->getDateModification();

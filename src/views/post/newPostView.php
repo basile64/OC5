@@ -14,15 +14,15 @@ $page = "postsManagement";
                 <div><div>Sélectionnez une image</div><input type="file" name="postImg" id="imgPost" class="img-post-single" accept="image/*"></div>
                 <div class="container-title">
                     <div class="label">Title</div>
-                    <input id="input-title" name="postTitle" type="text" class="title-post-single" value="<?= $_SESSION["formData"]['postTitle'] ?? '' ?>">
+                    <input id="input-title" name="postTitle" type="text" class="title-post-single" value="<?= $this->sessionManager->getSessionVariable('formData')['postTitle'] ?? '' ?>">
                 </div>
                 <div class="container-title">
                     <div class="label">Chapo</div>
-                    <textarea id="textarea-chapo" name="postChapo" class="chapo-post-single"><?= $_SESSION["formData"]['postChapo'] ?? '' ?></textarea>
+                    <textarea id="textarea-chapo" name="postChapo" class="chapo-post-single"><?= $this->sessionManager->getSessionVariable('formData')['postChapo'] ?? '' ?></textarea>
                 </div>
                 <div class="container-title">
                     <div class="label">Text</div>
-                    <textarea id="textarea-text" name="postText" class="text-post-single"><?= $_SESSION["formData"]['postText'] ?? '' ?></textarea>
+                    <textarea id="textarea-text" name="postText" class="text-post-single"><?= $this->sessionManager->getSessionVariable('formData')['postText'] ?? '' ?></textarea>
                 </div>
                 <button type="submit" id="btn-edit-post" name="submit">Validate the creation</button>
             </div>
@@ -58,4 +58,4 @@ $page = "postsManagement";
 
 $content = ob_get_clean();
 
-require_once("../src/views/adminEditLayout.php");
+require_once "../src/views/adminEditLayout.php";

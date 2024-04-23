@@ -5,8 +5,10 @@ namespace application\src\models\category;
 use application\src\models\database\DbConnect;
 use application\src\models\category\Category;
 
-class CategoryManager {
-    public static function getAll() {
+class CategoryManager
+{
+    public function getAll()
+    {
         $query = "SELECT * FROM category";
         $result = DbConnect::executeQuery($query);
         $categories = [];
@@ -18,7 +20,8 @@ class CategoryManager {
         return $categories;
     }
 
-    public function getCategory($id){
+    public function getCategory($id)
+    {
         $query="
             SELECT
                 *
