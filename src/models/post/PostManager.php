@@ -144,7 +144,9 @@ class PostManager
             header("Location: ".BASE_URL."admin/postsManagement");
             return;
         } else {
-            echo "Erreur lors de la suppression du post.";
+            $this->sessionManager->setSessionVariable("error_message", "Error when deleting the post.");
+            header("Location: ".BASE_URL."admin/postsManagement");
+            return;
         }
     }
 

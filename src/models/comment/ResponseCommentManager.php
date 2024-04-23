@@ -148,11 +148,11 @@ class ResponseCommentManager
     
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Comment submitted.");
-            header("Location: http://localhost/OC5/post/$postId");
+            header("Location: ".BASE_URL."post/$postId");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
-            header("Location: http://localhost/OC5/$postId");
+            header("Location: ".BASE_URL."$postId");
             return;
         }
     }

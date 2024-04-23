@@ -5,7 +5,7 @@ ob_start();
 $page = "postsManagement";
 
 ?>
-<link rel="stylesheet" href="http://localhost/OC5/public/css/post-list-management.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-list-management.css">
 
 <div class="posts-header">
     <div class="title1">Posts</div>
@@ -20,9 +20,9 @@ $page = "postsManagement";
                 <div class="right-post-list">
                     <div class="date-creation-post-list"><?= htmlspecialchars($post->getDateCreation()->format("F j, Y")) ?></div>
                     <div class="icons">
-                        <a href="/OC5/post/<?= htmlspecialchars($post->getId()) ?>"><img class="svg" src="http://localhost/OC5/public/svg/arrow-up.svg"/></a>
-                        <a href="/OC5/admin/postsManagement/delete/<?= htmlspecialchars($post->getId()) ?>" style="background-color:#de0404"><img class="svg" src="http://localhost/OC5/public/svg/trash.svg"/></a>
-                        <a href="/OC5/admin/postsManagement/edit/<?= htmlspecialchars($post->getId()) ?>" style="background-color:#2020cf"><img class="svg" src="http://localhost/OC5/public/svg/pencil.svg"/></a>
+                        <a href="/OC5/post/<?= htmlspecialchars($post->getId()) ?>"><img class="svg" src="<?= BASE_URL ?>public/svg/arrow-up.svg"/></a>
+                        <a href="/OC5/admin/postsManagement/delete/<?= htmlspecialchars($post->getId()) ?>" style="background-color:#de0404"><img class="svg" src="<?= BASE_URL ?>public/svg/trash.svg"/></a>
+                        <a href="/OC5/admin/postsManagement/edit/<?= htmlspecialchars($post->getId()) ?>" style="background-color:#2020cf"><img class="svg" src="<?= BASE_URL ?>public/svg/pencil.svg"/></a>
                     </div>
                 </div>
              </div>

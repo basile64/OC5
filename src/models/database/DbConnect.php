@@ -22,7 +22,7 @@ class DbConnect
                 self::$connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
         } catch (\PDOException $e) {
-            echo "Erreur lors de la connexion à la BDD";
+            echo "Error when connecting to database.";
         }
 
     }
@@ -46,7 +46,7 @@ class DbConnect
             return $result;
 
         } catch (\PDOException $e) {
-            echo "Erreur lors de l'exécution de la requête : ". $e->getMessage();
+            echo "Error when executing query : ". $e->getMessage();
             return false;
         }
     }

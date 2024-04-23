@@ -156,11 +156,11 @@ class MainCommentManager
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Comment submitted.");
             header("Location: ".BASE_URL."post/$postId");
-            exit();
+            return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: ".BASE_URL."$postId");
-            exit();
+            return;
         }
     }
     

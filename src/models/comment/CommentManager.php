@@ -242,6 +242,6 @@ class CommentManager
         } else {
             header("Location: ".BASE_URL."user/comments");
         }
-        exit();
+        return;
     }
 }
