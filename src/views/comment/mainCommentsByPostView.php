@@ -6,7 +6,7 @@
         <?php foreach ($post->getMainComments() as $mainComment) :?>
             <div class="comment-container" id="comment<?= htmlspecialchars($mainComment->getMainCommentId()) ?>">
                 <div class="avatar-plus-header-main">
-                    <a class="avatar" href="<?= BASE_URL ?>user/<?= htmlspecialchars($mainComment->getUser()->getId()) ?>"><img src="<?= BASE_URL ?>public/avatar/<?= htmlspecialchars($mainComment->getUser()->getAvatar()) ?>" class="avatar"></a>
+                    <a class="avatar" href="<?= htmlspecialchars(BASE_URL) ?>user/<?= htmlspecialchars($mainComment->getUser()->getId()) ?>"><img src="<?= htmlspecialchars(BASE_URL) ?>public/avatar/<?= htmlspecialchars($mainComment->getUser()->getAvatar()) ?>" class="avatar"></a>
                     <div class="main-comment-container">
                         <div class="main-comment-header">
                             <div class="main-comment-author"><?= htmlspecialchars($mainComment->getUser()->getFirstName()) ?> <?= ($mainComment->getUser()->getRole() === "admin")? " (Admin)" : "" ?></div>

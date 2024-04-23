@@ -4,15 +4,15 @@
 ob_start();
 $page = "postsManagement";
 ?>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-new.css">
-<script src="<?= BASE_URL ?>public/js/edit-post.js"></script>
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-new.css">
+<script src="<?= htmlspecialchars(BASE_URL) ?>public/js/edit-post.js"></script>
 
 <div class="single-post">
     <form method="post" action="../update/<?= htmlspecialchars($post->getId()) ?>" enctype="multipart/form-data">
         <div class="title1 title1-edit">Edit a post</div>
         <div class="container">
             <div class="left">
-                <div style="align-self:center"><img src="<?= BASE_URL ?>public/upload/<?= htmlspecialchars($post->getImg()) ?>" id="imagePreview"></div>
+                <div style="align-self:center"><img src="<?= htmlspecialchars(BASE_URL) ?>public/upload/<?= htmlspecialchars($post->getImg()) ?>" id="imagePreview"></div>
                 <div style="display:flex; flex-direction:column; align-items:center"><div>Sélectionnez une autre image</div><input type="file" name="postImg" id="imgPost" class="img-post-single" accept="image/*"></div>
                 <div class="container-title">
                     <div class="label">Title</div>

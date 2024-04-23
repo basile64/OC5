@@ -27,7 +27,7 @@ class CommentController extends Controller
             return;
         }
         $this->sessionManager->setSessionVariable("error_message", "You have to be logged.");
-        header("Location: ".BASE_URL);
+        header("Location: ".htmlspecialchars(htmlspecialchars(BASE_URL)));
         return;
     }
 

@@ -71,7 +71,7 @@ class PostManager
     
         if ($title === null || $chapo === null || $text === null || $categoryId === null) {
             $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
-            header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/edit/".$postId);
             return;
         }
     
@@ -104,7 +104,7 @@ class PostManager
                 $params[":postImg"] = $imageName;
             } else {
                 $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
-                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/edit/".$postId);
                 return;
             }
         }
@@ -115,11 +115,11 @@ class PostManager
     
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Post updated !");
-            header("Location: ".BASE_URL."admin/postsManagement");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error creating the post.");
-            header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/edit/".$postId);
             return;
         }
     }
@@ -141,11 +141,11 @@ class PostManager
 
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Post supprimé avec succès.");
-            header("Location: ".BASE_URL."admin/postsManagement");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when deleting the post.");
-            header("Location: ".BASE_URL."admin/postsManagement");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
             return;
         }
     }
@@ -168,7 +168,7 @@ class PostManager
         if ($title === null || $chapo === null || $text === null || $userId === null || $categoryId === null) {
             $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".BASE_URL."admin/postsManagement/create");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/create");
             return;
         }
     
@@ -199,24 +199,24 @@ class PostManager
                 if ($result !== false) {
                     $this->sessionManager->setSessionVariable("success_message", "Post created.");
                     $this->sessionManager->unsetSessionVariable("formData");
-                    header("Location: ".BASE_URL."admin/postsManagement");
+                    header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
                     return;
                 } else {
                     $this->sessionManager->setSessionVariable("error_message", "Error when creating the post.");
                     $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-                    header("Location: ".BASE_URL."admin/postsManagement/new");
+                    header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/new");
                     return;
                 }
             } else {
                 $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
                 $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-                header("Location: ".BASE_URL."admin/postsManagement/new");
+                header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/new");
                 return;
             }
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".BASE_URL."admin/postsManagement/new");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement/new");
             return;
         }
     }

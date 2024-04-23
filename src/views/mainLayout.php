@@ -11,10 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/main-layout.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-list-homepage.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-single.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/footer.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/main-layout.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-list-homepage.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-single.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/footer.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

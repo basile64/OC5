@@ -6,7 +6,7 @@ $page = "profileUser";
 
 ?>
 <!-- CSS -->
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-profile.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/user-profile.css">
 <!-- JS -->
 <script src="/OC5/public/js/profile-user.js"></script>
 
@@ -19,7 +19,7 @@ $page = "profileUser";
     <div class="container2">
         <div class="information">
             <form method="post" action="./save" enctype="multipart/form-data">
-                <img src="<?= BASE_URL ?>public/avatar/<?= htmlspecialchars($user->getAvatar()) ?>" class="avatar" id="avatarPreview">
+                <img src="<?= htmlspecialchars(BASE_URL) ?>public/avatar/<?= htmlspecialchars($user->getAvatar()) ?>" class="avatar" id="avatarPreview">
                 <div>
                     <div class="label">Select an avatar</div>
                     <input type="file" name="userAvatar" id="avatarUser" accept="image/*">

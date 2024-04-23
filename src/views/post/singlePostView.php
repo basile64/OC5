@@ -1,19 +1,19 @@
 <?php ob_start()?>
 <?php $currentUrl = isset($_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['REQUEST_URI']) : '';?>
 
-<script src="<?= BASE_URL ?>public/js/post-single.js"></script>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/comment.css">
+<script src="<?= htmlspecialchars(BASE_URL) ?>public/js/post-single.js"></script>
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/comment.css">
 
 <div class="single-post">
     <div class="header-post-single">
         <a id="post-previous" href="<?= htmlspecialchars($currentUrl) ?>/getPrevious">
-            <img class="svg" src="<?= BASE_URL ?>public/svg/arrow-left.svg"/>
+            <img class="svg" src="<?= htmlspecialchars(BASE_URL) ?>public/svg/arrow-left.svg"/>
         </a>
         <div class="date-creation-post-single">
             <?= ($post->getDateModification() != null) ? "Edited on " . htmlspecialchars($post->getDateModification()->format("F j, Y")) : htmlspecialchars($post->getDateCreation()->format("F j, Y")) ?> <div style="font-weight:bold;">by <?= htmlspecialchars($post->getUser()->getFirstName()) ?></div>
         </div>
         <a id="post-next" href="<?= htmlspecialchars($currentUrl) ?>/getNext">
-            <img class="svg" src="<?= BASE_URL ?>public/svg/arrow-right.svg"/>
+            <img class="svg" src="<?= htmlspecialchars(BASE_URL) ?>public/svg/arrow-right.svg"/>
         </a>
     </div>
 

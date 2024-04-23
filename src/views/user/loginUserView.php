@@ -4,7 +4,7 @@ ob_start();
 $page = "loginUser";
 
 ?>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-login.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/user-login.css">
 
 <div class="login">
 
