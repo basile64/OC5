@@ -67,7 +67,7 @@ form {
 
 @media (width <= 767px) {
   .user {
-    width: 95%;
+    width: 80%;
     margin-bottom: 80px;
   }
 
@@ -78,7 +78,7 @@ form {
 
 @media (768px <= width <= 1023px) {
   .user {
-    width: 95%;
+    width: 80%;
     margin-bottom: 80px;
   }
 
