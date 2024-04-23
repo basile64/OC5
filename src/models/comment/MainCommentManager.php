@@ -131,9 +131,9 @@ class MainCommentManager
     
     public function create($commentId)
     {
-        $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
-    
-        if (empty($postId)) {
+        $postId = filter_input(INPUT_POST, 'postId', FILTER_VALIDATE_INT);
+
+        if ($postId === null) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: ".BASE_URL);
             return;

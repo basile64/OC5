@@ -1,5 +1,5 @@
 <?php ob_start()?>
-<?php $currentUrl = htmlspecialchars($_SERVER['REQUEST_URI']);?>
+<?php $currentUrl = isset($_SERVER['REQUEST_URI']) ? htmlspecialchars($_SERVER['REQUEST_URI']) : '';?>
 
 <script src="http://localhost/OC5/public/js/post-single.js"></script>
 <link rel="stylesheet" href="http://localhost/OC5/public/css/comment.css">

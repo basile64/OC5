@@ -21,7 +21,7 @@ class UserController extends Controller
     {
         parent::__construct(); 
         $this->class = $explodedUrl[0];
-            if (isset($explodedUrl[2]) && $explodedUrl[2]=="delete" && isset($explodedUrl[3]) && is_numeric($explodedUrl[3])){
+            if (isset($explodedUrl[2]) && $explodedUrl[2]==="delete" && isset($explodedUrl[3]) && is_numeric($explodedUrl[3])){
                 $this->commentManager = new CommentManager();
                 $this->commentManager->delete($explodedUrl[3]);
             } elseif (isset($explodedUrl[1])) {

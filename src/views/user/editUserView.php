@@ -22,8 +22,8 @@ $page = "usersManagement";
         <div class="container">
             <div class="label">Role</div>
             <select id="select-role-user" name="userRole">
-                <option value="Basic" <?= ($user->getRole() == "basic") ? "selected" : "" ?>>Basic</option>
-                <option value="Admin" <?= ($user->getRole() == "admin") ? "selected" : "" ?>>Admin</option>
+                <option value="Basic" <?= ($user->getRole() === "basic") ? "selected" : "" ?>>Basic</option>
+                <option value="Admin" <?= ($user->getRole() === "admin") ? "selected" : "" ?>>Admin</option>
             </select>
         </div>  
         <button type="submit" id="btn-edit-user" name="submit">Save</button>

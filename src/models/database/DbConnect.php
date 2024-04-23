@@ -17,7 +17,7 @@ class DbConnect
 
     private function connect(){
         try {
-            if (self::$connection == null){
+            if (self::$connection === null){
                 self::$connection = new \PDO("mysql:host=".self::HOST.";dbname=".self::DBNAME, self::USER, self::PASSWORD);
                 self::$connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
@@ -28,7 +28,7 @@ class DbConnect
     }
 
     private static function getInstance(){
-        if (self::$instance == null){
+        if (self::$instance === null){
             self::$instance = new self();
         }
         return self::$instance;
