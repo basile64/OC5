@@ -7,7 +7,8 @@ use application\src\models\category\Category;
 
 class CategoryManager
 {
-    public static function getAll() {
+    public function getAll()
+    {
         $query = "SELECT * FROM category";
         $result = DbConnect::executeQuery($query);
         $categories = [];
@@ -19,7 +20,8 @@ class CategoryManager
         return $categories;
     }
 
-    public function getCategory($id){
+    public function getCategory($id)
+    {
         $query="
             SELECT
                 *

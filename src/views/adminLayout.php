@@ -20,14 +20,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <?php require_once("../src/views/navbar/admin-navbar.php");?>
-    <?php require_once("../src/views/navbar/admin-navbar-mobile-top.php");?>
+    <?php require_once "../src/views/navbar/admin-navbar.php";?>
+    <?php require_once "../src/views/navbar/admin-navbar-mobile-top.php";?>
 
     <div id ="content">
         <?= $content ?>
     </div>
 
-    <?php require_once("../src/views/navbar/admin-navbar-mobile-bottom.php");?>
+    <?php require_once "../src/views/navbar/admin-navbar-mobile-bottom.php";?>
     
 </body>
 </html>

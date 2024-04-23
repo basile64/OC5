@@ -35,4 +35,4 @@ $page = "postsManagement";
 
 $content = ob_get_clean();
 
-require_once("../src/views/adminLayout.php");
+require_once "../src/views/adminLayout.php";

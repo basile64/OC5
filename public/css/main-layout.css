@@ -50,7 +50,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 9999;
+  z-index: 9;
 }
 
 .navbar a {
@@ -111,7 +111,8 @@ button:hover {
   align-items: center;
 }
 
-.success-message {
+.success-message,
+.error-message {
   position: absolute;
   top: 0;
   right: 0;
@@ -125,22 +126,11 @@ button:hover {
   box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
   transition: opacity 0.5s ease-in-out;
   animation: fadeInOut 3s 0s forwards;
+  z-index: 10;
 }
 
 .error-message {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 10px 30px;
   background: red;
-  color: rgb(238 238 238);
-  border-radius: 0 0 0 5px;
-  text-align: center;
-  font-weight: 200;
-  opacity: 0;
-  box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
-  transition: opacity 0.5s ease-in-out;
-  animation: fadeInOut 3s 0s forwards;
 }
 
 .hidden {

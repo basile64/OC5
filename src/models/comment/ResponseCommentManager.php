@@ -8,7 +8,8 @@ use application\src\models\comment\ResponseComment;
 
 class ResponseCommentManager 
 {
-    public static function getAll(){
+    public static function getAll()
+    {
         $query = "
             SELECT
                 responseComment.id,
@@ -41,7 +42,8 @@ class ResponseCommentManager
 
     }
 
-    public static function getAllByMainCommentId($id){
+    public static function getAllByMainCommentId($id)
+    {
         $query = "
             SELECT
                 responseComment.id,
@@ -79,7 +81,8 @@ class ResponseCommentManager
         return $responseComments;
     }
 
-    public static function getAllApprovedByMainCommentId($id){
+    public static function getAllApprovedByMainCommentId($id)
+    {
         $query = "
         SELECT
             responseComment.id,
@@ -117,14 +120,15 @@ class ResponseCommentManager
         return $responseComments;
     }
 
-    public function create($commentId){
+    public function create($commentId)
+    {
         $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
         $mainCommentId = filter_var($_POST["mainCommentId"], FILTER_VALIDATE_INT);
     
         if (empty($postId) || empty($mainCommentId)) {
-            $_SESSION["error_message"] = "Error submitting comment.";
-            header("Location: http://localhost/OC5/$postId");
-            exit();
+            $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
+            header("Location: ".BASE_URL."$postId");
+            return;
         }
     
         $query="
@@ -143,13 +147,13 @@ class ResponseCommentManager
         $result = DbConnect::executeQuery($query, $params);
     
         if ($result !== false) {
-            $_SESSION["success_message"] = "Comment submitted.";
+            $this->sessionManager->setSessionVariable("success_message", "Comment submitted.");
             header("Location: http://localhost/OC5/post/$postId");
-            exit();
+            return;
         } else {
-            $_SESSION["error_message"] = "Error submitting comment.";
+            $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: http://localhost/OC5/$postId");
-            exit();
+            return;
         }
     }
 }

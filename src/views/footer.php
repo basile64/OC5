@@ -1,7 +1,7 @@
 <div class="footer">
     <div class="footer1">
         <div class="footer-contact">
-            <?= (isset($_SESSION["logged"])&&($_SESSION["userRole"]=="admin")) ?
+            <?= (($sessionManager->getSessionVariable("logged") === true)  && ($sessionManager->getSessionVariable("userRole") === "admin")) ?
                 "
                 <div class='logo-network'>
                     <a href='http://localhost/OC5/admin/postsManagement'><img class='svg' src='http://localhost/OC5/public/svg/gear.svg'/><div class='navbar-text'>Manage</div></a>

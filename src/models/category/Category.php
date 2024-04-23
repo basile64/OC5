@@ -10,26 +10,31 @@ class Category
     private $id;
     private $name;
 
-    public function __construct($category){
+    public function __construct($category)
+    {
         $this->setId($category[self::ID_COLUMN] ?? null);
         $this->setName($category[self::NAME_COLUMN] ?? null);
     }
 
     // Getters
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName(){
+    public function getName()
+    {
         return $this->name;
     }
 
     // Setters
-    private function setId($id){
+    private function setId($id)
+    {
         $this->id = $id;
     }
 
-    private function setName($name){
+    private function setName($name)
+    {
         $this->name = $name;
     }
 }

@@ -28,7 +28,8 @@ class Post
     private $userId;
     private $categoryId;
 
-    public function __construct($post){
+    public function __construct($post)
+    {
         $this->setId($post[self::ID_COLUMN] ?? null);
         $this->setDateCreation($post[self::DATE_CREATION_COLUMN] ?? null);
         $this->setDateModification($post[self::DATE_MODIFICATION_COLUMN] ?? null);
@@ -41,60 +42,73 @@ class Post
     }
 
     //Getters
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getDateCreation($format = "Y-m-d"){
+    public function getDateCreation($format = "Y-m-d")
+    {
         return $this->dateCreation;
     }
 
-    public function getDateModification($format = "Y-m-d"){
+    public function getDateModification($format = "Y-m-d")
+    {
         return $this->dateModification;
     }
 
-    public function getTitle(){
+    public function getTitle()
+    {
         return $this->title;
     }
 
-    public function getChapo(){
+    public function getChapo()
+    {
         return $this->chapo;
     }
 
-    public function getText(){
+    public function getText()
+    {
         return $this->text;
     }
 
-    public function getImg(){
+    public function getImg()
+    {
         return $this->img;
     }
         
-    public function getUserId(){
+    public function getUserId()
+    {
         return $this->userId;
     } 
     
-    public function getUser(){
+    public function getUser()
+    {
         $userManager = new UserManager;
         $user = $userManager->get($this->userId);
         return $user;
     }
 
-    public function getCategoryId(){
+    public function getCategoryId()
+    {
         return $this->categoryId;
     }
 
-    public function getMainComments(){
+    public function getMainComments()
+    {
         $mainCommentManager = new MainCommentManager;
         $mainComments = $mainCommentManager->getAllApprovedByPostId($this->id);
         return $mainComments;
     }
 
     //Setters
-    private function setId($id){
+    private function setId($id)
+    {
         $this->id = $id;
     }
 
-    private function setDateCreation($dateCreation){
+    private function setDateCreation($dateCreation)
+    {
         if ($dateCreation != null){
             $this->dateCreation = new \DateTime($dateCreation);
         } else {
@@ -102,7 +116,8 @@ class Post
         }
     }
 
-    private function setDateModification($dateModification){
+    private function setDateModification($dateModification)
+    {
         if ($dateModification != null){
             $this->dateModification = new \DateTime($dateModification);
         } else {
@@ -110,27 +125,33 @@ class Post
         }
     }
 
-    private function setTitle($title){
+    private function setTitle($title)
+    {
         $this->title = $title;
     }
 
-    private function setChapo($chapo){
+    private function setChapo($chapo)
+    {
         $this->chapo = $chapo;
     }
 
-    private function setText($text){
+    private function setText($text)
+    {
         $this->text = $text;
     }
 
-    private function setImg($img){
+    private function setImg($img)
+    {
         $this->img = $img;
     }
         
-    private function setUserId($userId){
+    private function setUserId($userId)
+    {
         $this->userId = $userId;
     }
 
-    private function setCategoryId($categoryId){
+    private function setCategoryId($categoryId)
+    {
         $this->categoryId = $categoryId;
     }
 

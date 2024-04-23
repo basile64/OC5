@@ -17,7 +17,7 @@
                 </div>
                 <?php require("../src/views/comment/responseCommentsByMainCommentView.php")?>
                 <?php 
-                    if (isset($_SESSION["logged"])){
+                    if ($sessionManager->getSessionVariable("logged") === true){
                         require("../src/views/comment/newResponseCommentView.php");
                     }
                 ?>
@@ -26,8 +26,8 @@
     </div>
 
     <?php 
-        if (isset($_SESSION["logged"])){
-            require_once("../src/views/comment/newMainCommentView.php");
+        if ($sessionManager->getSessionVariable("logged") === true){
+            require_once "../src/views/comment/newMainCommentView.php";
         } else {
             echo "<div style='margin-top:50px'>You must be connected to post a comment.</div>";
         }
