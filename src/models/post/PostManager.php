@@ -63,12 +63,13 @@ class PostManager
     }
 
     public function update($postId){
-        $title = filter_var($_POST["postTitle"], FILTER_SANITIZE_STRING);
-        $chapo = filter_var($_POST["postChapo"], FILTER_SANITIZE_STRING);
-        $text = filter_var($_POST["postText"], FILTER_SANITIZE_STRING);
-        $categoryId = filter_var($_POST["categoryId"], FILTER_VALIDATE_INT);
+        $title = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_STRING);
+        $chapo = filter_input(INPUT_POST, 'postChapo', FILTER_SANITIZE_STRING);
+        $text = filter_input(INPUT_POST, 'postText', FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, 'categoryId', FILTER_VALIDATE_INT);
+        
     
-        if (empty($title) || empty($chapo) || empty($text) || empty($categoryId)) {
+        if ($title === null || $chapo === null || $text === null || $categoryId === null) {
             $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
             header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
             return;
@@ -156,11 +157,18 @@ class PostManager
 
     public function create()
     {
-        $title = filter_var($_POST["postTitle"], FILTER_SANITIZE_STRING);
-        $chapo = filter_var($_POST["postChapo"], FILTER_SANITIZE_STRING);
-        $text = filter_var($_POST["postText"], FILTER_SANITIZE_STRING);
-        $userId = filter_var($_POST["userId"], FILTER_VALIDATE_INT);
-        $categoryId = filter_var($_POST["categoryId"], FILTER_VALIDATE_INT);
+        $title = filter_input(INPUT_POST, "postTitle", FILTER_SANITIZE_STRING);
+        $chapo = filter_input(INPUT_POST, "postChapo", FILTER_SANITIZE_STRING);
+        $text = filter_input(INPUT_POST, "postText", FILTER_SANITIZE_STRING);
+        $userId = filter_input(INPUT_POST, "userId", FILTER_VALIDATE_INT);
+        $categoryId = filter_input(INPUT_POST, "categoryId", FILTER_VALIDATE_INT);
+
+        if ($title === null || $chapo === null || $text === null || $userId === null || $categoryId === null) {
+            $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
+            $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
+            header("Location: ".BASE_URL."admin/postsManagement/create");
+            return;
+        }
     
         if (isset($_FILES["postImg"]) && $_FILES['postImg']['error'] === UPLOAD_ERR_OK){
             $uploadDir = "../public/upload/";

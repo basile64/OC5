@@ -19,7 +19,7 @@ class Router
             $explodedUrl = $this->urlParser->getExplodedUrl();
             if (!empty($explodedUrl)){
                 $controllerToLoad = $explodedUrl[0];
-                $controllerToLoad = ($controllerToLoad == "mainComment" || $controllerToLoad == "responseComment") ? "comment" : $controllerToLoad;
+                $controllerToLoad = ($controllerToLoad === "mainComment" || $controllerToLoad === "responseComment") ? "comment" : $controllerToLoad;
                 // On rajoute le chemin depuis index.php et on enlève l'extension du fichier
                 $controllerFileName = ucfirst(strtolower($controllerToLoad)) . "Controller.php";
                 $controllerFilePath = "../src/controllers/" . $controllerFileName;

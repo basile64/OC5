@@ -14,7 +14,12 @@ window.onload = function () {
     const imageValue = imageInput.value.trim();
 
     // Si tous les champs sont remplis, activer le bouton de validation
-    if (titleValue !== "" && chapoValue !== "" && textValue !== "") {
+    if (
+      titleValue !== "" &&
+      chapoValue !== "" &&
+      textValue !== "" &&
+      imageValue !== ""
+    ) {
       submitButton.disabled = false;
     } else {
       // Sinon, désactiver le bouton de validation

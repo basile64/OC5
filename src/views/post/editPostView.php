@@ -37,7 +37,7 @@ $page = "postsManagement";
                     <div>Author</div>
                     <select id="author" name="userId" class="date-creation-post-single">
                         <?php foreach ($authors as $author): ?>
-                            <option value="<?= htmlspecialchars($author->getId()) ?>" <?= ($author->getId() == $post->getUserId()) ? 'selected' : '' ?>>
+                            <option value="<?= htmlspecialchars($author->getId()) ?>" <?= ($author->getId() === $post->getUserId()) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($author->getFirstName()) ?>
                             </option>
                         <?php endforeach; ?>
@@ -47,7 +47,7 @@ $page = "postsManagement";
                     <div>Category</div>
                     <select id="category" name="categoryId" class="date-creation-post-single">
                         <?php foreach ($categories as $category): ?>
-                            <option value="<?= htmlspecialchars($category->getId()) ?>" <?= ($category->getId() == $post->getCategoryId()) ? 'selected' : '' ?>>
+                            <option value="<?= htmlspecialchars($category->getId()) ?>" <?= ($category->getId() === $post->getCategoryId()) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($category->getName()) ?>
                             </option>
                         <?php endforeach; ?>

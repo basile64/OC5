@@ -158,10 +158,10 @@ class CommentManager
 
     public function create()
     {
-        $textComment = filter_var($_POST["textComment"], FILTER_SANITIZE_STRING);
-        $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
-    
-        if (empty($textComment) || empty($postId)) {
+        $textComment = filter_input(INPUT_POST, "textComment", FILTER_SANITIZE_STRING);
+        $postId = filter_input(INPUT_POST, "postId", FILTER_VALIDATE_INT);
+        
+        if ($textComment === null || $postId === null) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: ".BASE_URL."$postId");
             return;

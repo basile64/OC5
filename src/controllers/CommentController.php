@@ -39,14 +39,17 @@ class CommentController extends Controller
     private function createComment()
     {
         $this->commentManager = new CommentManager();
-        if ($this->commentManager->{$this->action}() == true) {
+        if ($this->commentManager->{$this->action}() === true) {
             $commentId = DbConnect::$connection->lastInsertId();
             // Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
-            if (isset($_POST["idMainComment"]) == false) {
+            $idMainComment = filter_input(INPUT_POST, 'idMainComment', FILTER_VALIDATE_INT);
+
+            if ($idMainComment === null) {
                 $this->mainCommentManager = new MainCommentManager();
                 $this->mainCommentManager->create($commentId);
                 return;
             }
+            
             $this->responseCommentManager = new ResponseCommentManager();
             $this->responseCommentManager->create($commentId);
         }

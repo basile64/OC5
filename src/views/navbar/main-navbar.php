@@ -2,18 +2,18 @@
 
 <div class="navbar">
     <div class="link-container-navbar">
-        <a class='navbar-text' id="accueil" href="http://localhost/OC5" <?=(isset($page)&&$page=="home")?"style='font-weight:bold;'":""?>>Home</a>
+        <a class='navbar-text' id="accueil" href="http://localhost/OC5" <?=(isset($page)&&$page === "home")?"style='font-weight:bold;'":""?>>Home</a>
         <a class='navbar-text' id="contact" href="http://localhost/OC5/contact"  <?=(isset($page)&&$page=="contact")?"style='font-weight:bold;'":""?>>Contact</a>
     </div>
     <div class="login-container-navbar">
         <?= ($sessionManager->getSessionVariable("logged") === true) ?
             "
-            <a class='svg-plus-text' id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page == "profileUser" ? "style='font-weight:bold;'" : "") . ">
+            <a class='svg-plus-text' id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page === "profileUser" ? "style='font-weight:bold;'" : "") . ">
                 <img class='svg' src='http://localhost/OC5/public/svg/person.svg'/>
                 <div class='navbar-text'>My profile</div>
             </a>
             " 
-            : "<a class='navbar-text' id='logout' href='http://localhost/OC5/user/login'" . (isset($page) && $page == "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>";
+            : "<a class='navbar-text' id='logout' href='http://localhost/OC5/user/login'" . (isset($page) && $page === "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>";
         ?>
 
         <?= (($sessionManager->getSessionVariable("logged") === true)  && ($sessionManager->getSessionVariable("userRole") === "admin")) ?
@@ -47,17 +47,17 @@
     <div class="link-navbar hidden">
         <div class="svg-plus-text">
                 <img class='svg' src='http://localhost/OC5/public/svg/home.svg'/>
-                <a id='accueil' href='http://localhost/OC5/home' <?= (isset($page) && $page == "home" ? "style='font-weight:bold;'" : "")?>>Home</a>
+                <a id='accueil' href='http://localhost/OC5/home' <?= (isset($page) && $page === "home" ? "style='font-weight:bold;'" : "")?>>Home</a>
         </div>
         <div style='display:flex;align-items:center;gap:10px'>
                 <img class='svg' src='http://localhost/OC5/public/svg/contact.svg'/>
-                <a id='contact' href='http://localhost/OC5/contact' <?= (isset($page) && $page == "contact" ? "style='font-weight:bold;'" : "")?>>Contact</a>
+                <a id='contact' href='http://localhost/OC5/contact' <?= (isset($page) && $page === "contact" ? "style='font-weight:bold;'" : "")?>>Contact</a>
         </div>
-        <?= ($sessionManager->getSessionVariable("logged") == true) ?
+        <?= ($sessionManager->getSessionVariable("logged") === true) ?
             "
             <div class='svg-plus-text'>
                 <img class='svg' src='http://localhost/OC5/public/svg/person.svg'/>
-                <a id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page == "profileUser" ? "style='font-weight:bold;'" : "") . ">My profile</a>
+                <a id='login' href='http://localhost/OC5/user/profile' " . (isset($page) && $page === "profileUser" ? "style='font-weight:bold;'" : "") . ">My profile</a>
             </div>
             " 
             : "";
@@ -83,7 +83,7 @@
             : "
             <div class='svg-plus-text'>
                 <img class='svg' src='http://localhost/OC5/public/svg/login.svg'/>
-                <a id='login' href='http://localhost/OC5/user/login'". (isset($page) && $page == "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>
+                <a id='login' href='http://localhost/OC5/user/login'". (isset($page) && $page === "loginUser" ? "style='font-weight:bold;'" : "") . ">Login</a>
             </div>
             ";
         ?>

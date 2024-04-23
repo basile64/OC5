@@ -12,7 +12,8 @@ class ContactController extends Controller
     public function __construct()
     {
         parent::__construct(); 
-        if (isset($_POST['submit']) == true){
+        $submit = filter_input(INPUT_POST, 'submit', FILTER_SANITIZE_STRING);
+        if ($submit !== null) {
             $this->processContactForm();
             return;
         }
@@ -31,19 +32,21 @@ class ContactController extends Controller
 
     public function processContactForm()
     {
-        $firstName = filter_var($_POST['userFirstName'] ?? '', FILTER_SANITIZE_STRING);
-        $lastName = filter_var($_POST['userLastName'] ?? '', FILTER_SANITIZE_STRING);
-        $email = filter_var($_POST['userEmail'] ?? '', FILTER_SANITIZE_EMAIL);
-        $message = filter_var($_POST['userMessage'] ?? '', FILTER_SANITIZE_STRING);
-    
-        if (empty($firstName)  == true || empty($lastName) == true || empty($email) == true || empty($message) == true) {
+        $firstName = filter_input(INPUT_POST, 'userFirstName', FILTER_SANITIZE_STRING);
+        $lastName = filter_input(INPUT_POST, 'userLastName', FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, 'userEmail', FILTER_SANITIZE_EMAIL);
+        $message = filter_input(INPUT_POST, 'userMessage', FILTER_SANITIZE_STRING);
+        
+        // Vérifier si l'une des valeurs est nulle
+        if ($firstName === null || $lastName === null || $email === null || $message === null) {
+            // Gérer le cas où l'une des valeurs est nulle
             $this->sessionManager->setSessionVariable("error_message", "Please fill in all the fields.");
             $this->sessionManager->setSessionVariable("contactFormData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
             header('Location: '.BASE_URL.'contact');
             return;
         }
     
-        if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+        if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
             $this->sessionManager->setSessionVariable("contactFormData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
             header('Location: '.BASE_URL.'contact');
@@ -51,7 +54,7 @@ class ContactController extends Controller
         }
 
         $this->contactManager = new ContactManager();
-        if ($this->contactManager->sendEmail($firstName, $lastName, $email, $message) == true) {
+        if ($this->contactManager->sendEmail($firstName, $lastName, $email, $message) === true) {
             $this->sessionManager->setSessionVariable("success_message", "Your message has been sent.");
             header('Location: '.BASE_URL.'contact');
             return;

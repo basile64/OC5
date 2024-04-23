@@ -122,10 +122,10 @@ class ResponseCommentManager
 
     public function create($commentId)
     {
-        $postId = filter_var($_POST["postId"], FILTER_VALIDATE_INT);
-        $mainCommentId = filter_var($_POST["mainCommentId"], FILTER_VALIDATE_INT);
-    
-        if (empty($postId) || empty($mainCommentId)) {
+        $postId = filter_input(INPUT_POST, "postId", FILTER_VALIDATE_INT);
+        $mainCommentId = filter_input(INPUT_POST, "mainCommentId", FILTER_VALIDATE_INT);
+        
+        if ($postId === null || $mainCommentId === null) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: ".BASE_URL."$postId");
             return;

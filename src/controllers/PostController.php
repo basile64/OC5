@@ -17,14 +17,14 @@ class PostController extends Controller
     public function __construct($explodedUrl)
     {
         parent::__construct(); 
-        if (is_numeric($explodedUrl[1]) == true && isset($explodedUrl[2]) == false){
+        if (is_numeric($explodedUrl[1]) === true && isset($explodedUrl[2]) === false){
             $idPost = $explodedUrl[1];
             $this->showSingle($idPost);
         //Pour les getNextPost et getPreviousPost
         } else if (isset($explodedUrl[2])) {
             $idPost = $explodedUrl[1];
             $action = $explodedUrl[2];
-            if (method_exists($this, $action) == true) {
+            if (method_exists($this, $action) === true) {
                 $this->$action($idPost);
             } else {
                 header("Location: ".BASE_URL);

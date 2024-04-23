@@ -118,13 +118,13 @@ class UserManager
 
     public function create()
     {
-        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
-        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
-        $email = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
+        $lastName = filter_input(INPUT_POST, "userLastName", FILTER_SANITIZE_STRING);
+        $email = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);
         $password = $_POST["password"];
         $confirmPassword = $_POST["confirmPassword"];
     
-        if (empty($firstName) || empty($lastName) || empty($email) || empty($password) || empty($confirmPassword)) {
+        if ($firstName === null || $lastName === null || $email === null || $password === "" || $confirmPassword === "") {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
             header("Location: ".BASE_URL."user/register");
@@ -208,13 +208,13 @@ class UserManager
 
     public function update($id)
     {
-        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
-        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
-        $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
-        $role = filter_var($_POST["userRole"], FILTER_SANITIZE_STRING);
+        $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
+        $lastName = filter_input(INPUT_POST, "userLastName", FILTER_SANITIZE_STRING);
+        $mail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);
+        $role = filter_input(INPUT_POST, "userRole", FILTER_SANITIZE_STRING);
     
         // Vérifier que tous les champs sont remplis
-        if (empty($firstName) || empty($lastName) || empty($mail) || empty($role)) {
+        if ($firstName === null || $lastName === null || $mail === null || $role === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
             return;
@@ -285,10 +285,10 @@ class UserManager
 
     public function connect()
     {
-        $userMail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $userMail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);
         $userPassword = $_POST["userPassword"];
     
-        if (!$userMail) {
+        if ($userMail === null) {
             $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
             header("Location: ".BASE_URL."user/login");
@@ -420,11 +420,11 @@ class UserManager
         $user = $this->get($this->sessionManager->getSessionVariable("userId"));
         $currentAvatar = $user->getAvatar();
     
-        $firstName = filter_var($_POST["userFirstName"], FILTER_SANITIZE_STRING);
-        $lastName = filter_var($_POST["userLastName"], FILTER_SANITIZE_STRING);
-        $mail = filter_var($_POST["userMail"], FILTER_VALIDATE_EMAIL);
+        $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
+        $lastName = filter_input(INPUT_POST, "userLastName", FILTER_SANITIZE_STRING);
+        $mail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);        
     
-        if (empty($firstName) || empty($lastName) || empty($mail)) {
+        if ($firstName === null || $lastName === null || $mail === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             header("Location: ".BASE_URL."user/profile");
             return;

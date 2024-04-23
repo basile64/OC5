@@ -29,7 +29,7 @@ class AdminController extends Controller
         parent::__construct(); 
         array_shift($explodedUrl);
         $this->class = str_replace("sManagement", "", $explodedUrl[0]);
-        if (count($explodedUrl) == 1 && $this->sessionManager->getSessionVariable("userRole") === "admin"){
+        if (count($explodedUrl) === 1 && $this->sessionManager->getSessionVariable("userRole") === "admin"){
             $this->loadClassManagement($this->class);
             return; 
         }
@@ -91,7 +91,7 @@ class AdminController extends Controller
         }
 
         // Nous avons besoin d'une vue s'il faut éditer ou ajouter un nouveau post/utilisateur
-        if ($this->action == self::ACTION_EDIT || $this->action == self::ACTION_NEW){
+        if ($this->action === self::ACTION_EDIT || $this->action === self::ACTION_NEW){
             $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
             $this->manager = new PostManager();
             $this->categoryManager = new CategoryManager;
