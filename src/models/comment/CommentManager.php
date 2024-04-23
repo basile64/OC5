@@ -163,7 +163,7 @@ class CommentManager
         
         if ($textComment === null || $postId === null) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
-            header("Location: ".BASE_URL."$postId");
+            header("Location: ".htmlspecialchars(BASE_URL)."$postId");
             return;
         }
         
@@ -188,7 +188,7 @@ class CommentManager
             return true;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
-            header("Location: ".BASE_URL."$postId");
+            header("Location: ".htmlspecialchars(BASE_URL)."$postId");
             return;
         }
     }
@@ -215,7 +215,7 @@ class CommentManager
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when approving the comment.");
         }
-        header("Location: ".BASE_URL."admin/commentsManagement");
+        header("Location: ".htmlspecialchars(BASE_URL)."admin/commentsManagement");
     }
     
     public function delete($id)
@@ -238,9 +238,9 @@ class CommentManager
             $this->sessionManager->setSessionVariable("error_message", "Error when deleting the comment.");
         }
         if (strstr($_SERVER['REQUEST_URI'], '/OC5/admin/commentsManagement')) {
-            header("Location: ".BASE_URL."admin/commentsManagement");
+            header("Location: ".htmlspecialchars(BASE_URL)."admin/commentsManagement");
         } else {
-            header("Location: ".BASE_URL."user/comments");
+            header("Location: ".htmlspecialchars(BASE_URL)."user/comments");
         }
         return;
     }

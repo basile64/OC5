@@ -2,7 +2,7 @@
 ob_start();
 $page = "usersManagement";
 ?>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-edit.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/user-edit.css">
 
 <div class="user">
 <form method="post" action="../update/<?= htmlspecialchars($user->getId()) ?>">

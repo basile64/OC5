@@ -6,12 +6,12 @@ $page = "contact";
 
 ?>
 
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/contact.css">
-<script src="<?= BASE_URL ?>public/js/contact.js"></script>
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/contact.css">
+<script src="<?= htmlspecialchars(BASE_URL) ?>public/js/contact.js"></script>
 
 <div class="contact">
 
-    <form method="post" action="<?= BASE_URL ?>contact">
+    <form method="post" action="<?= htmlspecialchars(BASE_URL) ?>contact">
         <div class="title1">Contact us</div>
         <div style="margin-bottom:10px">We generally respond within 24 hours.</div>
         <input class="contact-input" name="userFirstName" type="text" placeholder="Your first name" value="<?= $formData['userFirstName'] ?? '' ?>" />

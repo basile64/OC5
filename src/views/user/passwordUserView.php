@@ -6,7 +6,7 @@ $page = "profileUser";
 
 ?>
 <!-- CSS -->
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-profile.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/user-profile.css">
 <!-- JS -->
 <script src="/OC5/public/js/profile-user.js"></script>
 

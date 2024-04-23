@@ -2,8 +2,8 @@
 ob_start();
 $page = "postsManagement";
 ?>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-new.css">
-<script src="<?= BASE_URL ?>public/js/new-post.js"></script>
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-new.css">
+<script src="<?= htmlspecialchars(BASE_URL) ?>public/js/new-post.js"></script>
 
 <div class="single-post">
     <form method="post" action="./create" enctype="multipart/form-data">

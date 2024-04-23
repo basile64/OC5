@@ -27,10 +27,10 @@ class PostController extends Controller
             if (method_exists($this, $action) === true) {
                 $this->$action($idPost);
             } else {
-                header("Location: ".BASE_URL);
+                header("Location: ".htmlspecialchars(BASE_URL));
             }
         } else {
-            header("Location: ".BASE_URL);
+            header("Location: ".htmlspecialchars(BASE_URL));
         }
     }
 
@@ -62,11 +62,11 @@ class PostController extends Controller
         $nextPost = $this->postManager->getNext($postId);
         $nextPostId = $nextPost->getId();
         if ($nextPostId !== null) {
-            header("Location: ".BASE_URL."post/".$nextPostId);
+            header("Location: ".htmlspecialchars(BASE_URL)."post/".$nextPostId);
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "This is the last post.");
-            header("Location: ".BASE_URL."post/".$postId);
+            header("Location: ".htmlspecialchars(BASE_URL)."post/".$postId);
             return;
         }
     }
@@ -77,11 +77,11 @@ class PostController extends Controller
         $previousPost = $this->postManager->getPrevious($postId);
         $previousPostId = $previousPost->getId();
         if ($previousPostId !== null) {
-            header("Location: ".BASE_URL."post/".$previousPostId);
+            header("Location: ".htmlspecialchars(BASE_URL)."post/".$previousPostId);
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "This is the first post.");
-            header("Location: ".BASE_URL."post/".$postId);
+            header("Location: ".htmlspecialchars(BASE_URL)."post/".$postId);
             return;
         }
     }

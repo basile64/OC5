@@ -5,7 +5,7 @@ ob_start();
 $page = "profileUser";
 
 ?>
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-profile.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/user-profile.css">
 
 <div class="container1">
     <div class="tabs">
@@ -24,8 +24,8 @@ $page = "profileUser";
                         <div class="right-comment-list">
                             <div class="date-comment-list"><?= htmlspecialchars($comment->getDate("F j, Y")) ?></div>
                             <div class="icons">
-                                <a href="/OC5/post/<?= htmlspecialchars($comment->getPostId()) ?>"><img class="svg" src="<?= BASE_URL ?>public/svg/arrow-up.svg"/></a>
-                                <a href="/OC5/user/comments/delete/<?= htmlspecialchars($comment->getCommentId()) ?>" style="background-color:#de0404"><img class="svg" src="<?= BASE_URL ?>public/svg/close.svg"/></a>
+                                <a href="/OC5/post/<?= htmlspecialchars($comment->getPostId()) ?>"><img class="svg" src="<?= htmlspecialchars(BASE_URL) ?>public/svg/arrow-up.svg"/></a>
+                                <a href="/OC5/user/comments/delete/<?= htmlspecialchars($comment->getCommentId()) ?>" style="background-color:#de0404"><img class="svg" src="<?= htmlspecialchars(BASE_URL) ?>public/svg/close.svg"/></a>
                             </div>
                         </div>
                     </div>

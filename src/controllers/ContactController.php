@@ -42,26 +42,26 @@ class ContactController extends Controller
             // Gérer le cas où l'une des valeurs est nulle
             $this->sessionManager->setSessionVariable("error_message", "Please fill in all the fields.");
             $this->sessionManager->setSessionVariable("contactFormData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header('Location: '.BASE_URL.'contact');
+            header('Location: '.htmlspecialchars(BASE_URL).'contact');
             return;
         }
     
         if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
             $this->sessionManager->setSessionVariable("contactFormData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header('Location: '.BASE_URL.'contact');
+            header('Location: '.htmlspecialchars(BASE_URL).'contact');
             return;
         }
 
         $this->contactManager = new ContactManager();
         if ($this->contactManager->sendEmail($firstName, $lastName, $email, $message) === true) {
             $this->sessionManager->setSessionVariable("success_message", "Your message has been sent.");
-            header('Location: '.BASE_URL.'contact');
+            header('Location: '.htmlspecialchars(BASE_URL).'contact');
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when sending the message.");
             $this->sessionManager->setSessionVariable("contactFormData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header('Location: '.BASE_URL.'contact');
+            header('Location: '.htmlspecialchars(BASE_URL).'contact');
             return;
         }
     }

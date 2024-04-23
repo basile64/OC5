@@ -6,7 +6,7 @@ $page = "home";
 
 ?>
 
-<link rel="stylesheet" href="<?= BASE_URL ?>public/css/homepage.css">
+<link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/homepage.css">
 
 <div class="banner">
     <div class="banner-overlay"></div>
@@ -14,7 +14,7 @@ $page = "home";
         <div class="banner-text-1">Basile Pineau,</div>
         <div class="banner-text-2">the creative mind your project needs !</div>
     </div>
-    <img class="logo" src="<?= BASE_URL ?>public/img/logo.png">
+    <img class="logo" src="<?= htmlspecialchars(BASE_URL) ?>public/img/logo.png">
 </div>
 
 
