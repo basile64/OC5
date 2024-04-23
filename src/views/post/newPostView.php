@@ -2,8 +2,8 @@
 ob_start();
 $page = "postsManagement";
 ?>
-<link rel="stylesheet" href="http://localhost/OC5/public/css/post-new.css">
-<script src="http://localhost/OC5/public/js/new-post.js"></script>
+<link rel="stylesheet" href="<?= BASE_URL ?>public/css/post-new.css">
+<script src="<?= BASE_URL ?>public/js/new-post.js"></script>
 
 <div class="single-post">
     <form method="post" action="./create" enctype="multipart/form-data">
@@ -34,17 +34,17 @@ $page = "postsManagement";
                 <div class="info-post">
                     <div>Author</div>
                     <select id="author" name="userId" class="date-creation-post-single">
-                    <?php foreach ($authors as $author): ?>
-                        <option value="<?php echo $author->getId(); ?>"><?php echo $author->getFirstName(); ?></option>
-                    <?php endforeach; ?>
+                        <?php foreach ($authors as $author): ?>
+                            <option value="<?= htmlspecialchars($author->getId()); ?>"><?= htmlspecialchars($author->getFirstName()); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="info-post">
                     <div>Category</div>
                     <select id="category" name="categoryId" class="date-creation-post-single">
-                    <?php foreach ($categories as $category): ?>
-                        <option value="<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></option>
-                    <?php endforeach; ?>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?= htmlspecialchars($category->getId()); ?>"><?= htmlspecialchars($category->getName()); ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>

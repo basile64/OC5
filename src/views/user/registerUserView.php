@@ -2,7 +2,7 @@
 ob_start();
 $page = "login";
 ?>
-<link rel="stylesheet" href="http://localhost/OC5/public/css/user-register.css">
+<link rel="stylesheet" href="<?= BASE_URL ?>public/css/user-register.css">
 
 <div class="user">
     <form method="post" action="./create">

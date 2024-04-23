@@ -274,7 +274,9 @@ class UserManager
             header("Location: ".BASE_URL."admin/usersManagement");
             return;
         } else {
-            echo "Erreur lors de la suppression de l'utilisation.";
+            $this->sessionManager->setSessionVariable("error_message", "Error when deleting the user !");
+            header("Location: ".BASE_URL."admin/usersManagement");
+            return;
         }
     }
 
