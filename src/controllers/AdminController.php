@@ -38,7 +38,7 @@ class AdminController extends Controller
             $this->runAction($explodedUrl);
             return; 
         }
-        header("Location: ".htmlspecialchars(BASE_URL));
+        header("Location: ".BASE_URL);
         return;
     }
 

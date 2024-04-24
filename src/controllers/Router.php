@@ -7,10 +7,7 @@ use application\src\utils\UrlParser;
 class Router
 {
     
-    private $url;
-    private $routes = [];
     private $urlParser;
-    private $className;
     private $controller;
 
         public function __construct($url)

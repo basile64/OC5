@@ -7,7 +7,8 @@ use application\src\models\database\DbConnect;
 use application\src\models\category\CategoryManager;
 use application\src\models\user\UserManager;
 use application\src\utils\SessionManager;
-use application\src\utils\FileManager;
+use application\src\models\file\FileManager;
+use application\src\models\file\File;
 
 class PostManager
 {
@@ -22,7 +23,8 @@ class PostManager
         $this->sessionManager = new SessionManager;
     }
     
-    public function getAll(){
+    public function getAll()
+    {
         $query = "
         SELECT
             *,
@@ -45,7 +47,8 @@ class PostManager
      
     }
 
-    public function get($postId){
+    public function get($postId)
+    {
         $query = "
             SELECT
                 *
@@ -62,80 +65,80 @@ class PostManager
 
     }
 
-    public function edit($postId){
+    public function edit($postId)
+    {
         return ($this->get($postId));
     }
 
-    public function update($postId){
+    public function update($postId)
+    {
         $title = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_STRING);
         $chapo = filter_input(INPUT_POST, 'postChapo', FILTER_SANITIZE_STRING);
         $text = filter_input(INPUT_POST, 'postText', FILTER_SANITIZE_STRING);
         $categoryId = filter_input(INPUT_POST, 'categoryId', FILTER_VALIDATE_INT);
-        
     
-    // Assurez-vous que tous les champs requis sont présents
-    if ($title === null || $chapo === null || $text === null || $categoryId === null) {
-        // Gérez l'erreur et redirigez l'utilisateur
-        $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
-        header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
-        return;
-    }
-
-    // Préparez les paramètres de la requête SQL
-    $params = [
-        ":title" => $title,
-        ":chapo" => $chapo,
-        ":text" => $text,
-        ":categoryId" => $categoryId,
-        ":postId" => $postId
-    ];
-
-    // Construisez la requête SQL de base
-    $query = "UPDATE post SET title = :title, chapo = :chapo, text = :text, dateModification = NOW(), categoryId = :categoryId";
-
-    // Instanciez le gestionnaire de fichiers
-    $this->fileManager = new FileManager;
-
-    // Vérifiez si un fichier a été soumis
-    if ($this->fileManager->isFileUploaded("postImg") === true) {
-        // Vérifiez si le fichier est correctement téléchargé
-        if ($this->fileManager->fileExists("postImg") === false) {
-            // Gérez l'erreur et redirigez l'utilisateur
-            $this->sessionManager->setSessionVariable("error_message", "Image doesn't exist.");
+        if ($title === null || $chapo === null || $text === null || $categoryId === null) {
+            $this->sessionManager->setSessionVariable("error_message", "All the fields are required.");
             header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
             return;
         }
-        
-        // Téléchargez le fichier
-        $uploadDir = "../public/upload/";
-        $fileName = $this->fileManager->generateUniqueFilename($_FILES["postImg"]["name"]); // Utilisez la méthode pour générer un nom unique
-        if (($this->fileManager->moveUploadedFile("postImg", $uploadDir, $fileName)) === false) {
-            // Gérez l'erreur et redirigez l'utilisateur
-            $this->sessionManager->setSessionVariable("error_message", "Unable to upload the image.");
-            header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
-            return;
-        }
-        
-        // Mettez à jour le champ img dans la base de données avec le même nom de fichier
-        $query .= ", img = :postImg";
-        $params[":postImg"] = $fileName;
-    }
-
-    // Ajoutez la condition WHERE à la requête SQL
-    $query .= " WHERE id = :postId";
-
-    // Exécutez la requête SQL
-    $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            $this->sessionManager->setSessionVariable("success_message", "Post updated !");
-            header("Location: ".BASE_URL."admin/postsManagement");
-            return;
-        } else {
-            $this->sessionManager->setSessionVariable("error_message", "Error creating the post.");
+        $params = [
+            ":title" => $title,
+            ":chapo" => $chapo,
+            ":text" => $text,
+            ":categoryId" => $categoryId,
+            ":postId" => $postId
+        ];
+    
+        $query = "UPDATE post SET title = :title, chapo = :chapo, text = :text, dateModification = NOW(), categoryId = :categoryId";
+    
+        $this->fileManager = new FileManager;
+    
+        // Vérifier si un fichier a été soumis
+        if ($this->fileManager->isFileUploaded("postImg") === true) {
+            $imgFile = new File("postImg");
+
+            // Vérifier si le fichier existe 
+            if ($this->fileManager->fileExists("postImg") === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Image doesn't exist.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                return;
+            }
+
+            // Vérifier si le fichier est une image en vérifiant son extension
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if ($this->fileManager->isAllowedFileType($imgFile, $allowedExtensions) === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                return;
+            }
+            
+            // Télécharger le fichier
+            $uploadDir = "../public/upload/";
+            $fileName = $this->fileManager->generateUniqueFilename($imgFile->getName()); // Utilisez la méthode pour générer un nom unique
+            if (!$this->fileManager->moveUploadedFile($imgFile, $uploadDir, $fileName)) {
+                $this->sessionManager->setSessionVariable("error_message", "Unable to upload the image.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                return;
+            }
+            
+            $query .= ", img = :postImg";
+            $params[":postImg"] = $fileName;
+        }
+    
+        $query .= " WHERE id = :postId";
+    
+        $result = DbConnect::executeQuery($query, $params);
+        
+        if ($result === false) {
+            $this->sessionManager->setSessionVariable("error_message", "Error updating the post.");
             header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
             return;
         }
+
+        $this->sessionManager->setSessionVariable("success_message", "Post updated !");
+        header("Location: ".BASE_URL."admin/postsManagement");
     }
     
     public function delete($postId)
@@ -154,11 +157,11 @@ class PostManager
 
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Post supprimé avec succès.");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
+            header("Location: ".BASE_URL."admin/postsManagement");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when deleting the post.");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/postsManagement");
+            header("Location: ".BASE_URL."admin/postsManagement");
             return;
         }
     }
@@ -193,24 +196,35 @@ class PostManager
             ":categoryId" => $categoryId
         ];
     
-        $query = "INSERT INTO post (title, chapo, text, dateCreation, userId, categoryId, img";
-
+        $query = "INSERT INTO post (title, chapo, text, dateCreation, userId, categoryId, img)";
+    
+        // Créez une instance de FileManager
         $this->fileManager = new FileManager;
         
         // Vérifiez si un fichier a été soumis
-        if ($this->fileManager->isFileUploaded("postImg")) {
-            // Vérifiez si le fichier est correctement téléchargé
-            if (!$this->fileManager->fileExists("postImg")) {
-                $this->sessionManager->setSessionVariable("error_message", "File upload failed.");
-                $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-                header("Location: " . BASE_URL . "admin/postsManagement/create");
+        if ($this->fileManager->isFileUploaded("postImg") === true) {
+            // Récupérez l'instance de File pour l'image
+            $imgFile = new File("postImg");
+
+            // Vérifier si le fichier existe 
+            if ($this->fileManager->fileExists("postImg") === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Image doesn't exist.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
+                return;
+            }
+
+            // Vérifier si le fichier est une image en vérifiant son extension
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if ($this->fileManager->isAllowedFileType($imgFile, $allowedExtensions) === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed.");
+                header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
                 return;
             }
             
             // Téléchargez le fichier
             $uploadDir = "../public/upload/";
-            $fileName = $this->fileManager->generateUniqueFilename($_FILES["postImg"]["name"]);
-            if (!$this->fileManager->moveUploadedFile("postImg", $uploadDir, $fileName)) {
+            $fileName = $this->fileManager->generateUniqueFilename($imgFile->getName());
+            if (!$this->fileManager->moveUploadedFile($imgFile, $uploadDir, $fileName)) {
                 $this->sessionManager->setSessionVariable("error_message", "Error when uploading the image.");
                 $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
                 header("Location: " . BASE_URL . "admin/postsManagement/create");
@@ -224,25 +238,21 @@ class PostManager
             $params[":img"] = null;
         }
         
-        $query .= ") VALUES (:title, :chapo, :text, NOW(), :userId, :categoryId, :img)";
-        
-        
+        $query .= "VALUES (:title, :chapo, :text, NOW(), :userId, :categoryId, :img)";
     
         $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            $this->sessionManager->setSessionVariable("success_message", "Post created.");
-            $this->sessionManager->unsetSessionVariable("formData");
-            header("Location: " . BASE_URL . "admin/postsManagement");
-            return;
-        } else {
-            $this->sessionManager->setSessionVariable("error_message", "Error when creating the post. Query: $query");
+        if ($result === false) {
+            $this->sessionManager->setSessionVariable("error_message", "Error when creating the post.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
             header("Location: " . BASE_URL . "admin/postsManagement/new");
             return;
         }
+
+        $this->sessionManager->setSessionVariable("success_message", "Post created.");
+        $this->sessionManager->unsetSessionVariable("formData");
+        header("Location: " . BASE_URL . "admin/postsManagement");
     }
-    
     
     
     public function getCategoryByPost($postId)

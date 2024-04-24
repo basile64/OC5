@@ -150,6 +150,32 @@ a:hover {
   font-size: 14px;
 }
 
+.success-message,
+.error-message {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px 30px;
+  background: green;
+  color: rgb(238 238 238);
+  border-radius: 0 0 0 5px;
+  text-align: center;
+  font-weight: 200;
+  opacity: 0;
+  box-shadow: rgb(0 0 0 / 0.2) 0 0 15px -3px;
+  transition: opacity 0.5s ease-in-out;
+  animation: fadeInOut 3s 0s forwards;
+  z-index: 10;
+}
+
+.error-message {
+  background: red;
+}
+
+.hidden {
+  display: none !important;
+}
+
 @media (width <= 767px) {
   body {
     flex-direction: column;

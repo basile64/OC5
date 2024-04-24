@@ -135,7 +135,7 @@ class MainCommentManager
 
         if ($postId === null) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
-            header("Location: ".htmlspecialchars(BASE_URL));
+            header("Location: ".BASE_URL);
             return;
         }
     
@@ -155,11 +155,11 @@ class MainCommentManager
     
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Comment submitted.");
-            header("Location: ".htmlspecialchars(BASE_URL)."post/$postId");
+            header("Location: ".BASE_URL."post/$postId");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
-            header("Location: ".htmlspecialchars(BASE_URL)."$postId");
+            header("Location: ".BASE_URL."$postId");
             return;
         }
     }
