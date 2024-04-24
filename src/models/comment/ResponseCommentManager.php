@@ -5,9 +5,18 @@ namespace application\src\models\comment;
 use application\src\models\database\DbConnect;
 use application\src\models\comment\MainComment;
 use application\src\models\comment\ResponseComment;
+use application\src\utils\SessionManager;
 
 class ResponseCommentManager 
 {
+
+    public $sessionManager;
+
+    public function __construct()
+    {
+        $this->sessionManager = new SessionManager;
+    }
+
     public static function getAll()
     {
         $query = "
@@ -104,7 +113,7 @@ class ResponseCommentManager
         WHERE
             mainComment.id = :id AND comment.status = 'approved'
         ORDER BY 
-            date DESC;
+            date ASC;
         ";
 
 

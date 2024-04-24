@@ -27,7 +27,7 @@
 .main-comment-container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
 }
 
 .main-comment-date {

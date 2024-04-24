@@ -27,7 +27,7 @@ class CommentController extends Controller
             return;
         }
         $this->sessionManager->setSessionVariable("error_message", "You have to be logged.");
-        header("Location: ".htmlspecialchars(htmlspecialchars(BASE_URL)));
+        header("Location: ".BASE_URL);
         return;
     }
 
@@ -42,9 +42,9 @@ class CommentController extends Controller
         if ($this->commentManager->{$this->action}() === true) {
             $commentId = DbConnect::$connection->lastInsertId();
             // Si pas de idMainComment dans $_POST, alors il ne s'agit pas d'une réponse à un autre commentaire
-            $idMainComment = filter_input(INPUT_POST, 'idMainComment', FILTER_VALIDATE_INT);
+            $mainCommentId = filter_input(INPUT_POST, 'mainCommentId', FILTER_VALIDATE_INT);
 
-            if ($idMainComment === null) {
+            if ($mainCommentId === null) {
                 $this->mainCommentManager = new MainCommentManager();
                 $this->mainCommentManager->create($commentId);
                 return;

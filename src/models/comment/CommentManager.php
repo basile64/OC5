@@ -184,15 +184,13 @@ class CommentManager
     
         $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            return true;
-        } else {
+        if ($result === false) {
             $this->sessionManager->setSessionVariable("error_message", "Error submitting comment.");
             header("Location: ".BASE_URL."$postId");
             return;
         }
+        return true;
     }
-    
 
     public function approve($id)
     {
