@@ -11,13 +11,20 @@ class DbConnect
     public static $connection;
     private static $instance;
 
-    private function __construct(){
+    private function __construct()
+    {
         $this->connect();
     }
 
-    private function connect(){
+    private function connect()
+    {
         try {
-            if (self::$connection === null){
+            if (self::$connection === null) {
+                $host = getenv('DB_HOST');
+                $dbname = getenv('DB_NAME');
+                $user = getenv('DB_USER');
+                $password = getenv('DB_PASSWORD');
+
                 self::$connection = new \PDO("mysql:host=".self::HOST.";dbname=".self::DBNAME, self::USER, self::PASSWORD);
                 self::$connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
@@ -34,7 +41,8 @@ class DbConnect
         return self::$instance;
     }
 
-    public static function executeQuery($sql, $params = array()){
+    public static function executeQuery($sql, $params = array())
+    {
         $db = self::getInstance();
         try {
             $stmt = $db::$connection->prepare($sql);
