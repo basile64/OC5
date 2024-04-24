@@ -31,6 +31,11 @@ composer install
 ```
 
 3. Configure database access parameters in the `.env` file.
+4. Configuration of the BASE_URL before getting started with using the application, make sure to configure the base URL in the config.php file. This URL is used to construct the absolute links of your application. For example, if your application is hosted on http://example.com/, you should define the base URL as follows:
+```bash
+define('BASE_URL', "http://example.com/");
+```
+Make sure to replace http://example.com/ with the actual URL of your application. It's important to properly configure this URL to ensure the correct functioning of links and redirects in your application.
 
 ## Usage
 
