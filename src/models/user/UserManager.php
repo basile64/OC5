@@ -7,6 +7,8 @@ use application\src\models\user\User;
 use application\src\models\user\BasicUser;
 use application\src\models\user\AdminUser;
 use application\src\utils\SessionManager;
+use application\src\models\file\FileManager;
+use application\src\models\file\File;
 
 class UserManager
 {
@@ -127,21 +129,21 @@ class UserManager
         if ($firstName === null || $lastName === null || $email === null || $password === "" || $confirmPassword === "") {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/register");
+            header("Location: ".BASE_URL."user/register");
             return;
         }
     
         if ($this->checkIfEmailExists($email)) {
             $this->sessionManager->setSessionVariable("error_message", "An account with this email address already exists.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/register");
+            header("Location: ".BASE_URL."user/register");
             return;
         }
     
         if ($password != $confirmPassword){
             $this->sessionManager->setSessionVariable("error_message", "Passwords do not match.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/register");
+            header("Location: ".BASE_URL."user/register");
             return;
         }
     
@@ -167,13 +169,13 @@ class UserManager
         if ($result === false) {
             $this->sessionManager->setSessionVariable("error_message", "Error creating your account.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/register");
+            header("Location: ".BASE_URL."user/register");
             return;
         }
 
         $this->sessionManager->setSessionVariable("success_message", "Your account is created.");
         $this->sessionManager->unsetSessionVariable("formData");
-        header("Location: ".htmlspecialchars(BASE_URL)."user/login");
+        header("Location: ".BASE_URL."user/login");
         return;
     }
     
@@ -216,7 +218,7 @@ class UserManager
         // Vérifier que tous les champs sont remplis
         if ($firstName === null || $lastName === null || $mail === null || $role === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/usersManagement/edit/".$id);
+            header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
             return;
         }
     
@@ -244,11 +246,11 @@ class UserManager
     
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "User updated !");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/usersManagement");
+            header("Location: ".BASE_URL."admin/usersManagement");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error updating user.");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/usersManagement/edit/".$id);
+            header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
             return;
         }
     }
@@ -271,11 +273,11 @@ class UserManager
 
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "User deleted !");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/usersManagement");
+            header("Location: ".BASE_URL."admin/usersManagement");
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when deleting the user !");
-            header("Location: ".htmlspecialchars(BASE_URL)."admin/usersManagement");
+            header("Location: ".BASE_URL."admin/usersManagement");
             return;
         }
     }
@@ -293,7 +295,7 @@ class UserManager
         if ($userMail === null) {
             $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/login");
+            header("Location: ".BASE_URL."user/login");
             return;
         }
     
@@ -320,12 +322,12 @@ class UserManager
 
             $this->openSession($userData);
             $this->sessionManager->unsetSessionVariable("formData");
-            header("Location: ".htmlspecialchars(BASE_URL));
+            header("Location: ".BASE_URL);
             return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Incorrect email or password.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
-            header("Location: ".htmlspecialchars(BASE_URL)."user/login");
+            header("Location: ".BASE_URL."user/login");
             return;
         }
     }
@@ -346,7 +348,7 @@ class UserManager
     public function logout()
     {
         session_unset();
-        header("Location: ".htmlspecialchars(BASE_URL));
+        header("Location: ".BASE_URL);
     }
     
     public function profile()
@@ -375,13 +377,13 @@ class UserManager
     
         if (!password_verify($oldPassword, $user->getPassword())) {
             $this->sessionManager->setSessionVariable("error_message", "Incorrect old password.");
-            header("Location: ".htmlspecialchars(BASE_URL)."user/password");
+            header("Location: ".BASE_URL."user/password");
             return;
         }
     
         if ($newPassword !== $confirmPassword) {
             $this->sessionManager->setSessionVariable("error_message", "New password and confirmation do not match.");
-            header("Location: ".htmlspecialchars(BASE_URL)."user/password");
+            header("Location: ".BASE_URL."user/password");
             return;
         }
     
@@ -405,12 +407,12 @@ class UserManager
     
         if ($result === false) {
             $this->sessionManager->setSessionVariable("error_message", "Error updating password.");
-            header("Location: ".htmlspecialchars(BASE_URL)."user/change-password");
+            header("Location: ".BASE_URL."user/change-password");
             return;
         }
 
         $this->sessionManager->setSessionVariable("success_message", "Password successfully updated.");
-        header("Location: ".htmlspecialchars(BASE_URL)."user/profile");
+        header("Location: ".BASE_URL."user/profile");
         return;
         
     }
@@ -428,18 +430,45 @@ class UserManager
     
         if ($firstName === null || $lastName === null || $mail === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
-            header("Location: ".htmlspecialchars(BASE_URL)."user/profile");
+            header("Location: ".BASE_URL."user/profile");
             return;
         }
     
-        if (isset($_FILES["avatar"]) && $_FILES["avatar"]["error"] === UPLOAD_ERR_OK) {
-            $avatarName = filter_var($_FILES["avatar"]["name"], FILTER_SANITIZE_STRING);
-            $avatarPath = "../public/avatar/" . basename($avatarName);
-            move_uploaded_file($_FILES["avatar"]["tmp_name"], $avatarPath);
+        $this->fileManager = new FileManager;
+    
+        // Vérifier si un fichier avatar a été soumis
+        if ($this->fileManager->isFileUploaded("userAvatar") === true) {
+            // Créer une instance de File pour l'avatar
+            $avatarFile = new File("userAvatar");
+    
+            // Vérifier si le fichier existe
+            if ($this->fileManager->fileExists("userAvatar") === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Avatar file doesn't exist.");
+                header("Location: ".BASE_URL."user/profile");
+                return;
+            }
+    
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if ($this->fileManager->isAllowedFileType($avatarFile, $allowedExtensions) === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed for avatars.");
+                header("Location: ".BASE_URL."user/profile");
+                return;
+            }
+    
+            // Déplacer le fichier avatar téléchargé vers le répertoire d'avatar
+            $uploadDir = "../public/avatar/";
+            $avatarName = $this->fileManager->generateUniqueFilename($avatarFile->getName());
+            if ($this->fileManager->moveUploadedFile($avatarFile, $uploadDir, $avatarName) === false) {
+                $this->sessionManager->setSessionVariable("error_message", "Error uploading the avatar.");
+                header("Location: ".BASE_URL."user/profile");
+                return;
+            }
         } else {
-            $avatarPath = $currentAvatar;
+            // Utiliser l'avatar actuel si aucun fichier n'a été soumis
+            $avatarName = $currentAvatar;
         }
     
+        // Construisez la requête SQL pour mettre à jour les données de l'utilisateur
         $query = "
             UPDATE
                 user
@@ -453,7 +482,7 @@ class UserManager
         ";
     
         $params = [
-            ":avatar" => $avatarPath,  
+            ":avatar" => $avatarName,
             ":firstName" => $firstName,
             ":lastName" => $lastName,
             ":mail" => $mail,
@@ -462,20 +491,21 @@ class UserManager
     
         $result = DbConnect::executeQuery($query, $params);
     
-        if ($result !== false) {
-            $this->sessionManager->setSessionVariable("success_message", "Profile updated !");
-            $this->sessionManager->setSessionVariable("userAvatar", $avatarPath);
-            $this->sessionManager->setSessionVariable("userFirstName", $firstName);
-            $this->sessionManager->setSessionVariable("userLastName", $lastName);
-            $this->sessionManager->setSessionVariable("userMail", $mail);            
-            header("Location: ".htmlspecialchars(BASE_URL)."user/profile");
-            return;
-        } else {
+        if ($result === false) {
             $this->sessionManager->setSessionVariable("error_message", "Error saving your profile.");
-            header("Location: ".htmlspecialchars(BASE_URL)."user/profile");
+            header("Location: ".BASE_URL."user/profile");
             return;
         }
+        
+        $this->sessionManager->setSessionVariable("success_message", "Profile updated !");
+        $this->sessionManager->setSessionVariable("userAvatar", $avatarPath);
+        $this->sessionManager->setSessionVariable("userFirstName", $firstName);
+        $this->sessionManager->setSessionVariable("userLastName", $lastName);
+        $this->sessionManager->setSessionVariable("userMail", $mail);            
+        header("Location: ".BASE_URL."user/profile");
     }
+    
+    
     
 
     public static function getNumberOfCommentsByUser($id)
