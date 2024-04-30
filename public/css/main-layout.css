@@ -137,6 +137,13 @@ button:hover {
   display: none !important;
 }
 
+.email-confirmed {
+  padding: 5px 10px;
+  margin: 0 auto;
+  color: rgb(6 2 51);
+  font-weight: bold;
+}
+
 @keyframes fadeInOut {
   0% {
     opacity: 0;

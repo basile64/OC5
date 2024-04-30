@@ -12,9 +12,32 @@ use application\src\models\user\AdminUserManager;
 class UserController extends Controller
 {
 
+    /**
+     * The manager instance for handling user-related operations.
+     *
+     * @var UserManager
+     */
     private $userManager;
+
+    /**
+     * The manager instance for handling comment-related operations.
+     *
+     * @var CommentManager
+     */
     private $commentManager;
+
+    /**
+     * Class representing the type of user-related action.
+     *
+     * @var string
+     */
     private $class;
+
+    /**
+     * Action to be performed on the user-related entity.
+     *
+     * @var string
+     */
     private $action;
 
     public function __construct($explodedUrl)
@@ -35,13 +58,13 @@ class UserController extends Controller
         if ($this->action != "comments"){
             $this->userManager = new UserManager();
             //C as pour afficher un profil public
-            if (is_numeric($explodedUrl[1])){
+            if (is_numeric($explodedUrl[1]) === true){
                 $user = $this->userManager->get($explodedUrl[1]);
                 $numberOfComments = $this->userManager->getNumberOfCommentsByUser($user->getId());
                 $this->view = $this->class . "/" . "publicProfile" . ucfirst($this->class) . "View";
                 $this->render([$this->class => $user, "numberOfComments" => $numberOfComments]);
             } else {
-                $result = $this->userManager->{$this->action}();
+                $result = $this->userManager->{$this->action}($explodedUrl);
                 $this->view = $this->class . "/" . $this->action . ucfirst($this->class) . "View";
                 $this->render([$this->class => $result]);
             }

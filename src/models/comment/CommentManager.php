@@ -6,16 +6,36 @@ use application\src\models\comment\Comment;
 use application\src\models\database\DbConnect;
 use application\src\utils\SessionManager;
 
+/**
+ * Provides methods to manage comment entity.
+ */
 class CommentManager
 {
-
+    
+    /**
+     * Instance of SessionManager for handling session-related operations.
+     *
+     * @var SessionManager
+     */
     private $sessionManager;
 
+    /**
+     * Constructor method for CommentManager class.
+     *
+     * Initializes a new instance of CommentManager class and creates an instance of SessionManager.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->sessionManager = new SessionManager;
     }
 
+    /**
+     * Retrieves all comments with associated data from the database.
+     *
+     * @return array An array of Comment objects.
+     */
     public function getAll()
     {
         $query = "
@@ -26,7 +46,7 @@ class CommentManager
                 C.status,
                 C.postId,
                 C.userId,
-                RC.mainCommentId,
+                RC.mainCommentId
 
             FROM 
                 comment AS C
@@ -38,7 +58,6 @@ class CommentManager
 
         $result = DbConnect::executeQuery($query);
 
-        // Instanciation des commentaires en fonction du type
         $comments = [];
         foreach ($result as $commentData) {
             if (!empty($commentData['postId'])) {
@@ -52,6 +71,11 @@ class CommentManager
         return $comments;
     }
 
+    /**
+     * Retrieves all pending comments with associated data from the database.
+     *
+     * @return array An array of Comment objects with 'pending' status.
+     */
     public function getAllPending()
     {
         $query = "
@@ -78,7 +102,6 @@ class CommentManager
 
         $result = DbConnect::executeQuery($query);
 
-        // Instanciation des commentaires en fonction du type
         $comments = [];
         foreach ($result as $commentData) {
             if (!empty($commentData['postId'])) {
@@ -92,6 +115,11 @@ class CommentManager
         return $comments;
     }
     
+    /**
+     * Retrieves all approved comments by the current user from the database.
+     *
+     * @return array An array of Comment objects with 'approved' status associated with the current user.
+     */
     public function getAllApprovedByUser()
     {
         $this->sessionManager = new SessionManager;
@@ -124,7 +152,6 @@ class CommentManager
 
         $result = DbConnect::executeQuery($query, $params);
 
-        // Instanciation des commentaires en fonction du type
         $comments = [];
         foreach ($result as $commentData) {
             if (!empty($commentData['postId'])) {
@@ -138,6 +165,12 @@ class CommentManager
         return $comments;
     }
 
+    /**
+     * Retrieves a comment by its ID from the database.
+     *
+     * @param int $id The ID of the comment to retrieve.
+     * @return Comment The Comment object corresponding to the provided ID.
+     */
     public function get($id)
     {
         $query = "
@@ -156,6 +189,11 @@ class CommentManager
 
     }
 
+    /**
+     * Creates a new comment in the database.
+     *
+     * @return bool True if the comment creation is successful, otherwise false.
+     */
     public function create()
     {
         $textComment = filter_input(INPUT_POST, "textComment", FILTER_SANITIZE_STRING);
@@ -192,6 +230,12 @@ class CommentManager
         return true;
     }
 
+    /**
+     * Approves a comment by updating its status in the database.
+     *
+     * @param int $id The ID of the comment to approve.
+     * @return void
+     */
     public function approve($id)
     {
         $query="
@@ -216,6 +260,12 @@ class CommentManager
         header("Location: ".BASE_URL."admin/commentsManagement");
     }
     
+    /**
+     * Deletes a comment from the database.
+     *
+     * @param int $id The ID of the comment to delete.
+     * @return void
+     */
     public function delete($id)
     {
         $query="

@@ -10,19 +10,45 @@ use application\src\utils\SessionManager;
 use application\src\models\file\FileManager;
 use application\src\models\file\File;
 
+/**
+ * Provides methods to manage post entity.
+ */
 class PostManager
 {
 
+    /**
+     * @var UserManager The user manager instance.
+     */
     protected $userManager;
+
+    /**
+     * @var CategoryManager The category manager instance.
+     */
     protected $categoryManager;
+
+    /**
+     * @var SessionManager The session manager instance.
+     */
     protected $sessionManager;
+
+    /**
+     * @var FileManager The file manager instance.
+     */
     protected $fileManager;
 
+    /**
+     * PostManager constructor.
+     */
     public function __construct()
     {
         $this->sessionManager = new SessionManager;
     }
     
+    /**
+     * Retrieves all posts from the database.
+     *
+     * @return array An array of Post objects.
+     */
     public function getAll()
     {
         $query = "
@@ -47,6 +73,12 @@ class PostManager
      
     }
 
+    /**
+     * Retrieves a post by its ID.
+     *
+     * @param int $postId The ID of the post.
+     * @return Post|null The post object, or null if not found.
+     */
     public function get($postId)
     {
         $query = "
@@ -65,11 +97,22 @@ class PostManager
 
     }
 
+    /**
+     * Retrieves a post to edit by its ID.
+     *
+     * @param int $postId The ID of the post.
+     * @return Post|null The post object, or null if not found.
+     */
     public function edit($postId)
     {
         return ($this->get($postId));
     }
 
+    /**
+     * Updates a post in the database.
+     *
+     * @param int $postId The ID of the post to update.
+     */
     public function update($postId)
     {
         $title = filter_input(INPUT_POST, 'postTitle', FILTER_SANITIZE_STRING);
@@ -95,18 +138,18 @@ class PostManager
     
         $this->fileManager = new FileManager;
     
-        // Vérifier si un fichier a été soumis
+        // Check if a file has been submitted
         if ($this->fileManager->isFileUploaded("postImg") === true) {
             $imgFile = new File("postImg");
 
-            // Vérifier si le fichier existe 
+            // Check if the file exists 
             if ($this->fileManager->fileExists("postImg") === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Image doesn't exist.");
                 header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
                 return;
             }
 
-            // Vérifier si le fichier est une image en vérifiant son extension
+            // Check if the file is an image by checking its extension
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if ($this->fileManager->isAllowedFileType($imgFile, $allowedExtensions) === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed.");
@@ -114,9 +157,9 @@ class PostManager
                 return;
             }
             
-            // Télécharger le fichier
+            // Upload the file
             $uploadDir = "../public/upload/";
-            $fileName = $this->fileManager->generateUniqueFilename($imgFile->getName()); // Utilisez la méthode pour générer un nom unique
+            $fileName = $this->fileManager->generateUniqueFilename($imgFile->getName()); // Use the method to generate a unique name
             if (!$this->fileManager->moveUploadedFile($imgFile, $uploadDir, $fileName)) {
                 $this->sessionManager->setSessionVariable("error_message", "Unable to upload the image.");
                 header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
@@ -141,6 +184,11 @@ class PostManager
         header("Location: ".BASE_URL."admin/postsManagement");
     }
     
+    /**
+     * Deletes a post from the database by its ID.
+     *
+     * @param int $postId The ID of the post to delete.
+     */
     public function delete($postId)
     {
         $query="
@@ -166,6 +214,11 @@ class PostManager
         }
     }
 
+    /**
+     * Retrieves all categories.
+     *
+     * @return array An array of categories.
+     */
     public function new()
     {
         $this->categoryManager = new CategoryManager();
@@ -173,6 +226,9 @@ class PostManager
         return $categories;
     }
 
+    /**
+     * Creates a new post in the database.
+     */
     public function create()
     {
         $title = filter_input(INPUT_POST, "postTitle", FILTER_SANITIZE_STRING);
@@ -198,22 +254,22 @@ class PostManager
     
         $query = "INSERT INTO post (title, chapo, text, dateCreation, userId, categoryId, img)";
     
-        // Créez une instance de FileManager
+        // Create an instance of FileManager
         $this->fileManager = new FileManager;
         
-        // Vérifiez si un fichier a été soumis
+        // Check if a file has been submitted
         if ($this->fileManager->isFileUploaded("postImg") === true) {
-            // Récupérez l'instance de File pour l'image
+            // Retrieve the File instance for the image
             $imgFile = new File("postImg");
 
-            // Vérifier si le fichier existe 
+            // Check if the file exists 
             if ($this->fileManager->fileExists("postImg") === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Image doesn't exist.");
                 header("Location: ".BASE_URL."admin/postsManagement/edit/".$postId);
                 return;
             }
 
-            // Vérifier si le fichier est une image en vérifiant son extension
+            // Check if the file is an image by checking its extension
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if ($this->fileManager->isAllowedFileType($imgFile, $allowedExtensions) === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed.");
@@ -221,7 +277,7 @@ class PostManager
                 return;
             }
             
-            // Téléchargez le fichier
+            // Upload the file
             $uploadDir = "../public/upload/";
             $fileName = $this->fileManager->generateUniqueFilename($imgFile->getName());
             if (!$this->fileManager->moveUploadedFile($imgFile, $uploadDir, $fileName)) {
@@ -231,10 +287,10 @@ class PostManager
                 return;
             }
             
-            // Ajoutez le nom de fichier à la requête SQL
+            // Add the file name to the SQL query
             $params[":img"] = $fileName;
         } else {
-            // Ajoutez une valeur NULL pour l'image si aucun fichier n'a été téléchargé
+            // Add a NULL value for the image if no file has been uploaded
             $params[":img"] = null;
         }
         
@@ -253,8 +309,13 @@ class PostManager
         $this->sessionManager->unsetSessionVariable("formData");
         header("Location: " . BASE_URL . "admin/postsManagement");
     }
-    
-    
+
+    /**
+     * Retrieves the category of a post by its ID.
+     *
+     * @param int $postId The ID of the post.
+     * @return string The name of the category.
+     */
     public function getCategoryByPost($postId)
     {
         $query = "
@@ -277,6 +338,12 @@ class PostManager
         return $category->getName();
     }
 
+    /**
+     * Retrieves the author of a post by its ID.
+     *
+     * @param int $postId The ID of the post.
+     * @return string The first name of the author.
+     */
     public function getAuthorByPost($postId)
     {
         $query = "
@@ -299,6 +366,12 @@ class PostManager
         return $user->getFirstName();
     }
 
+    /**
+     * Retrieves the next post based on the given post ID.
+     *
+     * @param int $postId The ID of the current post.
+     * @return Post The next post.
+     */
     public function getNext($postId)
     {
         $post = $this->get($postId);
@@ -328,6 +401,12 @@ class PostManager
         return $nextPost;
     }
 
+    /**
+     * Retrieves the previous post based on the given post ID.
+     *
+     * @param int $postId The ID of the current post.
+     * @return Post|null The previous post, or null if none found.
+     */
     public function getPrevious($postId)
     {
         $post = $this->get($postId);
@@ -342,19 +421,22 @@ class PostManager
             FROM 
                 post
             WHERE
-                IFNULL(dateModification, dateCreation) > :dateCreationOuModification
+                IFNULL(dateModification, dateCreation) < :dateCreationOuModification
                 AND id != :postId
             ORDER BY
-                dateCreationOuModification ASC
+                dateCreationOuModification DESC
             LIMIT 1
         ";
 
         $params = [":dateCreationOuModification" => $dateCreationOuModification, ":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        $previousPost = new Post($result[0]);
-
-        return $previousPost;
+        if (!empty($result)) {
+            $previousPost = new Post($result[0]);
+            return $previousPost;
+        } else {
+            return null; // Return null if no previous post found
+        }
     }
-
 }
+

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mer. 24 avr. 2024 à 16:22
+-- Généré le : mar. 30 avr. 2024 à 19:26
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -194,22 +194,25 @@ CREATE TABLE `user` (
   `avatar` varchar(50) NOT NULL DEFAULT 'avatar.png',
   `password` varchar(255) NOT NULL,
   `dateRegistration` datetime NOT NULL,
-  `role` enum('basic','admin') NOT NULL DEFAULT 'basic'
+  `role` enum('basic','admin') NOT NULL DEFAULT 'basic',
+  `emailConfirmed` tinyint(1) NOT NULL DEFAULT 0,
+  `token` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `user`
 --
 
-INSERT INTO `user` (`id`, `firstName`, `lastName`, `mail`, `avatar`, `password`, `dateRegistration`, `role`) VALUES
-(1, 'Basile', 'Pineau', 'basile.pineau@greta-cfa-aquitaine.academy', 'avatar1.jpeg', '$2y$10$sfh8n7Hslvz0uC6USH3zD.29sej6aLUhaSI8faYuQBx2V6YjUFhpa', '2024-02-29 21:42:21', 'admin'),
-(17, 'Shelly', 'Cros', 'shelly.cros@gmail.com', 'avatar2.png', '$2y$10$UeKjtmZ9juLZ0bMqIMgdK.bqD0V1stcj1vl4P/yaKmmGYyhxI3Q5G', '2024-04-01 10:31:06', 'basic'),
-(25, 'Jean', 'Dupont', 'jean.dupont@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic'),
-(26, 'Marie', 'Leroy', 'marie.leroy@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic'),
-(27, 'Pierre', 'Martin', 'pierre.martin@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'admin'),
-(28, 'Sophie', 'Dufour', 'sophie.dufour@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic'),
-(29, 'Antoine', 'Garcia', 'antoine.garcia@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'admin'),
-(30, 'Maxwell', 'Everest', 'maxwell.everest@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2023-10-15 08:00:00', 'basic');
+INSERT INTO `user` (`id`, `firstName`, `lastName`, `mail`, `avatar`, `password`, `dateRegistration`, `role`, `emailConfirmed`, `token`) VALUES
+(1, 'Basile', 'Pineau', 'basile.pineau@greta-cfa-aquitaine.academy', 'avatar1.jpeg', '$2y$10$sfh8n7Hslvz0uC6USH3zD.29sej6aLUhaSI8faYuQBx2V6YjUFhpa', '2024-02-29 21:42:21', 'admin', 1, 'd1b8a6c5d9e3a7b4c1a2f3e5d8a6c7b9a2f3e5d1b8a6c5d9'),
+(17, 'Shelly', 'Cros', 'shelly.cros@gmail.com', 'avatar2.png', '$2y$10$UeKjtmZ9juLZ0bMqIMgdK.bqD0V1stcj1vl4P/yaKmmGYyhxI3Q5G', '2024-04-01 10:31:06', 'basic', 1, 'c7b9a2f3e5d1b8a6c5d9e3a7b4c1a2f3e5d8a6c7b9a2f3e5'),
+(25, 'Jean', 'Dupont', 'jean.dupont@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic', 0, 'e7a2f3e5d8a6c7b9a2f3e5d1b8a6c5d9e3a7b4c1a2f3e5d'),
+(26, 'Marie', 'Leroy', 'marie.leroy@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic', 1, 'c9d5a6b8c1a2f3e5d9a4b6c2d3e7a2f3e5d8a6c7b9a2f3e1'),
+(27, 'Pierre', 'Martin', 'pierre.martin@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'admin', 1, 'ab3c2d8e9f1a5b6c7d4e3a2b4c5d6e7a8b9a2f3e5d1b7c9a5'),
+(28, 'Sophie', 'Dufour', 'sophie.dufour@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'basic', 0, 'f9a4b6c2d3e7a2f3e5d8a6c7b9a2f3e5d1b8a6c5d9e3a7b4'),
+(29, 'Antoine', 'Garcia', 'antoine.garcia@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2024-04-24 13:57:48', 'admin', 1, 'bd8a7c9e2f3e1d5a6b4c3a2f3e5d8a6c7b9a2f3e5d1b8a6c5d9'),
+(30, 'Maxwell', 'Everest', 'maxwell.everest@example.com', 'avatar.png', '$2y$10$rI48RzCSsP/.sjP8lGnU8uew7T9L/ALmbwI30V.eJoZki2ABjGM2m', '2023-10-15 08:00:00', 'basic', 1, 'ea4b6c9a2f3e5d1b8a6c5d9e3a7b4c1a2f3e5d8a6c7b9a2f3e5d1b'),
+(31, 'test', 'test', 'contact@avey.fr', 'avatar.png', '$2y$10$AYJatZmvjyQQIraubGs1q.WG5PFxEi1IKb1dmG2a7UMkTzGTMmtdi', '2024-04-30 18:45:32', 'basic', 1, '5cbe352f9269e1262e1c32d68dd2203c55f582a687a54ffcdee3bb8253df83c9');
 
 --
 -- Index pour les tables déchargées
@@ -296,7 +299,7 @@ ALTER TABLE `responseComment`
 -- AUTO_INCREMENT pour la table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Contraintes pour les tables déchargées

@@ -6,16 +6,36 @@ use application\src\models\database\DbConnect;
 use application\src\models\comment\MainComment;
 use application\src\utils\SessionManager;
 
+/**
+ * Provides methods to manage mainComment entity.
+ */
 class MainCommentManager
 {
 
+    /**
+     * Instance of SessionManager for handling session-related operations.
+     *
+     * @var SessionManager
+     */
     public $sessionManager;
 
+    /**
+     * Constructor method for MainCommentManager class.
+     *
+     * Initializes a new instance of MainCommentManager class and creates an instance of SessionManager.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->sessionManager = new SessionManager;
     }
 
+    /**
+     * Retrieves all main comments with associated data from the database.
+     *
+     * @return array An array of MainComment objects.
+     */
     public static function getAll()
     {
         $query = "
@@ -38,7 +58,7 @@ class MainCommentManager
                 date DESC
         ";
 
-        $result = Model\database\DbConnect::executeQuery($query);
+        $result = DbConnect::executeQuery($query);
 
         $mainComments = [];
 
@@ -49,6 +69,12 @@ class MainCommentManager
 
     }
 
+    /**
+     * Retrieves all main comments associated with a specific post ID from the database.
+     *
+     * @param int $postId The ID of the post.
+     * @return array An array of MainComment objects associated with the specified post ID.
+     */
     public static function getAllByPostId($postId)
     {
         $query = "
@@ -89,6 +115,12 @@ class MainCommentManager
 
     }
 
+    /**
+     * Retrieves all approved main comments associated with a specific post ID from the database.
+     *
+     * @param int $postId The ID of the post.
+     * @return array An array of MainComment objects with approved status associated with the specified post ID.
+     */
     public static function getAllApprovedByPostId($postId)
     {
         $query = "
@@ -129,6 +161,12 @@ class MainCommentManager
 
     }
     
+    /**
+     * Creates a new main comment in the database.
+     *
+     * @param int $commentId The ID of the associated comment.
+     * @return void
+     */
     public function create($commentId)
     {
         $postId = filter_input(INPUT_POST, 'postId', FILTER_VALIDATE_INT);
