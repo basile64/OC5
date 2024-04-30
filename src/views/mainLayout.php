@@ -22,6 +22,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <?= ($sessionManager->getSessionVariable("logged") === true && $sessionManager->getSessionVariable("userEmailConfirmed") === 0) ?
+    "<div class='email-confirmed'>Your email adress isn't confirmed. Check your mails !</div>"
+    : ""?>
     <?php require_once "../src/views/navbar/main-navbar.php";?>
 
     <div id ="content">

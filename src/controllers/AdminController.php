@@ -12,18 +12,93 @@ use application\src\utils as Util;
 class AdminController extends Controller
 {
     
+    /**
+     * The current class being managed.
+     *
+     * @var string
+     */
     private $class;
+
+    /**
+     * The action to be performed on the current class.
+     *
+     * @var string
+     */
     private $action;
+
+    /**
+     * Action constant for editing.
+     *
+     * @var string
+     */
     private const ACTION_EDIT = "edit";
+
+    /**
+     * Action constant for updating.
+     *
+     * @var string
+     */
     private const ACTION_UPDATE = "update";
+
+    /**
+     * Action constant for deleting.
+     *
+     * @var string
+     */
     private const ACTION_DELETE = "delete";
+
+    /**
+     * Action constant for creating a new instance.
+     *
+     * @var string
+     */
     private const ACTION_NEW = "new";
+
+    /**
+     * Action constant for creating a new instance.
+     *
+     * @var string
+     */
     private const ACTION_CREATE = "create";
+
+    /**
+     * The manager instance for handling data operations.
+     *
+     * @var mixed
+     */
     private $manager;
+
+    /**
+     * The key used to access data in the rendered view.
+     *
+     * @var string
+     */
     private $dataKey;
+
+    /**
+     * The manager instance for handling category-related operations.
+     *
+     * @var mixed
+     */
     private $categoryManager;
+
+    /**
+     * The manager instance for handling user-related operations.
+     *
+     * @var mixed
+     */
     private $userManager;
 
+    /**
+     * Constructor of the class.
+     *
+     * Initializes a new instance of the class with the provided parameters.
+     * This constructor takes an array representing a URL split into segments and
+     * performs necessary actions based on the user's role and URL segments.
+     *
+     * @param array $explodedUrl An array representing a URL split into segments.
+     * @return void
+     */
     public function __construct($explodedUrl)
     {
         parent::__construct(); 
@@ -42,6 +117,13 @@ class AdminController extends Controller
         return;
     }
 
+    /**
+     * Loads the appropriate management class based on the current class property value.
+     * Sets necessary properties such as manager, view, and dataKey accordingly.
+     * Invokes the loadManagement method to load data for rendering.
+     *
+     * @return void
+     */
     private function loadClassManagement(){
         switch ($this->class) {
             case "post":
@@ -65,6 +147,14 @@ class AdminController extends Controller
         $this->loadManagement();
     }
     
+    /**
+     * Loads data for rendering based on the current class and action.
+     * If the class is not 'comment', retrieves all data using the manager's 'getAll' method.
+     * Otherwise, retrieves only pending data using the manager's 'getAllPending' method.
+     * Renders the retrieved data using the render method.
+     *
+     * @return void
+     */
     private function loadManagement()
     {
         if ($this->class !== "comment") {
@@ -75,6 +165,16 @@ class AdminController extends Controller
         $this->render($data);
     }
     
+    /**
+     * Runs the specified action on the current manager instance.
+     * Retrieves the action name and optionally the ID from the URL segments.
+     * Instantiates the appropriate manager class based on the current class property value.
+     * Calls the specified action method on the manager instance with the optional ID parameter.
+     * Renders the result if the action involves editing or adding a new post/user.
+     *
+     * @param array $explodedUrl The array containing URL segments.
+     * @return void
+     */
     private function runAction($explodedUrl)
     {
         $id = ($explodedUrl[2] ?? null);

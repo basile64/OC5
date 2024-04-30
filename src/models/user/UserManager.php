@@ -4,22 +4,44 @@ namespace application\src\models\user;
 
 use application\src\models\database\DbConnect;
 use application\src\models\user\User;
-use application\src\models\user\BasicUser;
-use application\src\models\user\AdminUser;
 use application\src\utils\SessionManager;
+use application\src\models\contact\ContactManager;
 use application\src\models\file\FileManager;
 use application\src\models\file\File;
 
+/**
+ * Provides methods to manage user entity.
+ */
 class UserManager
 {
 
+    /**
+     * Manages session-related operations such as setting and getting session variables.
+     *
+     * @var SessionManager
+     */
     public $sessionManager;
 
+    /**
+     * Manages the sending of emails.
+     *
+     * @var contactManager
+     */
+    public $contactManager;
+
+    /**
+     * UserManager constructor.
+     */
     public function __construct()
     {
         $this->sessionManager = new SessionManager;
     }
 
+    /**
+     * Get all users.
+     *
+     * @return array An array of User objects representing all users.
+     */
     public function getAll()
     {
         $query = "
@@ -33,7 +55,6 @@ class UserManager
 
         $result = DbConnect::executeQuery($query);
 
-        // Instanciation des commentaires en fonction du type
         $users = [];
         foreach ($result as $userData) {
             $user = new User($userData);
@@ -43,6 +64,11 @@ class UserManager
         return $users;
     }
 
+    /**
+     * Get all admin users.
+     *
+     * @return array An array of User objects representing all admin users.
+     */
     public static function getAllAdmin()
     {
         $query = "
@@ -58,7 +84,6 @@ class UserManager
 
         $result = DbConnect::executeQuery($query);
 
-        // Instanciation des commentaires en fonction du type
         $users = [];
         foreach ($result as $userData) {
             $user = new User($userData);
@@ -68,6 +93,11 @@ class UserManager
         return $users;
     }
 
+    /**
+     * Get all basic users.
+     *
+     * @return array An array of User objects representing all basic users.
+     */
     public function getAllBasic()
     {
         $query = "
@@ -83,7 +113,6 @@ class UserManager
 
         $result = DbConnect::executeQuery($query);
 
-        // Instanciation des commentaires en fonction du type
         $users = [];
         foreach ($result as $userData) {
             $user = new User($userData);
@@ -93,6 +122,12 @@ class UserManager
         return $users;
     }
 
+    /**
+     * Get a user by their ID.
+     *
+     * @param int $id The ID of the user to retrieve.
+     * @return User|null The User object if found, otherwise null.
+     */
     public function get($id)
     {
         $query = "
@@ -110,14 +145,23 @@ class UserManager
         $user = new User($result[0]);
 
         return $user;
+    }
 
-    } 
-
+    /**
+     * Register a new user.
+     *
+     * @return void
+     */
     public function register()
     {
         return null;
     }
 
+    /**
+     * Create a new user.
+     *
+     * @return void
+     */
     public function create()
     {
         $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
@@ -152,16 +196,19 @@ class UserManager
         $query="
             INSERT 
             INTO
-                user (firstName, lastName, mail, password, dateRegistration)
+                user (firstName, lastName, mail, password, dateRegistration, token)
             VALUES
-                (:firstName, :lastName, :mail, :password, NOW())
+                (:firstName, :lastName, :mail, :password, NOW(), :token)
         ";
+
+        $token = $this->generateToken();
     
         $params = [
             ":firstName" => $firstName,
             ":lastName" => $lastName,
             ":mail" => $email,
             ":password" => $hashedPassword,
+            ":token" => $token
         ];
     
         $result = DbConnect::executeQuery($query, $params);
@@ -175,14 +222,74 @@ class UserManager
 
         $this->sessionManager->setSessionVariable("success_message", "Your account is created.");
         $this->sessionManager->unsetSessionVariable("formData");
+        $this->contactManager = new ContactManager;
+        $this->contactManager->sendEmailConfirmation($firstName, $email, $token);
         header("Location: ".BASE_URL."user/login");
         return;
     }
-    
 
+    /**
+     * Generate a unique token.
+     *
+     * @return string
+     */
+    private function generateToken() {
+        // Generate a random string using PHP's built-in functions
+        $token = bin2hex(random_bytes(32)); // 32 bytes = 64 hexadecimal characters
+        return $token;
+    }
+
+    /**
+     * Confirm the email address of the user using the provided token.
+     * 
+     * @param string $token The token used for email confirmation.
+     * @return void
+     */
+    public function confirmEmail($explodedUrl) {
+        $token = $explodedUrl[2];
+        $user = $this->getUserByToken($token);
+    
+        if ($user === null) {
+            $this->sessionManager->setSessionVariable("error_message", "Invalid token.");
+            header("Location: ".BASE_URL);
+            return;
+        } 
+        $query = "UPDATE user SET emailConfirmed = 1 WHERE id = :userId";
+        $params = [":userId" => $user->getId()];
+        DbConnect::executeQuery($query, $params);
+
+        $this->sessionManager->setSessionVariable("success_message", "Your email is confirmed.");
+        $this->sessionManager->setSessionVariable("userEmailConfirmed", 1);
+        header("Location: ".BASE_URL);
+        return;
+    }
+    
+    /**
+     * Retrieve a user from the database by token.
+     *
+     * @param string $token The token used to retrieve the user.
+     * @return User|null Returns the user object if found, or null if not found.
+     */
+    private function getUserByToken($token) {
+        $query = "SELECT * FROM user WHERE token = :token";
+        $params = [":token" => $token];
+        $result = DbConnect::executeQuery($query, $params);
+        if ($result) {
+            return new User($result[0]);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Check if an email already exists in the database.
+     *
+     * @param string $mail The email address to check.
+     * @return bool True if the email exists, otherwise false.
+     */
     public function checkIfEmailExists($mail)
     {
-        $query="
+        $query = "
             SELECT
                 mail
             FROM
@@ -197,31 +304,42 @@ class UserManager
 
         $result = DbConnect::executeQuery($query, $params);
 
-        if (count($result) >= 1){
-            return true;
-        }
-
+        return count($result) >= 1;
     }
 
+    /**
+     * Retrieves and returns the user with the given ID.
+     *
+     * @param int $id The ID of the user to retrieve.
+     * @return User|null The user object if found, otherwise null.
+     */
     public function edit($id)
     {
-        return ($this->get($id));
+        return $this->get($id);
     }
 
+    /**
+     * Updates the user information in the database.
+     *
+     * @param int $id The ID of the user to update.
+     * @return void
+     */
     public function update($id)
     {
+        // Retrieving user data from the POST request
         $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
         $lastName = filter_input(INPUT_POST, "userLastName", FILTER_SANITIZE_STRING);
         $mail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);
         $role = filter_input(INPUT_POST, "userRole", FILTER_SANITIZE_STRING);
     
-        // Vérifier que tous les champs sont remplis
+        // Checking if all fields are filled
         if ($firstName === null || $lastName === null || $mail === null || $role === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             header("Location: ".BASE_URL."admin/usersManagement/edit/".$id);
             return;
         }
     
+        // Updating user information in the database
         $params = [
             ":firstName" => $firstName,
             ":lastName" => $lastName,
@@ -254,9 +372,13 @@ class UserManager
             return;
         }
     }
-    
-    
 
+    /**
+     * Deletes the user with the given ID from the database.
+     *
+     * @param int $id The ID of the user to delete.
+     * @return void
+     */
     public function delete($id)
     {
         $query="
@@ -282,16 +404,28 @@ class UserManager
         }
     }
 
+    /**
+     * Initiates the login process for the user.
+     *
+     * @return void
+     */
     public function login()
     {
         return null;
     }
 
+    /**
+     * Attempts to authenticate the user based on provided credentials.
+     *
+     * @return void
+     */
     public function connect()
     {
+        // Retrieving user credentials from the POST request
         $userMail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);
         $userPassword = $_POST["userPassword"];
     
+        // Validating email format
         if ($userMail === null) {
             $this->sessionManager->setSessionVariable("error_message", "Invalid email format.");
             $this->sessionManager->setSessionVariable("formData", filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING));
@@ -299,15 +433,10 @@ class UserManager
             return;
         }
     
+        // Retrieving user data from the database
         $query="
             SELECT 
-                id,
-                firstName,
-                lastName,
-                mail,
-                password,
-                dateRegistration,
-                role
+                *
             FROM
                 user
             WHERE
@@ -316,6 +445,7 @@ class UserManager
         $params = [":mail" => $userMail];
         $userData = DbConnect::executeQuery($query, $params)[0];
     
+        // Authenticating user
         if ($userData != NULL && password_verify($userPassword, $userData['password'])) {
             $this->sessionManager->setSessionVariable("success_message", "Connected !");
             $this->sessionManager->setSessionVariable("logged", true);
@@ -331,8 +461,13 @@ class UserManager
             return;
         }
     }
-    
 
+    /**
+     * Opens a session for the authenticated user.
+     *
+     * @param array $userData The data of the authenticated user.
+     * @return void
+     */
     public function openSession($userData)
     {
         $user = new User($userData);
@@ -343,52 +478,80 @@ class UserManager
         $this->sessionManager->setSessionVariable("userAvatar", $user->getAvatar());
         $this->sessionManager->setSessionVariable("userDateRegistration", $user->getDateRegistration());
         $this->sessionManager->setSessionVariable("userRole", $user->getRole());
+        $this->sessionManager->setSessionVariable("userEmailConfirmed", $user->getEmailConfirmed());
     }
-    
+
+    /**
+     * Logs out the currently logged-in user.
+     *
+     * @return void
+     */
     public function logout()
     {
         session_unset();
         header("Location: ".BASE_URL);
     }
-    
+
+    /**
+     * Retrieves and returns the profile information of the currently logged-in user.
+     *
+     * @return User|null The user object representing the profile of the currently logged-in user, or null if no user is logged in.
+     */
     public function profile()
     {
         $user = $this->get($this->sessionManager->getSessionVariable("userId"));
         return $user;
     }
 
+    /**
+     * Placeholder method.
+     *
+     * @return void
+     */
     public function password()
     {
         return null;
     }
 
+    /**
+     * Updates the user's password in the database.
+     *
+     * @return void
+     */
     public function changePassword()
     {
+        // Retrieving user ID
         $userId = $this->sessionManager->getSessionVariable("userId");
         $user = $this->get($userId);
     
+        // Retrieving old, new, and confirmed passwords
         $oldPassword = $_POST["oldPassword"];
         $newPassword = $_POST["newPassword"];
         $confirmPassword = $_POST["confirmPassword"];
     
+        // Sanitizing password inputs
         $oldPassword = filter_var($oldPassword, FILTER_SANITIZE_STRING);
         $newPassword = filter_var($newPassword, FILTER_SANITIZE_STRING);
         $confirmPassword = filter_var($confirmPassword, FILTER_SANITIZE_STRING);
     
+        // Validating old password
         if (!password_verify($oldPassword, $user->getPassword())) {
             $this->sessionManager->setSessionVariable("error_message", "Incorrect old password.");
             header("Location: ".BASE_URL."user/password");
             return;
         }
     
+        // Checking if new password matches the confirmation
         if ($newPassword !== $confirmPassword) {
             $this->sessionManager->setSessionVariable("error_message", "New password and confirmation do not match.");
             header("Location: ".BASE_URL."user/password");
             return;
         }
     
+        // Hashing the new password
         $hashedNewPassword = password_hash($newPassword, PASSWORD_DEFAULT);
     
+        // Updating password in the database
         $query = "
             UPDATE
                 user
@@ -414,20 +577,25 @@ class UserManager
         $this->sessionManager->setSessionVariable("success_message", "Password successfully updated.");
         header("Location: ".BASE_URL."user/profile");
         return;
-        
     }
-    
-    
 
+    /**
+     * Saves the user's profile information in the database.
+     *
+     * @return void
+     */
     public function save()
     {
+        // Retrieving user and current avatar
         $user = $this->get($this->sessionManager->getSessionVariable("userId"));
         $currentAvatar = $user->getAvatar();
     
+        // Retrieving form inputs
         $firstName = filter_input(INPUT_POST, "userFirstName", FILTER_SANITIZE_STRING);
         $lastName = filter_input(INPUT_POST, "userLastName", FILTER_SANITIZE_STRING);
         $mail = filter_input(INPUT_POST, "userMail", FILTER_VALIDATE_EMAIL);        
     
+        // Checking if all fields are filled
         if ($firstName === null || $lastName === null || $mail === null) {
             $this->sessionManager->setSessionVariable("error_message", "All fields are required.");
             header("Location: ".BASE_URL."user/profile");
@@ -436,18 +604,19 @@ class UserManager
     
         $this->fileManager = new FileManager;
     
-        // Vérifier si un fichier avatar a été soumis
+        // Checking if an avatar file is uploaded
         if ($this->fileManager->isFileUploaded("userAvatar") === true) {
-            // Créer une instance de File pour l'avatar
+            // Creating a File instance for the avatar
             $avatarFile = new File("userAvatar");
     
-            // Vérifier si le fichier existe
+            // Checking if the file exists
             if ($this->fileManager->fileExists("userAvatar") === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Avatar file doesn't exist.");
                 header("Location: ".BASE_URL."user/profile");
                 return;
             }
     
+            // Allowed avatar file extensions
             $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
             if ($this->fileManager->isAllowedFileType($avatarFile, $allowedExtensions) === false) {
                 $this->sessionManager->setSessionVariable("error_message", "Only JPG, JPEG, PNG, and GIF files are allowed for avatars.");
@@ -455,7 +624,7 @@ class UserManager
                 return;
             }
     
-            // Déplacer le fichier avatar téléchargé vers le répertoire d'avatar
+            // Moving the uploaded avatar file to the avatar directory
             $uploadDir = "../public/avatar/";
             $avatarName = $this->fileManager->generateUniqueFilename($avatarFile->getName());
             if ($this->fileManager->moveUploadedFile($avatarFile, $uploadDir, $avatarName) === false) {
@@ -464,11 +633,11 @@ class UserManager
                 return;
             }
         } else {
-            // Utiliser l'avatar actuel si aucun fichier n'a été soumis
+            // Using the current avatar if no file is submitted
             $avatarName = $currentAvatar;
         }
     
-        // Construisez la requête SQL pour mettre à jour les données de l'utilisateur
+        // Constructing the SQL query to update user data
         $query = "
             UPDATE
                 user
@@ -505,9 +674,12 @@ class UserManager
         header("Location: ".BASE_URL."user/profile");
     }
     
-    
-    
-
+    /**
+     * Retrieves the number of comments posted by the user with the given ID.
+     *
+     * @param int $id The ID of the user.
+     * @return int The number of comments posted by the user.
+     */
     public static function getNumberOfCommentsByUser($id)
     {
         $query = "
@@ -522,7 +694,8 @@ class UserManager
         $params = [":id" => $id];
         $result = DbConnect::executeQuery($query, $params);
 
-        // Retourner le nombre de commentaires de l'utilisateur
+        // Returning the number of comments posted by the user
         return $result[0]['commentCount'];
     }
+
 }
