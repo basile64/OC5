@@ -11,6 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+    <link rel="shortcut icon" href="<?= htmlspecialchars(BASE_URL) ?>public/img/logo.ico" type="image/x-icon">
+
     <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/main-layout.css">
     <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-list-homepage.css">
     <link rel="stylesheet" href="<?= htmlspecialchars(BASE_URL) ?>public/css/post-single.css">
