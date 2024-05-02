@@ -7,6 +7,7 @@ This project is a professional blog developed in PHP, designed to showcase your 
 The blog consists of two main parts:
 
 1. **Pages Accessible to All Visitors:**
+
    - Home page presenting your professional identity, a navigation menu, a contact form, and links to your social media profiles.
    - Page listing all blog posts, including their titles, dates of last modification, summaries, and links to the full articles.
    - Page detailing a specific blog post, displaying the title, summary, content, author, last update date, as well as the ability to add comments and the list of validated and published comments.
@@ -32,9 +33,11 @@ composer install
 
 3. Configure database access parameters in the `.env` file.
 4. Configuration of the BASE_URL before getting started with using the application, make sure to configure the base URL in the config.php file. This URL is used to construct the absolute links of your application. For example, if your application is hosted on http://example.com/, you should define the base URL as follows:
+
 ```bash
 define('BASE_URL', "http://example.com/");
 ```
+
 Make sure to replace http://example.com/ with the actual URL of your application. It's important to properly configure this URL to ensure the correct functioning of links and redirects in your application.
 
 ## Usage
