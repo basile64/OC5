@@ -421,22 +421,19 @@ class PostManager
             FROM 
                 post
             WHERE
-                IFNULL(dateModification, dateCreation) < :dateCreationOuModification
+                IFNULL(dateModification, dateCreation) > :dateCreationOuModification
                 AND id != :postId
             ORDER BY
-                dateCreationOuModification DESC
+                dateCreationOuModification ASC
             LIMIT 1
         ";
 
         $params = [":dateCreationOuModification" => $dateCreationOuModification, ":postId" => $postId];
         $result = DbConnect::executeQuery($query, $params);
 
-        if (!empty($result)) {
-            $previousPost = new Post($result[0]);
-            return $previousPost;
-        } else {
-            return null; // Return null if no previous post found
-        }
+        $previousPost = new Post($result[0]);
+
+        return $previousPost;
     }
 }
 
