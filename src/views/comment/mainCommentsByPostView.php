@@ -30,7 +30,7 @@
             require_once "../src/views/comment/newMainCommentView.php";
         } else {
     ?>
-            <div style='margin-top:50px'>You must be connected to post a comment.</div>"
+            <div style='margin-top:50px'>You must be connected to post a comment.</div>
     <?php
         }
     ?>
