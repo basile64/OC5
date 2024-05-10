@@ -35,7 +35,7 @@ $page = "postsManagement";
                     <div>Author</div>
                     <select id="author" name="userId" class="date-creation-post-single">
                         <?php foreach ($authors as $author): ?>
-                            <option value="<?= htmlspecialchars($author->getId()); ?>"><?= htmlspecialchars($author->getFirstName()); ?></option>
+                            <option value="<?= htmlspecialchars($author->getId()); ?>" <?php if ($author->getId() == $sessionManager->getSessionVariable("userId")) echo 'selected'; ?>><?= htmlspecialchars($author->getFirstName()); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
