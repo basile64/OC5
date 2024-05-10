@@ -253,7 +253,6 @@ class CommentManager
 
         if ($result !== false) {
             $this->sessionManager->setSessionVariable("success_message", "Comment approved.");
-            return;
         } else {
             $this->sessionManager->setSessionVariable("error_message", "Error when approving the comment.");
         }
